@@ -1,78 +1,28 @@
 <template>
     <div class="login">
         <div class="prj-name">
-            <b>STREAMS</b>
+            <!--<b>STREAMS</b>-->
         </div>
-        <div class="container">
-            <h1 class="signup">LOG IN</h1>
+        <div class="container fixed bottom-3 top-3 right-3 bg-blue-200 h-17/20 w-3/4 sm:w-2/4 md:w-1/3 lg:w-2/3 xl:w-2/5 text-black rounded-lg flex flex-col items-center justify-center p-5">
+            <h1 class="login font-bold text-3xl text-blue-700 mb-10">LOG IN</h1>
             <div class="forms">
-                <label for="user_id"><b>User ID</b></label>
-                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID"/>
 
-                <label for="password"><b>Password</b></label>
-                <input type="password" id="input_password" name="password" required placeholder="Password"/>
+                <label for="user_id" class="font-bold flex flex-col mb-1 text-left">User ID</label>
+                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID" class="p-2 mb-6 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
 
-                <button class="submit" id="sign-up" value="Sign Up">Log In</button>
-                <label for="guest" id="guest"><b>Guest</b></label>
+                <label for="password" class="font-bold flex flex-col mb-1 text-left">Password</label>
+                <input type="password" id="input_password" name="password" required placeholder="Password" class="p-2 mb-6 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+
+                <router-link to="/reading">
+                <label for="guest" id="guest" class="font-bold underline cursor-pointer flex flex-col text-left">Guest.</label>
+                </router-link>
+
+                <div class="flex justify-center"> <!-- to centers its content horizontally -->
+                    <router-link to="/reading">
+                    <button class="submit bg-blue-700 text-blue-200 py-2 px-4 rounded-full mt-5 flex flex-col">Log In</button>
+                    </router-link>
+                </div>
             </div>
         </div>
     </div>
-
 </template>
-
-<style scoped>
-   .container{
-        margin: 0 5px 0 45px ;
-        background-color: #C9D8EC;
-        min-height: 85vh;
-        color: black;
-        border-radius: 20px;
-    }
-    h1{
-        font-weight: 900;
-        margin: 40px 230px 0 210px;
-        padding: 65px 0 0 10px;
-        color: #5F88BF;
-        -webkit-text-stroke-color: black;
-        -webkit-text-stroke-width: 1px;
-    }
-    .forms{
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        padding: 10%
-    }
-    .forms b{
-        font-size: 16px;
-    }
-    .forms input[type="text"],
-    .forms input[type="password"] {
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 7px;
-        font-size: 16px;
-        background-color: white;
-        color: black;
-    }
-    .forms button{
-        padding: 10px;
-        margin: 40px 150px;
-        border-radius: 25px;
-        font-size: 16px;
-        background-color: #5F88BF;
-        color: #C9D8EC;
-    }
-    #guest{
-        padding: 3px;
-        margin-left: 200px;
-        font-size: 16px;
-        color: black;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-    button{
-        margin-top: 5%;
-        cursor: pointer;
-    }
-</style>
