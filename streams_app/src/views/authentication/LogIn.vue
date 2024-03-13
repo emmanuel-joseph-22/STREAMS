@@ -11,8 +11,10 @@
 
                 <label for="password"><b>Password</b></label>
                 <input type="password" id="input_password" name="password" required placeholder="Password"/>
-
-                <button class="submit" id="sign-up" value="Sign Up">Log In</button>
+                
+                <p v-if = "errorMsg">{{ errorMsg }}</p>
+                
+                <button  v-on:click = "login" class="submit" id="sign-up" value="Sign Up">Log In</button>
                 <label for="guest" id="guest"><b>Guest</b></label>
             </div>
         </div>
@@ -76,3 +78,46 @@
         cursor: pointer;
     }
 </style>
+
+
+<script setup>
+
+import { ref } from "vue";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+const email = ref("");
+const password = ref("");
+const errorMsg = ref()
+
+const login = () => {
+
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email.value, password.value)
+        .then((data) => {
+            console.log("You have logged in");
+
+            console.log(auth.currentUser);
+
+            
+        })
+        .catch((error) => {
+            console.log(error.code);
+            switch(error.code){
+                case "auth/invalid-email":
+                    errorMsg.value = "Invalid email";
+                    break;
+                case "auth/user-not-found":
+                    errorMsg.value = "Email not found";
+                    break;
+                case "auth/wrong-password":
+                    errorMsg.value = "Invalid Password";
+                    break;
+                default:
+                    errorMsg.value = "Email or password was incorrect";
+                    break;
+            }
+        });
+
+}
+
+</script>
