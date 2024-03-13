@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meter Records Form</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="datetime-local"],
+    select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    #submitData {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    #submitData:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Meter Records Form</h2>
+    <form id="meterForm">
+        <div class="form-group">
+            <label for="date">Date and Time:</label>
+            <input type="datetime-local" id="date" name="date" required>
+        </div>
+        <div class="form-group">
+            <label for="waterSource">Water Source:</label>
+            <select id="waterSource" name="waterSource" required>
+                <option value="">Select Water Source</option>
+                <option value="deepwell1">Deepwell 1</option>
+                <option value="deepwell2">Deepwell 2</option>
+                <option value="deepwell3">Deepwell 3</option>
+                <option value="deepwell4">Deepwell 4</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="measurement">Measurement:</label>
+            <input type="text" id="measurement" name="measurement" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" id="submitData" name="submitData">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBR5Tyx6-Oj996DaGOP2WKY80ijL4zWN_0",
+    authDomain: "streams-database-c8590.firebaseapp.com",
+    projectId: "streams-database-c8590",
+    storageBucket: "streams-database-c8590.appspot.com",
+    messagingSenderId: "415149398034",
+    appId: "1:415149398034:web:daeb25890b4f7e5ac8a0cb"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+  // Get a Firestore instance
+  const db = getFirestore(app);
+
+  // Handling form submission
+  document.getElementById('meterForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Fetch form values
+      const date = document.getElementById('date').value;
+      const waterSource = document.getElementById('waterSource').value;
+      const measurement = document.getElementById('measurement').value;
+
+      try {
+          // Add record to Firestore
+          const docRef = await addDoc(collection(db, "meter_records"), {
+              date: date,
+              waterSource: waterSource,
+              measurement: measurement
+          });
+          console.log("Record written with ID: ", docRef.id);
+          // Reset the form after successful submission
+          document.getElementById('meterForm').reset();
+          alert("Record added");
+      } catch (error) {
+          console.error("Error adding record: ", error);
+      }
+  });
+</script>
+
+</body>
+</html>
