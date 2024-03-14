@@ -1,0 +1,8 @@
+{
+  "appId": "com.streams.app",
+  "appName": "Streams",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
