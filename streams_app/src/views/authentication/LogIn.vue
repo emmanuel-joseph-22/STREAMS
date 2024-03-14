@@ -93,9 +93,9 @@ const errorMsg = ref()
 
 const login = () => {
     
-    const auth = getAuth(data);
+    const auth = getAuth(); 
     signInWithEmailAndPassword(auth, email.value, password.value)
-        .then(() => {
+        .then((data) => { // eslint-disable-line no-unused-vars
             console.log("You have logged in");
             console.log(auth.currentUser);
         })
