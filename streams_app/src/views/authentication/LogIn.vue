@@ -90,15 +90,11 @@ const password = ref("");
 const errorMsg = ref()
 
 const login = () => {
-
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email.value, password.value)
         .then((data) => {
             console.log("You have logged in");
-
             console.log(auth.currentUser);
-
-            
         })
         .catch((error) => {
             console.log(error.code);
