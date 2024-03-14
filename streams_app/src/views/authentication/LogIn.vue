@@ -14,8 +14,10 @@
                 
                 <p v-if = "errorMsg">{{ errorMsg }}</p>
                 
+                <router-link to="/reading">
                 <button  v-on:click = "login" class="submit" id="sign-up" value="Sign Up">Log In</button>
                 <label for="guest" id="guest"><b>Guest</b></label>
+                </router-link>
             </div>
         </div>
     </div>
@@ -90,9 +92,10 @@ const password = ref("");
 const errorMsg = ref()
 
 const login = () => {
-    const auth = getAuth();
+    
+    const auth = getAuth(data);
     signInWithEmailAndPassword(auth, email.value, password.value)
-        .then((data) => {
+        .then(() => {
             console.log("You have logged in");
             console.log(auth.currentUser);
         })
