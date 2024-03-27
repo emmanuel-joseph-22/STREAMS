@@ -1,0 +1,24 @@
+:root {
+    /* light mode */
+    --navy: #030622;
+    --regular_button: #630606;
+    --chatbox: #2a0000;
+    --red: #410505;
+    --reg_btn_hover: #a30d0d;
+    --white: rgb(255, 246, 246);
+    --pure_white: white;
+    --navbarHover: rgba(92, 94, 230, 0.347);
+    --main_cont_color: rgba(255, 255, 255, 0.792);
+    --transparent: rgba(255, 20, 20, 0);
+    --placeholder: rgb(200, 200, 200);
+    --infoBox: #ead4d4;
+    --border: rgba(0, 0, 0, 0.601);
+    --dropdown: #000210;
+    --text_color: black;
+    --link_hover: rgb(115, 108, 176);
+    
+    /* dark mode */
+
+    /* theme elements */
+    --button: 
+}

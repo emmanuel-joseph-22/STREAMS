@@ -22,7 +22,17 @@ const routes = [
     {
       path: '/home',
       name: 'dashboard',
-      component: () => import('../views/DashboardView.vue')
+      component: () => import('../views/dashboard/DashboardView.vue')
+    },
+    {
+      path: '/report',
+      name: 'report',
+      component: () => import('../views/dashboard/ReportView.vue')
+    },
+    {
+      path: '/map',
+      name: 'campus_map',
+      component: () => import('../views/dashboard/CampusMapView.vue')
     },
     {
       path: '/reading',
