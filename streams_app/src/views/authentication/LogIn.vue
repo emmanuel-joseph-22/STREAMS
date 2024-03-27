@@ -16,6 +16,7 @@
                 
                 <router-link to="/reading">
                 <button  v-on:click = "login" class="submit" id="sign-up" value="Sign Up">Log In</button>
+                <br/>
                 <label for="guest" id="guest"><b>Guest</b></label>
                 </router-link>
             </div>
@@ -77,7 +78,7 @@
     }
     #guest{
         padding: 3px;
-        margin-left: 200px;
+        
         font-size: 16px;
         color: black;
         text-decoration: underline;
