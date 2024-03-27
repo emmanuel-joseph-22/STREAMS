@@ -7,102 +7,47 @@
             <h1 class="signup">LOG IN</h1>
             <div class="forms">
                 <label for="user_id" class="form_label"><b>User ID</b></label>
-                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID"/>
+                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID" v-model="email"/>
 
                 <label for="password"  class="form_label"><b>Password</b></label>
-                <input type="password" id="input_password" name="password" required placeholder="Password"/>
+                <input type="password" id="input_password" name="password" required placeholder="Password" v-model="password"/>
                 
                 <p v-if = "errorMsg">{{ errorMsg }}</p>
-                
-                <router-link to="/reading">
+            
                 <button  v-on:click = "login" class="submit" id="sign-up" value="Sign Up">Log In</button>
                 <br/>
-                <label for="guest" id="guest"><b>Guest</b></label>
-                </router-link>
+                <router-link to="/home" id="guest"><b>Guest</b></router-link>
+                <br/>
+                <router-link to="/signup">Sign Up</router-link>
             </div>
         </div>
     </div>
 
 </template>
 
-<style scoped>
-   .container{
-        margin: 0 10px ;
-        background-color: #C9D8EC;
-        min-height: 85vh;
-        color: black;
-        border-radius: 20px;
-    }
-    .prj-name{
-        margin: 20px;
-    }
-    .signup{
-        font-weight: 900;
-        margin: 0;
-        padding: 20px 0 0 10px;
-        color: #5F88BF;
-        -webkit-text-stroke-color: black;
-        -webkit-text-stroke-width: 1px;
-    }
-    .forms{
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        padding: 10%
-    }
-    .forms b{
-        font-size: 16px;
-    }
-    .form_label{
-        text-align: left;
-        margin: 3px;
-    }
-    .forms input[type="text"],
-    .forms input[type="password"] {
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 7px;
-        font-size: 16px;
-        background-color: white;
-        color: black;
-    }
-    .forms button{
-        padding: 10px;
-        margin: 40px 0px;
-        border-radius: 25px;
-        font-size: 16px;
-        background-color: #5F88BF;
-        color: #C9D8EC;
-        cursor: pointer;
-    }
-    #guest{
-        padding: 3px;
-        
-        font-size: 16px;
-        color: black;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-</style>
+<style src="../../themes/auth.css"></style>
 
 
 <script setup>
 
 import { ref } from "vue";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from 'vue-router';
 
 const email = ref("");
 const password = ref("");
 const errorMsg = ref()
 
+const router = useRouter();
 const login = () => {
     
     const auth = getAuth(); 
     signInWithEmailAndPassword(auth, email.value, password.value)
-        .then((data) => { // eslint-disable-line no-unused-vars
+        // eslint-disable-next-line
+        .then((data) => { 
             console.log("You have logged in");
             console.log(auth.currentUser);
+            router.push('/home')
         })
         .catch((error) => {
             console.log(error.code);
