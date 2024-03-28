@@ -32,6 +32,7 @@
 
 import { ref } from "vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+//may something dito
 import { db_app as db } from 'firebase/database';
 import { useRouter } from 'vue-router';
 const email = ref("");

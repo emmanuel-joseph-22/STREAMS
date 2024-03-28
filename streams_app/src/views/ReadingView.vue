@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import { collection, addDoc } from "firebase/firestore";
-import { firestore as db } from './../main'
+import { collection, doc, setDoc } from "firebase/firestore";
+import { firestore as db } from './../main.js';
 
 export default {
     data() {
@@ -85,33 +85,29 @@ export default {
         };
     },
     methods: {
-        submitForm() {
+        async submitForm() {
             const waterSource = this.WaterSource;
             const buildingDepartment = this.BuildingDepartment;
             const consumption = this.Consumption;
-            const timestamp = new Date().getTime();
-
-            
+            //const timestamp = new Date().getTime(); wait
             // Get current date in the format YYYY-MM-DD
             const currentDate = new Date().toISOString().split('T')[0];
-
+            
             // Construct the path
-            const path = 'meter_records/main_meter/' + `${waterSource}/${currentDate}/${timestamp}`;
+            const path = 'meter_records/main_meter/' + `${waterSource}`;
             // Construct the data object
             const data = {
                 consumption: consumption,
                 buildingDepartment: buildingDepartment
             };
-
-            // Add the record to Firestore
-            addDoc(collection(db, path), data)
-                .then(() => {
-                    console.log("Meter record stored successfully!");
-                    console.log(path);
-                })
-                .catch((error) => {
-                    console.error("Error storing meter record: ", error);
-                });
+            // set doc function to customize ID as current Date
+            try {
+                await setDoc(doc(collection(db, path), currentDate), data);
+                console.log("Meter record stored successfully!");
+            } catch(error) {
+                console.error("Error storing meter record: ", error);
+            }
+                
         }
     }
 };
