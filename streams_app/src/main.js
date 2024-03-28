@@ -17,7 +17,14 @@ const firebaseConfig = {
     appId: "1:415149398034:web:daeb25890b4f7e5ac8a0cb"
   };
 
-export const db_app = initializeApp(firebaseConfig);
+// Initialize Firebase inside createApp
+export const app = createApp(App);
+export const db_app = initializeApp(firebaseConfig, 'uniqueAppId');
 export const firestore = getFirestore(db_app);
 
-createApp(App).use(router).mount('#app')
+// Provide Firestore instance to all components via provide/inject
+app.provide('firestore', firestore);
+
+// Mount the app with router
+app.use(router).mount('#app');
+

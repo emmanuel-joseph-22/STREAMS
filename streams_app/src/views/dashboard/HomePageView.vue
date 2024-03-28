@@ -27,9 +27,9 @@ export default {
 
 <style scoped>
     .main_content{
-        position: relative;
+        position: absolute;
         height: 200px;
-        left: 140px;
+        left: 280px;
         z-index: 16;
         width: calc(100% - 280px);
         min-width: 600px;

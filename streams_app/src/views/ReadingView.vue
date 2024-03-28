@@ -33,7 +33,7 @@
 
             <div class="m3-cont">
                 <label for="input_cubic" class="m3-label">m3:</label>
-                <input autofocus id="input_cubic" type="text" name="cubic" required placeholder="m3: " class="m3-input"/>
+                <input autofocus id="input_cubic" type="text" v-model="Consumption" required placeholder="m3: " class="m3-input"/>
             </div>
 
             <div class="m3-cont-x">
@@ -47,7 +47,7 @@
             </div>
 
             <div class="submit">
-                <button>SUBMIT</button>
+                <button @click="submitForm">SUBMIT</button>
             </div>
 
             <nav class="bot-navi">
@@ -71,6 +71,49 @@
         </div>
     </div>
 </template>
+
+<script>
+import { collection, addDoc } from "firebase/firestore";
+import { firestore as db } from './../main'
+
+export default {
+    data() {
+        return {
+            WaterSource: '',
+            BuildingDepartment: '',
+            Consumption: ''
+        };
+    },
+    methods: {
+        submitForm() {
+            const waterSource = this.WaterSource;
+            const buildingDepartment = this.BuildingDepartment;
+            const consumption = this.Consumption;
+            const timestamp = new Date().getTime();
+
+            // Get current date in the format YYYY-MM-DD
+            const currentDate = new Date().toISOString().split('T')[0];
+
+            // Construct the path
+            const path = meter_records/main_meter/${waterSource}/${currentDate}/${timestamp};
+            // Construct the data object
+            const data = {
+                consumption: consumption,
+                buildingDepartment: buildingDepartment
+            };
+
+            // Add the record to Firestore
+            addDoc(collection(db, path), data)
+                .then(() => {
+                    console.log("Meter record stored successfully!");
+                })
+                .catch((error) => {
+                    console.error("Error storing meter record: ", error);
+                });
+        }
+    }
+};
+</script>
 
 <style scoped>
     body {

@@ -208,9 +208,9 @@ kase di ko mababa ung nav icon last of type sa bottom */
         color: var(--white);
         width: 250px;
         height: 200px;
-        border-radius: 15px;
+        border-radius: 20px;
         text-decoration: none;
-        z-index: 15;
+        z-index: 20;
         text-align: left;
     }
 </style>

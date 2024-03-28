@@ -12,8 +12,10 @@
     "@capacitor/core": "^5.7.2",
     "@capacitor/ios": "^5.7.2",
     "core-js": "^3.8.3",
+    "echarts": "^5.5.0",
     "firebase": "^10.8.1",
     "vue": "^3.2.13",
+    "vue-echarts": "^6.6.9",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
