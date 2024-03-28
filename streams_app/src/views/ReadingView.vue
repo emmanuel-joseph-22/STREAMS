@@ -17,6 +17,7 @@
                     <option value="deep-well-1">Deep Well 1</option>
                     <option value="deep-well-2">Deep Well 2</option>
                     <option value="deep-well-3">Deep Well 3</option>
+                    <option value="deep-well-4">Deep Well 4</option>
                     <option value="prime-water">Prime Water</option>
                 </select>
             </div>
@@ -24,10 +25,11 @@
             <div class="building-department">
                 <label for="building-department" class="building-department-label">Building Department</label>
                 <select id="building-department" v-model="BuildingDepartment" class="building-department-dropdown">
-                    <option value="CIT">CIT</option>
+                    <option value="CET">CET</option>
                     <option value="CEAFA">CEAFA</option>
                     <option value="CICS">CICS</option>
                     <option value="RGR">RGR</option>
+                    <option value="STEERHUB">STEER HUB</option>
                 </select>
             </div>
 
