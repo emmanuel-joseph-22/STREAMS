@@ -91,11 +91,12 @@ export default {
             const consumption = this.Consumption;
             const timestamp = new Date().getTime();
 
+            
             // Get current date in the format YYYY-MM-DD
             const currentDate = new Date().toISOString().split('T')[0];
 
             // Construct the path
-            const path = meter_records/main_meter/${waterSource}/${currentDate}/${timestamp};
+            const path = 'meter_records/main_meter/' + `${waterSource}/${currentDate}/${timestamp}`;
             // Construct the data object
             const data = {
                 consumption: consumption,
@@ -106,6 +107,7 @@ export default {
             addDoc(collection(db, path), data)
                 .then(() => {
                     console.log("Meter record stored successfully!");
+                    console.log(path);
                 })
                 .catch((error) => {
                     console.error("Error storing meter record: ", error);
