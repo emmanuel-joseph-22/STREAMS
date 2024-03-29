@@ -38,14 +38,14 @@ export default {
 
     @media screen and (max-width: 1000px){
         .main_content{
-            left: -15px;
+            left: 40px;
             width: calc(100% - 90px);
         }
     }
     @media screen and (max-width: 766px){
         .main_content{
             left: 0;
-            width: 100vw;
+            width: 100%;
         }
     }
 

@@ -1,7 +1,7 @@
 <template>
     <home-page>
         <header-bar>
-            <h1>Dashboard bitch draft na magulo</h1>
+            <h1>Dashboard</h1>
         </header-bar>
         <dashboard-content>
           <div class="dashboard_grid">
@@ -196,17 +196,17 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: minmax(100px, auto);
   gap: 30px;
-  background-color: rgba(123, 0, 239, 0);
+  background-color: rgba(69, 16, 118, 0.532);
   border: 1px solid black;
   width: 100%;
 }
 
 .dash_container{
-  width: 100%;
+  width: 80%;
   position: relative;
   display: flex;
-  align-items: center;
-  background-color: rgba(114, 153, 153, 0.481);
+  justify-self: center;
+  background-color: rgb(114, 153, 153);
 }
 
 .box1{
@@ -253,6 +253,7 @@ export default {
   .dashboard_grid{
     grid-template-columns: repeat(1, 1fr);
     grid-auto-rows: auto;
+    width: 100vw;
   }
   .box1, .box2, .box3, .box4, .box5, .box6 {
     grid-row: auto;

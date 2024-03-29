@@ -82,13 +82,8 @@
                 </router-link>        
             </div>
             <div class="mobile_link">
-                <router-link to="/" class="mobile_link">
-                    <img class="mobile_icon" src="bell.png" />
-                </router-link>            
-            </div>
-            <div class="mobile_link">
-                <router-link to="/" class="mobile_link">
-                    <img class="mobile_icon" src="profile.png" /> 
+                <router-link to="/reading" class="mobile_link">
+                    <img class="mobile_icon" src="metro.png" />
                 </router-link>            
             </div>
         </div>
