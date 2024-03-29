@@ -27,18 +27,16 @@ export default {
     .main_content{
         position: relative;
         height: 200px;
-        left: 130px;
+        left: 280px;
         z-index: 16;
         width: calc(100% - 290px);
-        min-width: 600px;
-        margin: 0 auto;
-        background-color: rgb(136, 199, 255);
+        background-color: rgba(136, 199, 255, 0);
         transition: ease-in-out 0.3s;
     }
 
     @media screen and (max-width: 1000px){
         .main_content{
-            left: 40px;
+            left: 90px;
             width: calc(100% - 90px);
         }
     }

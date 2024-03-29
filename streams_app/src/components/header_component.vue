@@ -29,7 +29,9 @@
 
 @media screen and (max-width: 766px){
     .header{
-        width: 100%;
+        width: auto;
+        height: 40px;
+        font-size: 0.8rem;
     }
 }
 </style>
