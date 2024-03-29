@@ -16,7 +16,7 @@
     position: sticky;
     align-items: left;
     padding: 10px;
-    background-color: rgba(184, 250, 168, 0.371);
+    background-color: rgb(222, 236, 255);
     left: 0;
     top: 0;
     width: auto;

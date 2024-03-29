@@ -196,8 +196,7 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: minmax(100px, auto);
   gap: 30px;
-  background-color: rgba(69, 16, 118, 0.532);
-  border: 1px solid black;
+  background-color: rgba(69, 16, 118, 0);
   width: 100%;
 }
 
