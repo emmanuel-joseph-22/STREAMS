@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LogIn from '../views/authentication/LogIn.vue';
 import SignUp from '../views/authentication/SignUp.vue';
 import Reading from '../views/ReadingView.vue';
-
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
     {
@@ -46,5 +46,33 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
   })
+
+//gets the current user's info from authentication
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+      getAuth(),
+      (user) => {
+        removeListener();
+        resolve(user);
+      },
+      reject
+    )
+  })
+}
+
+// saglet di ko na tanda ung code
+router.beforeEach(async (to, from, next) => {
+  if(to.matched.some((record) => record.meta.requiresAuth)){
+     if(await getCurrentUser()){
+      next();
+     } else {
+      alert("you dont have access!");
+      next('/');
+     }
+  } else {
+    next();
+  }
+});
 
 export default router

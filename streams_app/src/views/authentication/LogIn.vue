@@ -30,8 +30,8 @@
 
 <script setup>
 
-import { ref } from "vue";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { ref } from 'vue';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
 const email = ref("");
@@ -39,15 +39,17 @@ const password = ref("");
 const errorMsg = ref()
 
 const router = useRouter();
+console.log("ey")
 const login = () => {
     
     const auth = getAuth(); 
+    console.log("bitch")
     signInWithEmailAndPassword(auth, email.value, password.value)
         // eslint-disable-next-line
         .then((data) => { 
             console.log("You have logged in");
             console.log(auth.currentUser);
-            router.push('/home')
+            router.push('/home');
         })
         .catch((error) => {
             console.log(error.code);
