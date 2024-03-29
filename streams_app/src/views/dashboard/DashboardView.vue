@@ -205,7 +205,6 @@ export default {
   width: 100%;
   position: relative;
   display: flex;
-  min-width: 300px;
   align-items: center;
   background-color: rgba(114, 153, 153, 0.481);
 }

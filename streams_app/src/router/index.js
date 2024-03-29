@@ -7,7 +7,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 const routes = [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/home'
     },
     {
       path: '/login',
