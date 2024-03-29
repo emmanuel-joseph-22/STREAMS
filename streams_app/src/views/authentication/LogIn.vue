@@ -1,22 +1,26 @@
 <template>
     <div class="login">
         <div class="prj-name">
-            <b>STREAMS</b>
+            <h1 class="streams fixed ml-10 mt-10 font-bold text-4xl font-sans">STREAMS</h1>
+            <img src="Batangas_State_Logo 2.png" class="fixed left-44 pl-10 pt-8">
+            <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
+            <img src="434098720_2156500128032719_6742569181348426872_n-removebg-preview 1.png" class="fixed left-72 pl-12 pt-8">
         </div>
-        <div class="container">
-            <h1 class="signup">LOG IN</h1>
+        <div class="container fixed bottom-10 top-40 left-30 right-40 h-17/20 w-3/4 text-black rounded-lg items-center justify-center p-5">
+            <h1 class="signup font-black text-stroke text-5xl text-blue-300 mb-20 font-sans">LOG-IN</h1>
             <div class="forms">
-                <label for="user_id" class="form_label"><b>User ID</b></label>
-                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID" v-model="email"/>
+                <label for="user_id" class="form_label font-bold flex flex-col mb-1 text-left"><b>User ID</b></label>
+                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID" class="px-20 pl-4 py-2 mb-6 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="email"/>
 
-                <label for="password"  class="form_label"><b>Password</b></label>
-                <input type="password" id="input_password" name="password" required placeholder="Password" v-model="password"/>
+                <label for="password"  class="form_label font-bold flex flex-col mb-1 text-left"><b>Password</b></label>
+                <input type="password" id="input_password" name="password" required placeholder="Password" class="pl-4 py-2 mb-6 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="password"/>
                 
-                <p v-if = "errorMsg">{{ errorMsg }}</p>
+                <p v-if="errorMsg">{{ errorMsg }}</p>
             
-                <button  v-on:click = "login" class="submit" id="sign-up" value="Sign Up">Log In</button>
+                <button  v-on:click="login" class="submit bg-blue-700 text-blue-200 py-2 px-20 rounded-full mt-5" id="sign-up" value="Sign Up">Log In</button>
                 <br/>
-                <router-link to="/home" id="guest"><b>Guest</b></router-link>
+                <label for="or-text" class="font-bold flex flex-col mb-1 text-mid my-5">-OR-</label>
+                <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-5"><b>Guest</b></router-link>
                 <br/>
                 <router-link to="/signup">Sign Up</router-link>
             </div>
@@ -25,8 +29,16 @@
 
 </template>
 
-<style src="../../themes/auth.css"></style>
-
+<style>
+.text-stroke {
+    color: #86B6F6; /* Set the text color */
+    text-shadow: 
+      -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000; /* Set the stroke effect */
+  }
+</style>
 
 <script setup>
 
