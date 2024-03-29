@@ -27,6 +27,14 @@
                     <div class="navlink_label">Report</div>
                 </div>
             </router-link>
+            <!-- reading div -->
+            <router-link class="navbar_link" to="/reading" v-if="!admin">
+                <div class="navbar_icon">
+                    <!-- nav icon -->
+                    <img class="icon" src="metero.png"/>
+                    <div class="navlink_label">Reading</div>
+                </div>
+            </router-link>
             <!-- map div -->
             <router-link class="navbar_link" to="/map">
                 <div class="navbar_icon">
@@ -71,9 +79,15 @@
                     <img class="mobile_icon" src="home2.png" />
                 </router-link>
             </div>
+            <!--
             <div class="mobile_link">
                 <router-link to="/report" class="mobile_link">
                     <img class="mobile_icon" src="report.png" alt="report" />
+                </router-link>            
+            </div>-->
+            <div class="mobile_link">
+                <router-link to="/reading" class="mobile_link">
+                    <img class="mobile_icon" src="metro.png" />
                 </router-link>            
             </div>
             <div class="mobile_link">
@@ -81,11 +95,7 @@
                     <img class="mobile_icon" src="map2.png" />
                 </router-link>        
             </div>
-            <div class="mobile_link">
-                <router-link to="/reading" class="mobile_link">
-                    <img class="mobile_icon" src="metro.png" />
-                </router-link>            
-            </div>
+
         </div>
     </div>
 </template>
@@ -96,7 +106,8 @@ export default {
         return {
             more_settings: false,
             dark_mode: false,
-            isMobile: false
+            isMobile: false,
+            admin: true
         }
     },
     mounted(){
