@@ -27,6 +27,14 @@
                     <div class="navlink_label">Report</div>
                 </div>
             </router-link>
+            <!-- reading div -->
+            <router-link class="navbar_link" to="/reading" v-if="!admin">
+                <div class="navbar_icon">
+                    <!-- nav icon -->
+                    <img class="icon" src="metero.png"/>
+                    <div class="navlink_label">Reading</div>
+                </div>
+            </router-link>
             <!-- map div -->
             <router-link class="navbar_link" to="/map">
                 <div class="navbar_icon">
@@ -71,9 +79,15 @@
                     <img class="mobile_icon" src="home2.png" />
                 </router-link>
             </div>
+            <!--
             <div class="mobile_link">
                 <router-link to="/report" class="mobile_link">
                     <img class="mobile_icon" src="report.png" alt="report" />
+                </router-link>            
+            </div>-->
+            <div class="mobile_link">
+                <router-link to="/reading" class="mobile_link">
+                    <img class="mobile_icon" src="metro.png" />
                 </router-link>            
             </div>
             <div class="mobile_link">
@@ -81,16 +95,7 @@
                     <img class="mobile_icon" src="map2.png" />
                 </router-link>        
             </div>
-            <div class="mobile_link">
-                <router-link to="/" class="mobile_link">
-                    <img class="mobile_icon" src="bell.png" />
-                </router-link>            
-            </div>
-            <div class="mobile_link">
-                <router-link to="/" class="mobile_link">
-                    <img class="mobile_icon" src="profile.png" /> 
-                </router-link>            
-            </div>
+
         </div>
     </div>
 </template>
@@ -101,7 +106,8 @@ export default {
         return {
             more_settings: false,
             dark_mode: false,
-            isMobile: false
+            isMobile: false,
+            admin: true
         }
     },
     mounted(){
@@ -280,26 +286,25 @@ kase di ko mababa ung nav icon last of type sa bottom */
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 40px;
+    height: 30px;
     background-color: var(--navy);
-    padding: 15px 10px;
+    padding: 12px 0;
     border-top: 1px solid var(--white);
     transition: ease-in-out 0.3s;
 }
 .mobile_link{
     text-decoration: none;
-    flex: 1;
-    margin: 1em;
     align-items: center;
     color: var(--white);
-    padding: 0;
     text-align: center;
+    flex: 1;
 }
 .mobile_icon{
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
 }
 </style>

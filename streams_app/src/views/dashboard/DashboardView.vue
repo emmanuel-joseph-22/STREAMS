@@ -1,7 +1,7 @@
 <template>
     <home-page>
         <header-bar>
-            <h1>Dashboard bitch draft na magulo</h1>
+            <h1>Dashboard</h1>
         </header-bar>
         <dashboard-content>
           <div class="dashboard_grid">
@@ -12,16 +12,17 @@
             <!-- filter option -->
             <div class="filter_toggle"></div>
             <!-- main meter graph -->
-            <div class="dash_container box2">
-              <v-chart class="data_pattern" :option="pie_main_meter"/>
-            </div>
             <!-- water consumption graph -->
-            <div class="dash_container box3">
+            <div class="dash_container box2">
               <v-chart class="data_pattern" :option="consumption_chart"/>
+            </div>
+            <div class="dash_container box3">
+              <v-chart class="data_pattern mainmeter" :option="pie_main_meter" />
+              <v-chart class="data_pattern submeter" :option="submeter_graph" />
             </div>
             <!-- submeter graph -->
             <div class="dash_container box4">
-              <v-chart class="data_pattern" :option="submeter_graph"/>
+              
             </div>
             <div class="dash_contaniner box5">
               <select class="field">
@@ -81,7 +82,7 @@ provide(THEME_KEY, "white");
 //main meter graph
 const pie_main_meter = ref({
   title: {
-    text: "Sources: Main Meters",
+    text: "Main Meters",
     left: "center"
   },
   tooltip: {
@@ -142,7 +143,7 @@ const consumption_chart = ref({
 //submeter_graph
 const submeter_graph = ref({
   title: {
-    text: 'Source: Submeters',
+    text: 'Submeters',
     left: 'center'
   },
   xAxis: {
@@ -193,20 +194,19 @@ export default {
 <style scoped>
 .dashboard_grid{
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2 1fr);
   grid-auto-rows: minmax(100px, auto);
-  gap: 30px;
-  background-color: rgba(123, 0, 239, 0);
-  border: 1px solid black;
+  gap: 20px;
+  background-color: rgba(69, 16, 118, 0);
   width: 100%;
 }
 
 .dash_container{
-  width: 100%;
+  width: 95%;
   position: relative;
   display: flex;
-  align-items: center;
-  background-color: rgba(114, 153, 153, 0.481);
+  justify-self: center;
+  box-sizing: border-box;
 }
 
 .box1{
@@ -217,18 +217,37 @@ export default {
 
 .box2 {
   grid-row: 2;
-  grid-column: 1;
-  background-color: rgb(245, 254, 254);
+  width: 600px;
   padding: 15px;
-  box-sizing: border-box;
-  border: 1px solid black;
-  border-radius: 10px;
 }
 
 .box3 {
   grid-row: 2;
-  grid-column: 2;
+  width: 30vw;
+  padding: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 600px;
+  min-width: 200px;
 }
+
+.box3::-webkit-scrollbar {
+    width: 15px;
+    height: 12px;
+}
+  
+/* Define the thumb style */
+.box3::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom right, rgb(4, 4, 106) 0%, rgb(62, 62, 206) 100%);
+    border-radius: 4px;
+}
+  
+/* Define the track style */
+.box3::-webkit-scrollbar-track:horizontal {
+    background-color: lightgray;
+    box-shadow: inset 0 0 2px 2px lightgray;;
+}
+
 
 .box4 {
   grid-row: 3 / span 1;
@@ -249,14 +268,36 @@ export default {
   width: 100%;
   height: 400px;
 }
-@media only screen and (max-width: 766px){
+@media screen and (max-width: 1000px){
   .dashboard_grid{
     grid-template-columns: repeat(1, 1fr);
     grid-auto-rows: auto;
+    grid-template-rows: auto;
+    width: 100vw;
   }
   .box1, .box2, .box3, .box4, .box5, .box6 {
     grid-row: auto;
     grid-column: auto;
+  }
+  .box2{
+    width: 600px;
+  }
+}
+@media only screen and (max-width: 766px){
+  .dashboard_grid{
+    grid-template-columns: repeat(1, 1fr);
+    grid-auto-rows: auto;
+    grid-template-rows: auto;
+    width: 100vw;
+  }
+  .box1, .box2, .box3, .box4, .box5, .box6 {
+    grid-row: auto;
+    grid-column: auto;
+  }
+  .box2, .box3, .mainmeter, .submeter, .data_pattern{
+    min-width: 200px;
+    width: 100%;
+    height: auto;
   }
 }
 .field{
@@ -310,5 +351,21 @@ export default {
     width: 100%;
     background-color: rgb(255, 255, 255);
     /*z-index: 21;*/
+    border: 1px solid black;
+}
+.mainmeter{
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: auto 10px;
+    min-width: 400px;
+}
+.submeter{
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: auto 10px;
+    min-width: 600px;
+    height: 90%;
+}
+.label{
 }
 </style>
