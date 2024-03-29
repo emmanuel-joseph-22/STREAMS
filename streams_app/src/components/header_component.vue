@@ -16,10 +16,10 @@
     position: sticky;
     align-items: left;
     padding: 10px;
-    background-color: white;
+    background-color: rgba(199, 184, 167, 0.371);
     left: 0;
     top: 0;
-    width: 99%;
+    width: auto;
     height: 60px;
     z-index: 10;
     flex-direction: row;

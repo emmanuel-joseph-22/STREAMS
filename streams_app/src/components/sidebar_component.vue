@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="nav_bar">
+        <!-- nav bar for web -->
+        <div class="nav_bar" v-if="!isMobile">
             <!-- STREAMS brand -->
             <div class="branding_div">
                 <!-- STREAMS brand template -->
@@ -48,19 +49,47 @@
             <div class="dropdown_content" v-if="more_settings">
                 <!-- feedback link -->
                 <router-link class="navbar_link" to="/">
-                    <div class="navlink_label"><span>Feedback</span></div>
+                    <div class="other_link_label"><span>Feedback</span></div>
                 </router-link>
-                <!-- convservation tips ewan san lalagay
+                <!-- convservation tips ewan san lalagay -->
                 <router-link class="navbar_link" to="/">
-                    <div class="navlink_label">Tips</div>
-                </router-link> -->
+                    <div class="other_link_label"><span>Tips</span></div>
+                </router-link>
                 <!-- profile view -->
                 <router-link class="navbar_link" to="/">
-                    <div class="navlink_label"><span>Account Settings</span></div>
+                    <div class="other_link_label"><span>Account Settings</span></div>
                 </router-link>
                 <!-- baka bet nyo magdark mode
                 <div class="navlink_label" @click="switch_mode">Dark Mode</div>  -->
-                <div class="navlink_label" @click="logout"><span>Logout</span></div>
+                <div class="other_link_label" @click="logout"><span>Logout</span></div>
+            </div>
+        </div>
+        <!-- nav bar for mobile -->
+        <div class="nav_mobile" v-if="isMobile">
+            <div class="mobile_link">
+                <router-link :to="{ name: 'dashboard' }">
+                    <img class="mobile_icon" src="home2.png" />
+                </router-link>
+            </div>
+            <div class="mobile_link">
+                <router-link to="/report" class="mobile_link">
+                    <img class="mobile_icon" src="report.png" alt="report" />
+                </router-link>            
+            </div>
+            <div class="mobile_link">
+                <router-link to="/map" class="mobile_link">
+                    <img class="mobile_icon" src="map2.png" />
+                </router-link>        
+            </div>
+            <div class="mobile_link">
+                <router-link to="/" class="mobile_link">
+                    <img class="mobile_icon" src="bell.png" />
+                </router-link>            
+            </div>
+            <div class="mobile_link">
+                <router-link to="/" class="mobile_link">
+                    <img class="mobile_icon" src="profile.png" /> 
+                </router-link>            
             </div>
         </div>
     </div>
@@ -71,18 +100,23 @@ export default {
     data(){
         return {
             more_settings: false,
-            dark_mode: false
+            dark_mode: false,
+            isMobile: false
         }
     },
     mounted(){
+        this.checkScreenWidth();
+        window.addEventListener('resize', this.checkScreenWidth);
+        
     },
     unmounted(){
-
+        window.removeEventListener('resize', this.checkScreenWidth);
+    
     },
     methods: {
         // for dark mode
         switch_mode(){
-
+            this.dark_mode = !this.dark_mode
         },
         logout(){
             // call nalang si log out function
@@ -90,6 +124,12 @@ export default {
         },
         showMoreOptions(){
             this.more_settings = !this.more_settings
+        },
+        checkScreenWidth(){
+            const screenWidth = window.innerWidth;
+            const mobileThreshold = 766;
+
+            this.isMobile = screenWidth <= mobileThreshold;
         }
     }
 }
@@ -112,7 +152,6 @@ export default {
         transition: ease-in-out 0.3s;
         overflow: hidden;
         z-index: 10; /* oa nyan */
-
         display: flex;
         flex-direction: column;
     }
@@ -143,7 +182,7 @@ export default {
         flex-shrink: 0;
         fill: white;
     }
-    .navlink_label{
+    .navlink_label, .other_link_label{
         transition: ease-in-out 0.3s;
         transition-delay: .2s;
         margin-left: 24px;
@@ -207,10 +246,60 @@ kase di ko mababa ung nav icon last of type sa bottom */
         background-color: var(--dropdown);
         color: var(--white);
         width: 250px;
-        height: 200px;
+        height: 260px;
         border-radius: 20px;
         text-decoration: none;
         z-index: 20;
         text-align: left;
     }
+
+    @media screen and (max-width: 1000px) {
+        .nav_bar{
+            width: 90px;
+            padding: 5px;
+        }
+        .icon, .hamburger{
+            margin: 12px 16px;
+        }
+        .navlink_label{
+            visibility: hidden;
+        }
+        .dropdown_content{
+            width: 200px;
+        }
+    }
+    @media screen and (max-width: 766px) {
+        /* imobile */
+    }
+</style>
+<style scoped>
+/* mobile navigation bar */
+.nav_mobile{
+    position: fixed;
+    z-index: 15;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: var(--navy);
+    padding: 15px 10px;
+    border-top: 1px solid var(--white);
+    transition: ease-in-out 0.3s;
+}
+.mobile_link{
+    text-decoration: none;
+    flex: 1;
+    margin: 1em;
+    align-items: center;
+    color: var(--white);
+    padding: 0;
+    text-align: center;
+}
+.mobile_icon{
+    height: 30px;
+    width: 30px;
+}
 </style>

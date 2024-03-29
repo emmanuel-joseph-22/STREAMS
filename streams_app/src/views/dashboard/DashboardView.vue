@@ -3,7 +3,7 @@
         <header-bar>
             <h1>Dashboard bitch draft na magulo</h1>
         </header-bar>
-        <main-content>
+        <dashboard-content>
           <div class="dashboard_grid">
             <!-- highlighted data -->
             <div class="dash_container box1">
@@ -48,7 +48,7 @@
             </div>
           </div>
             
-        </main-content>
+        </dashboard-content>
     </home-page>
 </template>
 
@@ -172,7 +172,7 @@ export default {
     components: {
         'home-page': HomePageView,
         'header-bar': header,
-        'main-content': dashboard_content,
+        'dashboard-content': dashboard_content,
         'v-chart': VChart,
         'line-chart': LineChart
     },
@@ -196,18 +196,18 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: minmax(100px, auto);
   gap: 30px;
-  background-color: rgba(134, 92, 174, 0.103);
+  background-color: rgba(123, 0, 239, 0);
+  border: 1px solid black;
   width: 100%;
 }
 
 .dash_container{
+  width: 100%;
   position: relative;
   display: flex;
-  width: 100%;
   min-width: 300px;
   align-items: center;
-  justify-content: center;
-  background-color: rgba(114, 153, 153, 0.286);
+  background-color: rgba(114, 153, 153, 0.481);
 }
 
 .box1{
@@ -217,7 +217,7 @@ export default {
 }
 
 .box2 {
-  grid-row: 2 / span 1;
+  grid-row: 2;
   grid-column: 1;
   background-color: rgb(245, 254, 254);
   padding: 15px;
@@ -227,7 +227,7 @@ export default {
 }
 
 .box3 {
-  grid-row: 2 / span 1;
+  grid-row: 2;
   grid-column: 2;
 }
 
@@ -250,9 +250,13 @@ export default {
   width: 100%;
   height: 400px;
 }
-
-@media (max-width: 600px){
-  .box2, .box3 {
+@media only screen and (max-width: 766px){
+  .dashboard_grid{
+    grid-template-columns: repeat(1, 1fr);
+    grid-auto-rows: auto;
+  }
+  .box1, .box2, .box3, .box4, .box5, .box6 {
+    grid-row: auto;
     grid-column: auto;
   }
 }
