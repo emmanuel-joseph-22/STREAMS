@@ -34,7 +34,7 @@ export default {
         width: calc(100% - 280px);
         min-width: 600px;
         margin: 0 auto;
-        background-color: rgba(127, 195, 255, 0.338);
+        background-color: rgba(148, 183, 214, 0.245);
     }
 
 </style>
