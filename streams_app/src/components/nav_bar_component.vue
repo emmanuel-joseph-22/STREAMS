@@ -5,7 +5,7 @@
             <!-- STREAMS brand -->
             <div class="branding_div">
                 <!-- STREAMS brand template -->
-                <img src="aquatech_v1.png" alt="Streams logo" class="brand_icon">
+                <img src="S.png" alt="Streams logo" class="brand_icon">
                 <h1>STREAMS</h1>
                 <div>Sustainable Tracking, Recording, Evaluating of Aqua Metering System</div>
             </div>

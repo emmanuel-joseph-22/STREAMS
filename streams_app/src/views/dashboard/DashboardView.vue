@@ -1,77 +1,106 @@
 <template>
-    <home-page>
-      <div class="bg-gray-100">
-        <header-bar>
-            <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
-        </header-bar>
-        <dashboard-content>
-          <div class="dashboard_grid">
-            <!-- highlighted data -->
-            <div class="dash_container box1 rounded-lg mt-5">
-              <img src="th.jfif" class="w-600">
-                highlight info like avg, warning, alerts
+  <home-page>
+      <header-bar>
+        <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
+      </header-bar>
+      <dashboard-content>
+        <div class="dashboard_grid">
+          <!-- highlighted data -->
+          <div class="dash_container box1">
+            <div class="box1-inner">
+                <!-- idk pwede idagdag pero nagleave ako isa pang box para pantay -->
+                <div class="box1-item">
+                  <img src="th.jfif" class="w-600">
+                  <!-- insert laman -->
+                </div>
+              <div class="box1-item">
+                  <p>Average Water Consumption:</p>
+                  <span style="font-size: 1.5rem; font-weight: bold;">{{ averageWaterConsumption }} m3</span>
+                </div>
+                <!-- PREVIOUS WATER CONSUMPTION BOX -->
+                <div class="box1-item">
+                  <p>Previous Water Consumption:</p>
+                    <span style="font-size: 1.2rem;">
+                      <template v-if="showDeepWell">
+                        <p>Deep Well:</p>
+                        <p style="font-size: 1.2rem; font-weight: bold;">{{ previousWaterConsumptionDeepWell }} m3</p>
+                      </template>
+                      <template v-else>
+                        <p>Prime Water:</p>
+                        <p style="font-size: 1.2rem; font-weight: bold;">{{ previousWaterConsumptionPrimeWater }} m3</p>
+                      </template>
+                    </span>
+                </div>
+                <!-- CURRENT WATER CONSUMPTION BOX -->
+                <div class="box1-item">
+                  <p>Current Water Consumption:</p>
+                    <span style="font-size: 1.2rem;">
+                      <template v-if="showDeepWell">
+                        <p>Deep Well:</p>
+                        <p style="font-size: 1.2rem; font-weight: bold;">{{ currentWaterConsumptionDeepWell }} m3</p>
+                      </template>
+                      <template v-else>
+                        <p>Prime Water:</p>
+                        <p style="font-size: 1.2rem; font-weight: bold;">{{ currentWaterConsumptionPrimeWater }} m3</p>
+                      </template>
+                    </span>
+                </div>
             </div>
-            <!-- filter option -->
-            <div class="filter_toggle"></div>
-            <!-- main meter graph -->
-            <!-- water consumption graph -->
-            <div class="dash_container box2">
-              <v-chart class="data_pattern" :option="consumption_chart"/>
+          </div>
+          <!-- filter option -->
+          <div class="filter_toggle"></div>
+          <!-- main meter graph -->
+          <div class="dash_container box2">
+            <v-chart class="data_pattern" :option="consumption_chart"/>
+          </div>
+          <div class="dash_container box3" v-if="selectedGraph === 'mainMeter'">
+            <v-chart class="data_pattern mainmeter" :option="pie_main_meter" />
+                <!-- navigation buttons -->
+                <div class="navigation-buttons">
+                  <button class="arrow-button" @click="navigate('left')">◄</button>
+                  <button class="arrow-button" @click="navigate('right')">►</button>
+                </div>
+          </div>
+          <div class="dash_container box3" v-else-if="selectedGraph === 'subMeter'">
+            <v-chart class="data_pattern submeter" :option="submeter_graph" />
+              <!-- navigation buttons -->
+                <div class="navigation-buttons">
+                    <button class="arrow-button" @click="navigate('left')">◄</button>
+                    <button class="arrow-button" @click="navigate('right')">►</button>
+                  </div>
             </div>
-            <div class="dash_container box3">
-              <v-chart class="data_pattern mainmeter" :option="pie_main_meter" />
-              <v-chart class="data_pattern submeter" :option="submeter_graph" />
-            </div>
-            <!-- submeter graph -->
-            <div class="dash_container box4 border border-black-500 inline-dashed p-5 bg-white-500">
+          <!-- specific reading details -->
+          <div class="dash_container box5 border border-black-500 inline-dashed p-5 bg-white-500">
               <h3 class="font-bold text-3xl">Records</h3>
+            <div class="field-container">
               <select class="field">
-                <option value="PW" class="dept_option">Prime Water</option>
-                <option value="DW1" class="dept_option">Deep well 1</option>
-                <option value="DW2" class="dept_option">Deep well 2</option>
-                <option value="DW3" class="dept_option">Deep well 3</option>
-                <option value="DW4" class="dept_option">Deep well 4</option>
-          </select>
-          <br/>
-          <!-- record - date -->
-          <input class="field" type="date"/>
-          <br/>
-          <!-- record details -->
-          <div class="record_details">
-              <div>Date: {{ date }}</div>
-              <div>Time: {{ time }}</div>
-              <div>m3: {{ meter }}</div>
-          </div>
-              
+                  <option value="PW" class="dept_option">Prime Water</option>
+                  <option value="DW1" class="dept_option">Deep well 1</option>
+                  <option value="DW2" class="dept_option">Deep well 2</option>
+                  <option value="DW3" class="dept_option">Deep well 3</option>
+                  <option value="DW4" class="dept_option">Deep well 4</option>
+            </select>
+            <!-- record - date -->
+                  <input class="field" type="date"/>
             </div>
-            <!--<div class="dash_contaniner box5 border border-black-500 inline-dashed p-2 bg-white-500">
-              <select class="field">
-                    <option value="PW" class="dept_option">Prime Water</option>
-                    <option value="DW1" class="dept_option">Deep well 1</option>
-                    <option value="DW2" class="dept_option">Deep well 2</option>
-                    <option value="DW3" class="dept_option">Deep well 3</option>
-                    <option value="DW4" class="dept_option">Deep well 4</option>
-              </select>
-              <br/> -->
-              <!-- record - date -->
-              <!--<input class="field" type="date"/>-->
-              <br/>
-              <!-- record details -->
-              <!--<div class="record_details">
-                  <div>Date: {{ date }}</div>
-                  <div>Time: {{ time }}</div>
-                  <div>m3: {{ meter }}</div>
-              </div>
-            </div>-->
-            <div class="dash_container box6">
-              <!-- quarterly -->
-              <h1>Quarterly</h1>
+            <br/>
+            <!-- record details -->
+            <div class="record_details">
+                <div>Date: {{ date }}</div>
+                <div>Time: {{ time }}</div>
+                <div>m3: {{ meter }}</div>
             </div>
           </div>
-            
-        </dashboard-content>
-      </div>
-    </home-page>
+          <!-- quarterly box -->
+          <div class="dash_container box6">
+            <div class="quarterly-box">
+              <h3 class="font-bold text-3xl">Quarterly</h3>
+            </div>
+          </div>
+        </div>
+          
+      </dashboard-content>
+  </home-page>
 </template>
 
 <script setup>
@@ -181,7 +210,40 @@ const submeter_graph = ref({
     }
   ]
   
-})
+});
+// nav - main and sub meters
+const selectedGraph = ref('mainMeter');
+
+const navigate = (direction) => {
+  if (direction === 'left') {
+    selectedGraph.value = 'mainMeter';
+  } else if (direction === 'right') {
+    selectedGraph.value = 'subMeter';
+  }
+};
+ // initialize with a default value (AVG)
+const averageWaterConsumption = ref(0);
+averageWaterConsumption.value = 2024;
+// initialize with a default value (PREV)
+const previousWaterConsumption = ref(0);
+previousWaterConsumption.value = 2003;
+// initialize with a default value (CURR)
+const currentWaterConsumption = ref(0);
+currentWaterConsumption.value = 2003;
+
+// reactive var for water consumption values sa prime at dw (PREV&CURR)
+const previousWaterConsumptionDeepWell = ref(2003);
+const previousWaterConsumptionPrimeWater = ref(2010);
+
+const currentWaterConsumptionDeepWell = ref(3509);
+const currentWaterConsumptionPrimeWater = ref(3097);
+
+const showDeepWell = ref(true);
+
+// alternate between pw and dw
+setInterval(() => {
+  showDeepWell.value = !showDeepWell.value;
+}, 5000); // interval
 </script>
 <script>
 /* eslint-disable */
@@ -213,31 +275,53 @@ export default {
 </script>
 
 <style scoped>
-.dashboard_grid{
-  display: grid;
-  grid-template-columns: repeat(2 1fr);
-  grid-auto-rows: minmax(100px, auto);
-  gap: 20px;
-  background-color: rgba(69, 16, 118, 0);
-  width: 100%;
-}
-
-.dash_container{
-  width: 95%;
-  position: relative;
+.dashboard_grid {
   display: flex;
-  justify-self: center;
-  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
-.box1{
-  grid-row: 1;
-  grid-column: 1 / span 2;
-  min-height: 120px;
-  background-color:aquamarine;
-  left:0;
+.dash_container {
+  flex: 1 0 50%;
+  padding: 10px;
+  margin-right: 20px;
 }
 
+.box1, .box2, .box3, .box4, .box5, .box6 {
+  padding: 15px;
+}
+
+.box1-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.box1-item {
+  flex: 0 0 auto;
+  width: 330px;
+  height: 100px;
+  margin-top: 5px;
+  margin-right: 5px;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 0 2px 2px rgba(1, 1, 1, 1);
+  transition: transform 0.3s ease;
+  padding: 5px;
+  background-color: rgb(193, 221, 246);;
+}
+.box1-item:hover {
+    transform: translateY(-3px);
+    background-color: rgb(121, 173, 218);;
+    color: white;
+}
+  
+
+@media screen and (max-width: 1000px) {
+  .dash_container {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
 .box2 {
   grid-row: 2;
   width: 600px;
@@ -246,41 +330,37 @@ export default {
 
 .box3 {
   grid-row: 2;
-  width: 40vw;
+  width: 30vw;
   padding: 20px;
-  overflow-x: auto;
+  /*overflow-x: auto;*/
   white-space: nowrap;
   max-width: 600px;
   min-width: 200px;
 }
-
+/*
 .box3::-webkit-scrollbar {
     width: 15px;
     height: 12px;
 }
-  
+*/  
 /* Define the thumb style */
+/*
 .box3::-webkit-scrollbar-thumb {
     background: linear-gradient(to bottom right, rgb(4, 4, 106) 0%, rgb(62, 62, 206) 100%);
     border-radius: 4px;
 }
-  
+*/  
 /* Define the track style */
+/*
 .box3::-webkit-scrollbar-track:horizontal {
     background-color: lightgray;
     box-shadow: inset 0 0 2px 2px lightgray;;
 }
-
+*/
 
 .box4 {
   grid-row: 3 / span 1;
   grid-column: 1;
-  background-color:white;
-  margin-left: 103%;
-  width:194%;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
 }
 /* specific reading details */
 .box5 {
@@ -289,17 +369,31 @@ export default {
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: 36vw;
-  margin-left:35px;
-  background-color:white;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-left: 13px;
+  width: 96%;
+}
+.field-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 130%;
 }
 
+.field {
+  margin: 5px;
+}
 .box6{ 
   grid-row: 4;
   grid-column: 1 / span 2;
-  width: 95%;
+  width: 100%;
   height: 400px;
-  background-color:white;
+}
+.quarterly-box {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 15px;
 }
 @media screen and (max-width: 1000px){
   .dashboard_grid{
@@ -334,7 +428,7 @@ export default {
   }
 }
 .field{
-    width: 80%;
+    width: 30%;
     height: 50px;
     border-radius: 12px;
     border: 1px solid black;
@@ -369,6 +463,18 @@ export default {
     background-color: rgba(193, 221, 246, 0.541);
     padding: 10px 0;
 }
+.arrow-button {
+  color: #333;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 3px 9px;
+  margin: 0 5px;
+}
+
+.arrow-button:hover {
+  background-color: #e0e0e0;
+  border-radius: 15px;
+}
 
 </style>
 
@@ -381,20 +487,20 @@ export default {
 }
 .data_pattern{
     height: 400px;
-    width: 100%;
+    width: 105%;
+    background-color: rgb(255, 255, 255);
     /*z-index: 21;*/
+    border: 1px solid black;
+    border-radius: 10px;
 }
 .mainmeter{
+    border: 1px solid black;
     border-radius: 10px;
-    margin: auto 10px;
-    min-width: 400px;
+    width: 550px;
 }
 .submeter{
+    border: 1px solid black;
     border-radius: 10px;
-    margin: auto 10px;
-    min-width: 600px;
-    height: 90%;
-}
-.label{
+    width: 550px;
 }
 </style>
