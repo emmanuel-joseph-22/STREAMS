@@ -4,7 +4,7 @@
             <h1 class="streams fixed ml-10 mt-10 font-bold text-4xl font-sans">STREAMS</h1>
             <img src="Batangas_State_Logo 2.png" class="fixed left-44 pl-10 pt-8">
             <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
-            <img src="434098720_2156500128032719_6742569181348426872_n-removebg-preview 1.png" class="fixed left-72 pl-12 pt-8">
+            <img src="aquatech_v`1.png" class="fixed left-72 pl-12 pt-8">
         </div>
         <div class="container fixed bottom-10 top-40 left-30 right-40 h-17/20 w-3/4 text-black rounded-lg items-center justify-center p-5">
             <h1 class="signup font-black text-stroke text-5xl text-blue-300 mb-20 font-sans">SIGN UP</h1>

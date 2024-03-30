@@ -5,7 +5,7 @@
             <!-- STREAMS brand -->
             <div class="branding_div">
                 <!-- STREAMS brand template -->
-                <img src="droplet.png" alt="Streams logo" class="icon">
+                <img src="aquatech_v1.png" alt="Streams logo" class="brand_icon">
                 <h1>STREAMS</h1>
                 <div>Sustainable Tracking, Recording, Evaluating of Aqua Metering System</div>
             </div>
@@ -16,7 +16,6 @@
                     <img class="icon" src="home2.png"/>
                     <!-- nav link label -->
                     <div class="navlink_label">Home</div>
-                
                 </div>
             </router-link>
             <!-- report div -->
@@ -166,10 +165,17 @@ export default {
         display: flex;
         flex-direction: column;
     }
+    /* eto sa icon */
     .branding_div{
         display: flex;
+        width: 55px;
+        height: 50px;
     }
-    .branding_div, .navbar_icon{
+    .brand_icon{
+        width: 100%;
+        height: 100%;
+    }
+    .navbar_icon{
         width: 95%;
         height: 70px;
         margin: 6px auto;

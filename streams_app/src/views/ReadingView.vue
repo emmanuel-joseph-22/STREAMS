@@ -105,8 +105,7 @@ export default {
             // Get current date in the format YYYY-MM-DD
             const currentDate = new Date().toISOString().split('T')[0];
             
-            // Construct the path
-            const path = 'meter_records/main_meter/' + `${waterSource}`;
+            const path = 'meter_records/main_meter/'+`${waterSource}`;
             // Construct the data object
             const data = {
                 consumption: consumption,

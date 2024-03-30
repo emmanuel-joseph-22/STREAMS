@@ -5,7 +5,7 @@
             <div class="logo-container relative">
                 <img src="Batangas_State_Logo 2.png" class="relative logo">
                 <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="relative logo"/>
-                <img src="434098720_2156500128032719_6742569181348426872_n-removebg-preview 1.png" class="relative logo" />
+                <img src="aquatech_v`1.png" class="relative logo" />
             </div>
         </div>
         <div class="container relative h-17/20 text-black rounded-lg items-center justify-center p-5">
