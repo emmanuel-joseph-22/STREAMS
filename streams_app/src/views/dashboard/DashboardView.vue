@@ -1,12 +1,18 @@
 <template>
     <home-page>
+      <div class="bg-gray-100">
         <header-bar>
+<<<<<<< HEAD
             <h1 class="h1">Dashboard</h1>
+=======
+            <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
+>>>>>>> 4a63a878f8c00d20a5c8ba907975ba18c13bf55f
         </header-bar>
         <dashboard-content>
           <div class="dashboard_grid">
             <!-- highlighted data -->
-            <div class="dash_container box1">
+            <div class="dash_container box1 rounded-lg mt-5">
+              <img src="th.jfif" class="w-600">
                 highlight info like avg, warning, alerts
             </div>
             <!-- filter option -->
@@ -21,10 +27,28 @@
               <v-chart class="data_pattern submeter" :option="submeter_graph" />
             </div>
             <!-- submeter graph -->
-            <div class="dash_container box4">
+            <div class="dash_container box4 border border-black-500 inline-dashed p-5 bg-white-500">
+              <h3 class="font-bold text-3xl">Records</h3>
+              <select class="field">
+                <option value="PW" class="dept_option">Prime Water</option>
+                <option value="DW1" class="dept_option">Deep well 1</option>
+                <option value="DW2" class="dept_option">Deep well 2</option>
+                <option value="DW3" class="dept_option">Deep well 3</option>
+                <option value="DW4" class="dept_option">Deep well 4</option>
+          </select>
+          <br/>
+          <!-- record - date -->
+          <input class="field" type="date"/>
+          <br/>
+          <!-- record details -->
+          <div class="record_details">
+              <div>Date: {{ date }}</div>
+              <div>Time: {{ time }}</div>
+              <div>m3: {{ meter }}</div>
+          </div>
               
             </div>
-            <div class="dash_contaniner box5">
+            <!--<div class="dash_contaniner box5 border border-black-500 inline-dashed p-2 bg-white-500">
               <select class="field">
                     <option value="PW" class="dept_option">Prime Water</option>
                     <option value="DW1" class="dept_option">Deep well 1</option>
@@ -32,17 +56,17 @@
                     <option value="DW3" class="dept_option">Deep well 3</option>
                     <option value="DW4" class="dept_option">Deep well 4</option>
               </select>
-              <br/>
+              <br/> -->
               <!-- record - date -->
-              <input class="field" type="date"/>
+              <!--<input class="field" type="date"/>-->
               <br/>
               <!-- record details -->
-              <div class="record_details">
+              <!--<div class="record_details">
                   <div>Date: {{ date }}</div>
                   <div>Time: {{ time }}</div>
                   <div>m3: {{ meter }}</div>
               </div>
-            </div>
+            </div>-->
             <div class="dash_container box6">
               <!-- quarterly -->
               <h1>Quarterly</h1>
@@ -50,6 +74,7 @@
           </div>
             
         </dashboard-content>
+      </div>
     </home-page>
 </template>
 
@@ -213,6 +238,8 @@ export default {
   grid-row: 1;
   grid-column: 1 / span 2;
   min-height: 120px;
+  background-color:aquamarine;
+  left:0;
 }
 
 .box2 {
@@ -223,7 +250,7 @@ export default {
 
 .box3 {
   grid-row: 2;
-  width: 30vw;
+  width: 40vw;
   padding: 20px;
   overflow-x: auto;
   white-space: nowrap;
@@ -252,6 +279,12 @@ export default {
 .box4 {
   grid-row: 3 / span 1;
   grid-column: 1;
+  background-color:white;
+  margin-left: 103%;
+  width:194%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 /* specific reading details */
 .box5 {
@@ -260,13 +293,17 @@ export default {
   align-items: center;
   display: flex;
   flex-direction: column;
+  width: 36vw;
+  margin-left:35px;
+  background-color:white;
 }
 
 .box6{ 
   grid-row: 4;
   grid-column: 1 / span 2;
-  width: 100%;
+  width: 95%;
   height: 400px;
+  background-color:white;
 }
 @media screen and (max-width: 1000px){
   .dashboard_grid{
@@ -349,18 +386,14 @@ export default {
 .data_pattern{
     height: 400px;
     width: 100%;
-    background-color: rgb(255, 255, 255);
     /*z-index: 21;*/
-    border: 1px solid black;
 }
 .mainmeter{
-    border: 1px solid black;
     border-radius: 10px;
     margin: auto 10px;
     min-width: 400px;
 }
 .submeter{
-    border: 1px solid black;
     border-radius: 10px;
     margin: auto 10px;
     min-width: 600px;
