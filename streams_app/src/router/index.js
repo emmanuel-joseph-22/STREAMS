@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LogIn from '../views/authentication/LogIn.vue';
 import SignUp from '../views/authentication/SignUp.vue';
 import Reading from '../views/ReadingView.vue';
+import SubMeter from '../views/SubMeterView.vue';
+import Confirmation from '../views/ConfirmationView.vue';
+import Settings from '../views/AccountSettings/SettingsView.vue';
+import Password from '../views/AccountSettings/PasswordView.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
@@ -38,8 +42,27 @@ const routes = [
       path: '/reading',
       name: 'reading',
       component: Reading
+    },
+    {
+      path: '/submeter',
+      name: 'submeter',
+      component: SubMeter
+    },
+    {
+      path: '/confirmation',
+      name: 'confirmation',
+      component: Confirmation
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: Settings
+    },
+    {
+      path: '/password',
+      name: 'password',
+      component: Password
     }
-
 ]
 
 const router = createRouter({

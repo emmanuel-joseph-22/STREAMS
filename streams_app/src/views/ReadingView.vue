@@ -1,75 +1,47 @@
 <template>
-    <div class="read">
-        <div class="profile">
-            <img class="img" src="account.png" alt="/icon1">
-            <div class="overlay">
-                <img src="settings.png" alt="/icon2">
-            <router-link to="/login">
-                <img src="exit.png" alt="/icon3">
-            </router-link>
+    <div class="all">
+        <div class="nav">
+            <div class="nav-links">
+                <ul>
+                    <li><a href="#">MAIN</a></li>
+                    <router-link to="/submeter"><li><a href="#">SUBMETER</a></li></router-link>
+                </ul>
             </div>
         </div>
 
-        <div class="content">
-            <div class="water-source">
-                <label for="water-source" class="water-source-label">Water source</label>
-                <select id="water-source" v-model="WaterSource" class="water-source-dropdown">
-                    <option value="deep-well-1">Deep Well 1</option>
-                    <option value="deep-well-2">Deep Well 2</option>
-                    <option value="deep-well-3">Deep Well 3</option>
-                    <option value="deep-well-4">Deep Well 4</option>
-                    <option value="prime-water">Prime Water</option>
-                </select>
+        <div class="container">
+            <div class="content">
+                <div class="main">
+                    <label for="main" class="main-label">Water Source</label>
+                    <select id="main"  class="main-dropdown">
+                        <option value="deep-well-1">Deep Well 1</option>
+                        <option value="deep-well-2">Deep Well 2</option>
+                        <option value="deep-well-3">Deep Well 3</option>
+                        <option value="deep-well-4">Deep Well 4</option>
+                        <option value="prime-water">Prime Water</option>
+                    </select>
+                </div>
+                <div class="m3-cont">
+                    <label for="input_cubic" class="m3-label"></label>
+                    <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="m3-input"/>
+                </div>
+
+                <div class="m3-cont-x">
+                    <label for="input_x" class="x-label"></label>
+                    <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="x-input"/>
+                </div>
+
+                <div class="m3-cont-x0">
+                    <label for="input_x0" class="x0-label"></label>
+                    <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="x-input"/>
+                </div>
+
+                <router-link to="/confirmation">
+                <div class="submit">
+                    <button @click="submitForm">SUBMIT</button>
+                </div>
+                </router-link>
             </div>
-
-            <div class="building-department">
-                <label for="building-department" class="building-department-label">Building Department</label>
-                <select id="building-department" v-model="BuildingDepartment" class="building-department-dropdown">
-                    <option value="CET">CET</option>
-                    <option value="CEAFA">CEAFA</option>
-                    <option value="CICS">CICS</option>
-                    <option value="RGR">RGR</option>
-                    <option value="STEERHUB">STEER HUB</option>
-                </select>
-            </div>
-
-            <div class="m3-cont">
-                <label for="input_cubic" class="m3-label">m3:</label>
-                <input autofocus id="input_cubic" type="text" v-model="Consumption" required placeholder="m3: " class="m3-input"/>
-            </div>
-
-            <div class="m3-cont-x">
-                <label for="input_x" class="x-label">x0.001</label>
-                <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="x-input"/>
-            </div>
-
-            <div class="m3-cont-x0">
-                <label for="input_x0" class="x0-label">x0.0001</label>
-                <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="x-input"/>
-            </div>
-
-            <div class="submit">
-                <button @click="submitForm">SUBMIT</button>
-            </div>
-
-            <nav class="bot-navi">
-                <!--<a href="#" class="bot-navi-item">Home</a>-->
-                <a href="#" class="bot-navi-item">
-                    <img src="home.png" alt="Home" class="navi-image">
-                    Home
-                </a>
-                <!--<a href="#" class="bot-navi-item">Reading</a>-->
-                <a href="#" class="bot-navi-item">
-                    <img src="water-meter.png" alt="reading" class="navi1-image">
-                    Reading
-                </a>
-                <!--<a href="#" class="bot-navi-item">Map</a>-->
-                <a href="#" class="bot-navi-item">
-                    <img src="map.png" alt="map" class="navi2-image">
-                    Map
-                </a>
-            </nav>
-
         </div>
     </div>
 </template>
@@ -116,89 +88,82 @@ export default {
 </script>
 
 <style scoped>
-    body {
+    .all{
+        font-family: 'Times New Roman', Times, serif;
         background-color: #F2F5F9;
-        margin: 0;
-    }
-
-    .read {
-        display: flex;
-        position: relative;
-        height: 100vh; 
-    }
-
-    .profile {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 50px;
         height: 100vh;
-        padding: 8px;
-        overflow: fixed;
+        width: auto;
+        margin: 0;
+        padding: 0;
     }
 
-    .img {
-        width: 25px;
-        height: 25px;
-        transition: transform 0.5s ease;
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(217, 207, 255, 0.5);
-        color: #3B5271;
+    .nav{
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.5s ease;
-        transform: translateY(-100%);
+        justify-content: space-between;
+        background-color: #3B5271;
+        border-radius: 40px;
+        color: #FFFFFF;
+        height: 40px;
+        margin-top: 30%;
+        padding: 0 4rem;
     }
 
-    .profile:hover .img {
-        margin-top: 0;
-        margin-left: 80px;
-        transform: scale(1.1);
+    .nav ul{
+        display: flex;
+        list-style-type: none; 
     }
 
-    .profile:hover .overlay {
-        opacity: 1;
-        width: 120px;
+    .nav ul li{
+        font-weight: bold;
+        margin: 0 10px;
+        padding: 0;
     }
 
-    .overlay img {
-        width: 25px;
-        height: 25px;
+    .nav ul li a{
+        text-decoration: none;
+        color: #FFFFFF;
+        font-size: 16px;
+        transition: all ease 0.5s;
+        margin-top: 8px;
+        padding: 1px 40px;
+        display: inline-block;
+    }
+
+    .nav ul li a:hover{
+        background-color: #C9D8EC;
+        color: #3B5271;
+        border-radius: 30px;
+    }
+
+    .container{
+        display: flex;
+        background-color: #FFFFFF;
+        border: 2px solid #3B5271;
+        border-radius: 20px;
         margin-top: 10px;
-        margin-bottom: 10px;
+        height: 70vh;
+        padding: 0 1rem;
     }
 
-    .content {
+    .content{
         flex: 1;
         padding: 8px;
-        margin-top: 60px;
-        margin-left: 20px;
-        overflow-y: auto; 
+        margin-top: 80px;
+        margin-left: 10px;
+        overflow-y: auto;
     }
 
-    .water-source label,
-    .building-department label {
+    .main label{
         font-weight: bold;
         display: block;
         margin-bottom: 10px;
         margin-top: 10px;
+        text-align: justify;
     }
 
-    .water-source-dropdown,
-    .building-department-dropdown {
-        width: 90%; 
-        padding: 8px;
+    .main-dropdown{
+        width: 80vw;
+        padding: 10px;
         font-size: 16px;
         border: 2px solid #5F88BF;
         color: #3B5271;
@@ -213,8 +178,7 @@ export default {
         flex-direction: column;
         align-items: flex-start;
         width: 90%;
-        margin-top: 20px;
-        margin-left: 70px;
+        margin-top: 30px;
     }
 
     .m3-label,
@@ -227,8 +191,9 @@ export default {
     .m3-input,
     .x-input,
     .x0-input {
+        width: 80vw;
         flex: 1;
-        padding: 8px;
+        padding: 10px;
         border: 2px solid #5F88BF;
         border-radius: 4px;
         font-size: 16px;
@@ -237,67 +202,20 @@ export default {
         outline: none;
     }
 
-    .submit{
+    .submit button{
         background-color: #5F88BF;
         color: #F2F5F9;
         width: 40%;
-        padding: 10px 20px;
+        padding: 15px 25px;
         margin-top: 70px;
-        margin-left: 100px;
         border: none;
         border-radius: 50px;
         cursor: pointer;
         transition: background-color 0.3s;
     }
 
-    .submit:hover{
+    .submit button:hover{
         background-color: #3B5271;
     }
 
-    .bot-navi {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #C9D8EC;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        height: 60px;
-    }
-
-    .navi-image{
-        display: block;
-        margin: 0 auto 3px;
-        width: 28px; 
-        height: auto;
-    }
-
-    .navi1-image{
-        display: block;
-        margin: 0 auto 2px;
-        width: 38px; 
-        height: auto;
-    }
-
-    .navi2-image{
-        display: block;
-        margin: 0 auto 3px;
-        width: 30px; 
-        height: auto;
-    }
-
-    .bot-navi-item {
-        text-decoration: none;
-        color: #3B5271;
-        font-weight: bold;
-        padding: 10px;
-        transition: all 0.3s ease;
-    }
-
-    .bot-navi-item:hover {
-        background-color: #3B5271;
-        border-radius: 10px;
-        color: #C9D8EC;
-    }
 </style>
