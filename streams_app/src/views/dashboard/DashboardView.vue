@@ -1,7 +1,7 @@
 <template>
     <home-page>
         <header-bar>
-            <h1>Dashboard</h1>
+            <h1 class="h1">Dashboard</h1>
         </header-bar>
         <dashboard-content>
           <div class="dashboard_grid">

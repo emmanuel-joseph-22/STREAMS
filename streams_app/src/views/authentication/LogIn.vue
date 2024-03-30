@@ -1,12 +1,14 @@
 <template>
     <div class="login">
-        <div class="prj-name">
-            <h1 class="streams fixed ml-10 mt-10 font-bold text-4xl font-sans">STREAMS</h1>
-            <img src="Batangas_State_Logo 2.png" class="fixed left-44 pl-10 pt-8">
-            <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
-            <img src="434098720_2156500128032719_6742569181348426872_n-removebg-preview 1.png" class="fixed left-72 pl-12 pt-8">
+        <div class="prj-name"> <!-- ginawan ko ng definition sa baba -->
+            <h1 class="streams relative font-bold text-4xl font-sans">STREAMS</h1>
+            <div class="logo-container relative">
+                <img src="Batangas_State_Logo 2.png" class="relative logo">
+                <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="relative logo"/>
+                <img src="434098720_2156500128032719_6742569181348426872_n-removebg-preview 1.png" class="relative logo" />
+            </div>
         </div>
-        <div class="container fixed bottom-10 top-40 left-30 right-40 h-17/20 w-3/4 text-black rounded-lg items-center justify-center p-5">
+        <div class="container relative h-17/20 text-black rounded-lg items-center justify-center p-5">
             <h1 class="signup font-black text-stroke text-5xl text-blue-300 mb-20 font-sans">LOG-IN</h1>
             <div class="forms">
                 <label for="user_id" class="form_label font-bold flex flex-col mb-1 text-left"><b>User ID</b></label>
@@ -22,7 +24,7 @@
                 <label for="or-text" class="font-bold flex flex-col mb-1 text-mid my-5">-OR-</label>
                 <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-5"><b>Guest</b></router-link>
                 <br/>
-                <router-link to="/signup">Sign Up</router-link>
+                <span>New to STREAMS? <router-link to="/signup" class="underline ">Create an Account</router-link></span>
             </div>
         </div>
     </div>
@@ -30,6 +32,43 @@
 </template>
 
 <style>
+.login{
+    display: flex;
+    max-width: 540px;
+    margin: 0 auto;
+    flex-direction: column;
+}
+.prj-name{
+    position: absolute;
+    left: 0;
+    display: flex;
+}
+.logo-container{
+  display: flex;
+  margin: 0 auto;
+  flex-direction: row;
+}
+.logo {
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+}
+.container{
+    margin-top: 50px;
+}
+@media screen and (max-width: 766px) {
+    .prj-name{
+        position: relative;
+        margin: 0 auto;
+        flex-direction: column;
+    }
+    .logo{
+        position: relative;
+        width: 40px;
+        height: 40px;
+    }
+
+}
 .text-stroke {
     color: #86B6F6; /* Set the text color */
     text-shadow: 
@@ -51,7 +90,6 @@ const password = ref("");
 const errorMsg = ref()
 
 const router = useRouter();
-console.log("ey")
 const login = () => {
     
     const auth = getAuth(); 

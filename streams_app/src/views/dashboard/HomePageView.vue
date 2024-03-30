@@ -1,16 +1,16 @@
 <template> 
         <div class="main_content">
-            <side-bar/>
+            <nav-bar/>
             <slot></slot>
         </div>
 </template>
 
 <script>
-import side_bar from '../../components/sidebar_component.vue';
+import nav_bar from '../../components/nav_bar_component.vue';
 
 export default {
     components: {
-        "side-bar": side_bar
+        "nav-bar": nav_bar
     },
     data(){
         return{

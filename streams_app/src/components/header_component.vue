@@ -1,5 +1,8 @@
 <template>
     <div class="header">
+        <div class="block">
+
+        </div>
         <slot></slot>
     </div>
 </template>
@@ -23,15 +26,17 @@
     height: 60px;
     z-index: 1;
     flex-direction: row;
-    font-size: 1rem;
     border-radius: 1px solid var(--border);
 }
 
 @media screen and (max-width: 766px){
     .header{
         width: auto;
-        height: 40px;
+        height: 70px;
         font-size: 0.8rem;
+    }
+    .block{
+        width: 50px;
     }
 }
 </style>
