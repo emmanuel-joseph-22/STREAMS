@@ -1,26 +1,13 @@
 <template>
     <div class="login">
-<<<<<<< HEAD
-        <div class="prj-name"> <!-- ginawan ko ng definition sa baba -->
-            <h1 class="streams relative font-bold text-4xl font-sans">STREAMS</h1>
-            <div class="logo-container relative">
-                <img src="Batangas_State_Logo 2.png" class="relative logo">
-                <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="relative logo"/>
-                <img src="aquatech_v`1.png" class="relative logo" />
-            </div>
-        </div>
-        <div class="container relative h-17/20 text-black rounded-lg items-center justify-center p-5">
-            <h1 class="signup font-black text-stroke text-5xl text-blue-300 mb-20 font-sans">LOG-IN</h1>
-=======
         <div class="prj-name">
             <h1 class="streams fixed left-10 mt-10 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl">STREAMS</h1>
             <img src="Batangas_State_Logo 2.png" class="fixed left-44 pl-10 pt-8">
             <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
-            <img src="434098720_2156500128032719_6742569181348426872_n-removebg-preview 1.png" class="fixed left-72 pl-12 pt-8">
+            <img src="aquatech_v1.png" class="fixed left-72 pl-12 pt-8">
         </div>
         <div class="container relative bottom-10 top-40 mx-auto w-full sm:w-3/4 text-black rounded-lg items-center justify-center p-5">
             <h1 class="signup font-black text-stroke text-4xl sm:text-5xl text-blue-300 mb-10 sm:mb-20 font-sans text-center">LOG-IN</h1>
->>>>>>> 4a63a878f8c00d20a5c8ba907975ba18c13bf55f
             <div class="forms">
                 <label for="user_id" class="form_label font-bold flex flex-col mb-1 text-left"><b>User ID</b></label>
                 <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID" class="px-4 py-2 mb-4 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="email"/>
@@ -35,11 +22,7 @@
                 <label for="or-text" class="font-bold flex flex-col mb-1 text-mid my-5">-OR-</label>
                 <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-2 sm:my-5"><b>Guest</b></router-link>
                 <br/>
-<<<<<<< HEAD
-                <span>New to STREAMS? <router-link to="/signup" class="underline ">Create an Account</router-link></span>
-=======
                 <router-link to="/signup" class="block text-center">Sign Up</router-link>
->>>>>>> 4a63a878f8c00d20a5c8ba907975ba18c13bf55f
             </div>
         </div>
     </div>

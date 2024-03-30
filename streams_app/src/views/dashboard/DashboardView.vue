@@ -2,11 +2,7 @@
     <home-page>
       <div class="bg-gray-100">
         <header-bar>
-<<<<<<< HEAD
-            <h1 class="h1">Dashboard</h1>
-=======
             <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
->>>>>>> 4a63a878f8c00d20a5c8ba907975ba18c13bf55f
         </header-bar>
         <dashboard-content>
           <div class="dashboard_grid">
