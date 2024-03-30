@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="sidebarchuchu bg-white-500">
         <!-- nav bar for web -->
         <div class="nav_bar" v-if="!isMobile">
             <!-- STREAMS brand -->
