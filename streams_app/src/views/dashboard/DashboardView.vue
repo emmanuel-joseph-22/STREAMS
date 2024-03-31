@@ -6,7 +6,7 @@
       <dashboard-content>
         <div class="dashboard_grid">
           <!-- highlighted data -->
-          <div class="dash_container box1">
+          <div class="dash_container box1" @mouseover="stopFlashing" @mouseleave="resumeFlashing">
             <div class="box1-inner">
                 <!-- idk pwede idagdag pero nagleave ako isa pang box para pantay -->
                 <div class="box1-item">
@@ -211,7 +211,7 @@ const submeter_graph = ref({
   ]
   
 });
-// nav - main and sub meters
+// nav : main and sub meters
 const selectedGraph = ref('mainMeter');
 
 const navigate = (direction) => {
@@ -239,11 +239,21 @@ const currentWaterConsumptionDeepWell = ref(3509);
 const currentWaterConsumptionPrimeWater = ref(3097);
 
 const showDeepWell = ref(true);
+const flashing = ref(true);
 
+const stopFlashing = () => {
+  flashing.value = false;
+};
+
+const resumeFlashing = () => {
+  flashing.value = true;
+};
 // alternate between pw and dw
 setInterval(() => {
-  showDeepWell.value = !showDeepWell.value;
-}, 5000); // interval
+  if (flashing.value) {
+    showDeepWell.value = !showDeepWell.value;
+  }
+}, 5000); // interval : 5s
 </script>
 <script>
 /* eslint-disable */
