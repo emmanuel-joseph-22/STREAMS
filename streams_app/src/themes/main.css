@@ -1,19 +1,23 @@
 :root {
     /* light mode */
-    --navy: #030622;
+    /*--navy: #030622;*/
+    --navy: #042334;
     --regular_button: #630606;
     --chatbox: #2a0000;
     --red: #410505;
     --reg_btn_hover: #a30d0d;
     --white: rgb(255, 246, 246);
     --pure_white: white;
-    --navbarHover: rgba(92, 94, 230, 0.347);
+    /*--navbarHover: rgba(92, 94, 230, 0.347);*/
+    --navbarHover: #0E5E7B;
     --main_cont_color: rgba(255, 255, 255, 0.792);
     --transparent: rgba(255, 20, 20, 0);
     --placeholder: rgb(200, 200, 200);
     --infoBox: #ead4d4;
     --border: rgba(0, 0, 0, 0.601);
-    --dropdown: #000210;
+    /*--dropdown: #000210;*/
+    --dropdown: #4E636F;
+    --dropdownHover: rgba(255, 255, 255, 0.831);
     --text_color: black;
     --link_hover: rgb(115, 108, 176);
     

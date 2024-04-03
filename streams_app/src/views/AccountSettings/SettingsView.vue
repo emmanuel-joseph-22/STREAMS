@@ -1,25 +1,28 @@
 <template>
     <div class="account-cont">
+        <div class="cont">
         <img src="user.png" alt="User" class="user-img">
         <div class="settings">
             <h1 class="mr-4">AQUATECH</h1>
 
-            <div class="edit">
-                <img src="edit.png" alt="edit">
+            <div class="def-name">
+                <label for="def-name" class="def-name-label">Default Name</label>
+                <input autofocus id="def-name" type="text" required placeholder="Default Name" class="def-name-input"/>
             </div>
+             
             <router-link to="/password">
             <div class="password">
-                <label for="password" class="password-label">Password</label>
+                <label for="password" class="password-label">Change Password</label>
                 <input autofocus id="password" type="text" required placeholder="Password" class="password-input"/>
             </div>
             </router-link>
 
             <router-link to="/home">
             <div class="save">
-                <button>SAVE</button>
+                <button>SAVE CHANGES</button>
             </div>
             </router-link>
-
+        </div>
         </div>
     </div>
 </template>
@@ -32,29 +35,30 @@
     .account-cont{
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
         align-items: center;
-        background-color: #FFFFFF;
-        border: 2px solid #3B5271;
-        border-radius: 20px;
-        margin-top: 40px;
-        margin-left: 32%;
-        height: 90vh;
-        width: 40vw;
-        padding: 0 1rem;
         cursor: pointer;
     }
 
     .account-cont img{
         width: 150px;
         height: 150px;
-        margin: 20px;
+        margin: 15px;
+        margin-left: 38%;
+    }
+
+    .cont{
+        background-color: #042334;
+        border-radius: 20px;
+        width: 50%;
+        height: 90vh;
+        margin-top: 25px;
+        margin-left: 10px;
     }
 
     .settings{
         flex: 1;
         padding: 8px;
-        margin-top: 20px;
+        margin-top: 10px;
         margin-left: 8px;
         width: 100%;
     }
@@ -63,16 +67,7 @@
         font-size: 2rem;
         font-weight: bold;
         font-family: 'Times New Roman', Times, serif;
-        color: #3B5271;
-        margin-top: 0;
-    }
-
-    .edit img{
-        width: 20px;
-        height: 20px;
-        position: absolute;
-        margin-left: 25%;
-        top: 43%;
+        color: #FFFFFF;
     }
 
     .password{
@@ -81,13 +76,14 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        margin-top: 20px;
+        margin-top: 30px;
     }
 
     .password-label{
-        margin-top: 20px;
-        margin-right: 10px;
+        margin-top: 30px;
+        margin-right: 37%;
         font-weight: bold;
+        color: #FFFFFF;
     }
 
     .password-input{
@@ -103,7 +99,7 @@
     }
     
     .save button{
-        background-color: #5F88BF;
+        background-color: #0E5E7B;
         color: #F2F5F9;
         width: 40%;
         padding: 10px 20px;
@@ -115,6 +111,6 @@
     }
 
     .save button:hover{
-        background-color: #3B5271;
+        background-color: #36B4E7;
     }
 </style>

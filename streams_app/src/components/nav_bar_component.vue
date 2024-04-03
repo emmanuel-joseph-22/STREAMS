@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class>
         <!-- nav bar for web -->
         <div class="nav_bar" v-if="!isMobile">
             <!-- STREAMS brand -->
@@ -7,7 +7,7 @@
                 <!-- STREAMS brand template -->
                 <img src="S.png" alt="Streams logo" class="brand_icon">
                 <h1>STREAMS</h1>
-                <div>Sustainable Tracking, Recording, Evaluating of Aqua Metering System</div>
+                <!--<div>Sustainable Tracking, Recording, Evaluating of Aqua Metering System</div>-->
             </div>
             <!-- dashboard/home div -->
             <router-link class="navbar_link" :to="{ name: 'dashboard' }">
@@ -63,12 +63,14 @@
                     <div class="other_link_label"><span>Tips</span></div>
                 </router-link>
                 <!-- profile view -->
-                <router-link class="navbar_link" to="/">
+                <router-link class="navbar_link" to="/settings">
                     <div class="other_link_label"><span>Account Settings</span></div>
                 </router-link>
                 <!-- baka bet nyo magdark mode
                 <div class="navlink_label" @click="switch_mode">Dark Mode</div>  -->
+                <router-link to="/login">
                 <div class="other_link_label" @click="logout"><span>Logout</span></div>
+                </router-link>
             </div>
         </div>
         <!-- bottom nav bar for mobile -->
@@ -152,9 +154,9 @@ export default {
         left: 0; 
         top: 0;
         /* ansolute size */
-        width: 280px;
+        /*width: 280px;*/
+        width: 60px;
         height: 100%;
-
         box-sizing: border-box;
         padding: 10px 20px 10px 10px;
         background-color: var(--navy);
@@ -164,7 +166,10 @@ export default {
         z-index: 10; /* oa nyan */
         display: flex;
         flex-direction: column;
-    }
+    }  
+    .nav_bar:hover{
+        width: 270px;
+    } 
     /* eto sa icon */
     .branding_div{
         display: flex;
@@ -210,6 +215,13 @@ export default {
         text-decoration: none;
         cursor: pointer;
     }
+
+    .other_link_label:hover{
+        background-color: var(--dropdownHover);
+        color: var( --text_color);
+        border-radius: 10px;
+        cursor: pointer;
+    }
     .navlink_label > span:hover{
         color: var(--link_hover);
     }
@@ -230,6 +242,9 @@ kase di ko mababa ung nav icon last of type sa bottom */
         display: flex;
         position: relative;
         margin-bottom: auto;
+    }
+    .dropdown_menu:hover .dropdown_content{
+        display: block;
     }
     .dropdown_menu:hover{
         background-color: var(--navbarHover);
@@ -263,7 +278,7 @@ kase di ko mababa ung nav icon last of type sa bottom */
         background-color: var(--dropdown);
         color: var(--white);
         width: 250px;
-        height: 260px;
+        height: 290px;
         border-radius: 20px;
         text-decoration: none;
         z-index: 20;
