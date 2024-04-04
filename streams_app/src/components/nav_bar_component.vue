@@ -68,7 +68,9 @@
                     </router-link>
                     <!-- baka bet nyo magdark mode
                     <div class="navlink_label" @click="switch_mode">Dark Mode</div>  -->
+                    <router-link class="nav_link" to="/">
                     <div class="other_link_label" @click="logout"><span>Logout</span></div>
+                    </router-link>
                 </div>
         </div>
         <!-- bottom nav bar for mobile -->
