@@ -56,7 +56,7 @@
             </div>
             <div class="dropdown_content" v-if="more_settings">
                 <!-- feedback link -->
-                <router-link class="navbar_link" to="/">
+                <router-link class="navbar_link" to="/feedback">
                     <div class="other_link_label"><span>Feedback</span></div>
                 </router-link>
                 <!-- convservation tips ewan san lalagay -->
@@ -64,7 +64,7 @@
                     <div class="other_link_label"><span>Tips</span></div>
                 </router-link>
                 <!-- profile view -->
-                <router-link class="navbar_link" to="/">
+                <router-link class="navbar_link" to="/settings">
                     <div class="other_link_label"><span>Account Settings</span></div>
                 </router-link>
                 <!-- baka bet nyo magdark mode

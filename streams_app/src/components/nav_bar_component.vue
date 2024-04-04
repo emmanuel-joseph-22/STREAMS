@@ -55,7 +55,7 @@
             </div>
             <div class="dropdown_content" v-if="more_settings">
                 <!-- feedback link -->
-                <router-link class="navbar_link" to="/">
+                <router-link class="navbar_link" to="/feedback">
                     <div class="other_link_label"><span>Feedback</span></div>
                 </router-link>
                 <!-- convservation tips ewan san lalagay -->

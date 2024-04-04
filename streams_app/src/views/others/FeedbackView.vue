@@ -1,11 +1,10 @@
 <template>
-    <div>
-        <div>
-            
+    <div class="feed">
+        <div class="feedback">
+
         </div>
     </div>
 </template>
-
 
 
 <style scoped>
