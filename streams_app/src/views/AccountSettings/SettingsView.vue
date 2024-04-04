@@ -1,52 +1,66 @@
 <template>
-    <div class="account-cont">
-        <div class="cont">
-        <img src="user.png" alt="User" class="user-img">
-        <div class="settings">
-            <h1 class="mr-4">AQUATECH</h1>
-            <h2>aquatech@gmail.com</h2>
-            <!--<div class="def-name">
-                <label for="def-name" class="def-name-label">Default Name</label>
-                <input autofocus id="def-name" type="text" required placeholder="Default Name" class="def-name-input"/>
-            </div>
-             
-            <router-link to="/password">-->
-            <!--<div class="password">
-                <label for="password" class="password-label">Change Password</label>
-                <div class="password-input-cont">
-                    <input autofocus id="password" type="text" required placeholder="Password" class="password-input"/>
-                    <router-link to="/password">
-                    <img src="next.png" alt="next-icon">
-                    </router-link>
-                </div>   
-            </div>-->
-            <!--</router-link>-->
-            <div class="default">
-                <h3>Default Name</h3>
-                <div class="def-icon">
-                    <router-link to="/defname"><img src="next.png" alt=""></router-link>
+    <home-page>
+        <div class="account-cont">
+            <div class="cont">
+            <img src="user.png" alt="User" class="user-img">
+            <div class="settings">
+                <h1 class="mr-4">AQUATECH</h1>
+                <h2>aquatech@gmail.com</h2>
+                <!--<div class="def-name">
+                    <label for="def-name" class="def-name-label">Default Name</label>
+                    <input autofocus id="def-name" type="text" required placeholder="Default Name" class="def-name-input"/>
                 </div>
-            </div>
-
-            <div class="password">
-                <h4>Change Password</h4>
-                <div class="pass-icon">
-                    <router-link to="/password"><img src="next.png" alt=""></router-link>
+                
+                <router-link to="/password">-->
+                <!--<div class="password">
+                    <label for="password" class="password-label">Change Password</label>
+                    <div class="password-input-cont">
+                        <input autofocus id="password" type="text" required placeholder="Password" class="password-input"/>
+                        <router-link to="/password">
+                        <img src="next.png" alt="next-icon">
+                        </router-link>
+                    </div>   
+                </div>-->
+                <!--</router-link>-->
+                <div class="default">
+                    <h3>Default Name</h3>
+                    <div class="def-icon">
+                        <router-link to="/defname"><img src="next.png" alt=""></router-link>
+                    </div>
                 </div>
-            </div>
 
-            <router-link to="/home">
-            <div class="save">
-                <button>SAVE CHANGES</button>
+                <div class="password">
+                    <h4>Change Password</h4>
+                    <div class="pass-icon">
+                        <router-link to="/password"><img src="next.png" alt=""></router-link>
+                    </div>
+                </div>
+
+                <router-link to="/home">
+                <div class="save">
+                    <button>SAVE CHANGES</button>
+                </div>
+                </router-link>
             </div>
-            </router-link>
+            </div>
         </div>
-        </div>
-    </div>
+    </home-page>
 </template>
 
 <script>
+import AccountPageView from './AccountPageView.vue';
 
+export default {
+    components: {
+        'home-page': AccountPageView,
+    },
+    data(){
+
+    },
+    mounted(){
+      
+    }
+}
 </script>
 
 <style scoped>

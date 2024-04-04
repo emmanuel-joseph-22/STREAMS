@@ -1,5 +1,6 @@
 <template>
-    <div class="default">
+    <home-page>
+        <div class="default">
         <div class="cont">
         <div class="change">
             <label for="input-change" class="change-label">Old Password</label>
@@ -20,8 +21,24 @@
         </router-link>
         </div>
     </div>
+    </home-page>
 </template>
 
+<script>
+import AccountPageView from './AccountPageView.vue';
+
+    export default {
+        components: {
+            'home-page': AccountPageView,
+        },
+        data(){
+
+        },
+        mounted(){
+        
+        }
+    }
+</script>
 
 <style scoped>
     .default{

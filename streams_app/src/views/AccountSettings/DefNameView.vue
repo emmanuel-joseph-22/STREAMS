@@ -1,24 +1,41 @@
 <template>
-    <div class="default">
-        <div class="cont">
-        <div class="change">
-            <label for="input-change" class="change-label">Default Name</label>
-            <input autofocus id="input-change" type="text" name="change" required placeholder="Default Name" class="change-input"/>
-        </div>
-        <div class="change-1">
-            <label for="input-change-1" class="change-1-label">New Default Name</label>
-            <input autofocus id="input-change-1" type="text" name="change-1" required placeholder="New Default Name" class="change-1-input"/>
-        </div>
+    <home-page>
+        <div class="default">
+            <div class="cont">
+            <div class="change">
+                <label for="input-change" class="change-label">Default Name</label>
+                <input autofocus id="input-change" type="text" name="change" required placeholder="Default Name" class="change-input"/>
+            </div>
+            <div class="change-1">
+                <label for="input-change-1" class="change-1-label">New Default Name</label>
+                <input autofocus id="input-change-1" type="text" name="change-1" required placeholder="New Default Name" class="change-1-input"/>
+            </div>
 
-        <router-link to="/settings">
-        <div class="confirm">
-            <button>CONFRIM</button>
+            <router-link to="/settings">
+            <div class="confirm">
+                <button>CONFRIM</button>
+            </div>
+            </router-link>
+            </div>
         </div>
-        </router-link>
-        </div>
-    </div>
+    </home-page>
 </template>
 
+<script>
+import AccountPageView from './AccountPageView.vue';
+
+    export default {
+        components: {
+            'home-page': AccountPageView,
+        },
+        data(){
+
+        },
+        mounted(){
+        
+        }
+    }
+</script>
 
 <style scoped>
     .default{
