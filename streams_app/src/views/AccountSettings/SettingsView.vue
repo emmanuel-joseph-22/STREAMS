@@ -4,7 +4,7 @@
         <img src="user.png" alt="User" class="user-img">
         <div class="settings">
             <h1 class="mr-4">AQUATECH</h1>
-
+            <!---<div class="dropdown_content" v-if="more_settings">-->
             <div class="def-name">
                 <label for="def-name" class="def-name-label">Default Name</label>
                 <input autofocus id="def-name" type="text" required placeholder="Default Name" class="def-name-input"/>
@@ -50,8 +50,8 @@
         background-color: #042334;
         border-radius: 20px;
         width: 50%;
-        height: 90vh;
-        margin-top: 25px;
+        height: 95vh;
+        margin-top: 15px;
         margin-left: 10px;
     }
 
@@ -70,13 +70,14 @@
         color: #FFFFFF;
     }
 
-    .password{
+    .password,
+    .def-name{
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
         align-items: center;
         width: 100%;
-        margin-top: 30px;
+        margin-top: 2px;
     }
 
     .password-label{
@@ -85,8 +86,15 @@
         font-weight: bold;
         color: #FFFFFF;
     }
+    .def-name-label{
+        margin-top: 30px;
+        margin-right: 43%;
+        font-weight: bold;
+        color: #FFFFFF;
+    }
 
-    .password-input{
+    .password-input,
+    .def-name-input{
         width: 60%;
         flex: 1;
         padding: 8px;
@@ -103,7 +111,7 @@
         color: #F2F5F9;
         width: 40%;
         padding: 10px 20px;
-        margin-top: 60px;
+        margin-top: 40px;
         border: none;
         border-radius: 50px;
         cursor: pointer;

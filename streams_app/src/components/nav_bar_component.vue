@@ -154,8 +154,7 @@ export default {
         left: 0; 
         top: 0;
         /* ansolute size */
-        /*width: 280px;*/
-        width: 60px;
+        width: 280px;
         height: 100%;
         box-sizing: border-box;
         padding: 10px 20px 10px 10px;
@@ -167,9 +166,6 @@ export default {
         display: flex;
         flex-direction: column;
     }  
-    .nav_bar:hover{
-        width: 270px;
-    } 
     /* eto sa icon */
     .branding_div{
         display: flex;
