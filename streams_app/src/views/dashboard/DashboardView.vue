@@ -111,7 +111,46 @@ import {
   GridComponent 
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
-import { ref, provide } from "vue";
+import { ref, provide, onMounted } from "vue";
+
+import { doc, getDocs, query, collection /*getDocFromCache*/ } from "firebase/firestore";
+import { firestore as db } from './../../main.js';
+
+//const dataObject = ref({})
+const yAxisConsumption = ref([])
+const xAxisDate = ref([])
+const water_source = 'prime-water'
+
+onMounted(async () => {
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter');
+    const collectionRef = collection(mainMeterRef, water_source);
+    const consumption_query = query(collectionRef)
+
+    try{
+      const querySnapshot = await getDocs(consumption_query);
+      const value_temp = []
+      const date_temp = []
+      querySnapshot.forEach((doc) => {
+        // ni format date into text format (e.g., "April 20, 2022")
+        const date = new Date(doc.id)
+        const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' /* pede iadd ung year: 'numeric' */}).format(date);
+        date_temp.push(formattedDate);
+        value_temp.push(doc.data().consumption);
+      });
+      xAxisDate.value = date_temp;
+      yAxisConsumption.value = value_temp;
+      /* eto kapag whole object structure
+      const newDataObject = {}
+      querySnapshot.forEach((doc) => {
+        // Convert the Firestore document data into an object
+        newDataObject[doc.id] = doc.data();
+      }); 
+      dataObject.value = newDataObject;*/
+    } catch (error) {
+      console.error('Error getting document:', error);
+    }
+});
 
 use([
   CanvasRenderer,
@@ -175,7 +214,7 @@ const consumption_chart = ref({
   },
   xAxis: [{
     type: 'category',
-    data: ['Jan 4', 'Jan 5', 'Jan 6', 'Jan 9', 'Jan 10', 'Jan 11', 'Jan 12', 'Jan 13', 'Jan 17', 'Jan 18', 'Jan 19', 'Jan 20', 'Jan 23', 'Jan 24', 'Jan 25', 'Jan 26', 'Jan 27', 'Jan 30', 'Jan 31']
+    data: xAxisDate
   }],
   yAxis: {
     type: 'value'
@@ -183,7 +222,7 @@ const consumption_chart = ref({
   series: [{
     name: 'Data',
     type: 'bar',
-    data: [ 439.99, 74.07, 86.96, 245.9, 105.48, 72.18, 408.71, 81.79, 76.52, 80.31, 241.87, 105.57, 72.64, 66.05, 107.09, 323.82, 104]
+    data: yAxisConsumption
     }]
 });
 //submeter_graph

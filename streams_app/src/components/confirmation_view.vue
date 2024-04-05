@@ -24,7 +24,9 @@ export default{
             this.$emit('confirmEvent', confirmValue);
         }
     }
-}</script>
+}
+
+</script>
 
 <style scoped>
   .container{
