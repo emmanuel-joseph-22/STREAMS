@@ -18,10 +18,25 @@
                         <img src="fake_logo.png" alt="Toggle Icon">
                     </span>
                 </div>
+                <!-- nav icon : if navbar is collapsed -->
+                <div v-if="navbarCollapsed" class="icons-collapsed">
+                    <router-link class="navbar_link" :to="{ name: 'dashboard' }" title="Dashboard">
+                        <!-- nav icon -->
+                        <img class="col-icon" src="home_icon.png"/>
+                    </router-link>
+                    <router-link class="navbar_link" to="/report" title="Report">
+                        <!-- nav icon -->
+                        <img class="col-icon" src="report_icon.png"/>
+                    </router-link>
+                    <router-link class="navbar_link" to="/map" title="Map">
+                        <!-- nav icon -->
+                        <img class="col-icon" src="map_icon.png"/>
+                    </router-link>
+                </div>
                 <router-link class="navbar_link" v-if="!navbarCollapsed" :to="{ name: 'dashboard' }">
                     <div class="navbar_icon home_icon">
                         <!-- nav icon -->
-                        <img class="icon" src="home2.png"/>
+                        <img class="icon" src="home_icon.png"/>
                         <!-- nav link label -->
                         <div class="navlink_label">Home</div>
                     </div>
@@ -30,7 +45,7 @@
                 <router-link class="navbar_link" v-if="!navbarCollapsed" to="/report">
                     <div class="navbar_icon">
                         <!-- nav icon -->
-                        <img class="icon" src="report.png"/>
+                        <img class="icon" src="report_icon.png"/>
                         <div class="navlink_label">Report</div>
                     </div>
                 </router-link>
@@ -38,7 +53,7 @@
                 <router-link class="navbar_link" v-if="!navbarCollapsed" to="/map">
                     <div class="navbar_icon">
                         <!-- nav icon -->
-                        <img class="icon" src="map2.png"/>
+                        <img class="icon" src="map_icon.png"/>
                         <div class="navlink_label">Maps</div>
                     </div>
                 </router-link>
@@ -114,7 +129,7 @@ export default {
             dark_mode: false,
             isMobile: false,
             admin: true,
-            navbarCollapsed: false
+            navbarCollapsed: true
         }
     },
     mounted(){
@@ -167,7 +182,7 @@ export default {
         padding: 10px 14px;
         background-color: var(--navy);
         border-right: 1px solid var(--border);
-        transition: ease-in-out 0.3s;
+        transition: ease-in-out 0.6s;
         overflow: hidden;
         z-index: 10; /* oa nyan */
         display: flex;
@@ -175,7 +190,25 @@ export default {
     }
     .nav_bar.collapsed {
         width: 70px;
+        transition: ease-in-out 0.4s;
     }
+
+    .icons-collapsed {
+        margin-top: 120px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .icons-collapsed img:hover{
+        background-color: var(--navbarHover);
+        transition: background-color 1s;
+        border-radius: 50%;
+        padding: 3px;
+    }
+    .icons-collapsed .navbar_link{
+        padding: 20px;
+    }
+
     .nav_bar header{
         position: relative;
         top: 15px;
@@ -187,42 +220,26 @@ export default {
     .toggle-close {
         position: absolute;
         top: 0;
-        left: 2px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        z-index: 1;
+    }
+
+    .toggle-icon img:hover {
+        background-color: var(--navbarHover);
         transition: background-color 1s;
-    }
-    .toggle-open{
-        cursor: pointer;
         border-radius: 50%;
-        transition: background-color 3s;
-    }
-
-    .toggle-close:hover {
-        background-color: var(--white);
-    }
-
-    .toggle-open:hover {
-        background-color: var(--white);
+        cursor: pointer;
     }
 
     .toggle-icon img {
         width: 40px;
         height: 40px;
     }
+
     .navbar_icon{
         width: 95%;
         height: 70px;
         margin: 6px auto;
         text-align: center;
         display: flex;
-        transition: transform 0.24s ease-in-out;
     }
     .navbar_icon:hover{
         background-color: var(--navbarHover);
@@ -230,14 +247,13 @@ export default {
         cursor: pointer;
     }
     .home_icon{
-        margin-top: 20vh;
+        margin-top: 150px;
     }
     .icon{
         width: 44px;
         height: 42px;
         margin-top: 10px;
         margin-left: 41px;
-        flex-shrink: 0;
         fill: white;
     }
     .navlink_label, .other_link_label{

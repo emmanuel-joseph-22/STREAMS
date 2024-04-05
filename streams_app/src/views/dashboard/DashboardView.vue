@@ -11,43 +11,43 @@
             <div class="box1-inner">
               <!-- idk pwede idagdag pero nagleave ako isa pang box para pantay -->
               <div class="box1-item">
-                <img src="th.jfif" class="w-600">
+                <img src="th.jfif" class="w-full h-auto">
                 <!-- insert laman -->
               </div>
               <div class="box1-item">
                 <p>Average Water Consumption:</p>
-                <span style="font-size: 1.5rem; font-weight: bold;">{{ averageWaterConsumption }} m3</span>
+                <span class="text-lg font-bold">{{ averageWaterConsumption }} m3</span>
               </div>
               <div class="box1-item">
                 <p>Previous Water Consumption:</p>
-                <span style="font-size: 1.2rem;">
+                <span class="text-base">
                   <template v-if="showDeepWell">
                     <p>Deep Well:</p>
-                    <p style="font-size: 1.2rem; font-weight: bold;">{{ previousWaterConsumptionDeepWell }} m3</p>
+                    <p class="text-lg font-bold">{{ previousWaterConsumptionDeepWell }} m3</p>
                   </template>
                   <template v-else>
                     <p>Prime Water:</p>
-                    <p style="font-size: 1.2rem; font-weight: bold;">{{ previousWaterConsumptionPrimeWater }} m3</p>
+                    <p class="text-lg font-bold">{{ previousWaterConsumptionPrimeWater }} m3</p>
                   </template>
                 </span>
               </div>
               <div class="box1-item">
                 <p>Current Water Consumption:</p>
-                <span style="font-size: 1.2rem;">
+                <span class="text-base">
                   <template v-if="showDeepWell">
                     <p>Deep Well:</p>
-                    <p style="font-size: 1.2rem; font-weight: bold;">{{ currentWaterConsumptionDeepWell }} m3</p>
+                    <p class="text-lg font-bold">{{ currentWaterConsumptionDeepWell }} m3</p>
                   </template>
                   <template v-else>
                     <p>Prime Water:</p>
-                    <p style="font-size: 1.2rem; font-weight: bold;">{{ currentWaterConsumptionPrimeWater }} m3</p>
+                    <p class="text-lg font-bold">{{ currentWaterConsumptionPrimeWater }} m3</p>
                   </template>
                 </span>
               </div>
             </div>
           </div>
           <!-- filter option -->
-          <div class="filter_toggle"></div>
+          <div class="filter_toggle">[filter]</div>
           <!-- main meter graph -->
           <v-chart class="box2 data_pattern" :option="consumption_chart"/>
           <div v-if="selectedGraph === 'mainMeter'" class="box3">
@@ -67,7 +67,7 @@
             </div>
           </div>
           <!-- specific reading details -->
-          <div class="box5 border border-black-500 inline-dashed p-5 bg-white-500">
+          <div class="box5">
             <h3 class="font-bold text-3xl">Records</h3>
             <div class="field-container">
               <select class="field">
@@ -283,10 +283,11 @@ export default {
 <style scoped>
 .dashboard-box {
   border: 1px solid black;
+  box-shadow: 0 15px 15px rgba(1, 1, 1, 1);
   padding: 20px;
-  width: 1000px;
+  max-width: 100%;
   margin: 0 auto;
-  margin-left: calc(60% - 500px - 60px);
+  margin-left: 170px;
 }
 
 .box1-inner {
@@ -299,21 +300,30 @@ export default {
   flex: 0 0 auto;
   width: calc(25% - 10px);
   height: 120px;
-  margin-top: 5px;
+  margin-top: 15px;
   margin-right: 10px;
+  margin-bottom: 20px;
   border: 2px solid black;
   border-radius: 10px;
   box-shadow: 0 2px 2px rgba(1, 1, 1, 1);
   transition: transform 0.3s ease;
   padding: 5px;
-  background-color: rgb(193, 221, 246);;
+  background-color: rgb(193, 221, 246);
 }
 .box1-item:hover {
   transform: translateY(-3px);
-  background-color: rgb(121, 173, 218);;
+  background-color: rgb(121, 173, 218);
   color: white;
 }
-
+.filter_toggle{
+  border: 2px solid black;
+  background-color: rgb(254, 255, 255);
+  color: black;
+  left: 0;
+  width: 100px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
 .box2 {
   width: 100%;
   padding: 10px;
@@ -330,10 +340,12 @@ export default {
   flex-direction: row;
   justify-content: center;
   width: 130%;
+  padding: 5px;
 }
 
 .field {
   margin: 10px;
+  padding: 10px;
 }
 
 .box5 {
@@ -343,6 +355,8 @@ export default {
   border-radius: 10px;
   margin-left: 0;
   width: 100%;
+  border: 1px solid black;
+  padding: 20px;
 }
 
 .box6 { 
@@ -350,37 +364,39 @@ export default {
   height: 400px;
 }
 
-@media screen and (max-width: 1000px){
-  .dashboard_grid{
-    grid-template-columns: repeat(1, 1fr);
-    grid-auto-rows: auto;
-    grid-template-rows: auto;
-    width: 100vw;
-  }
-  .box1, .box2, .box3, .box4, .box5, .box6 {
-    grid-row: auto;
-    grid-column: auto;
-  }
-  .box2{
-    width: 600px;
-  }
+.quarterly-box{
+  margin-top: 15px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
 }
 
-@media only screen and (max-width: 766px){
-  .dashboard_grid{
-    grid-template-columns: repeat(1, 1fr);
-    grid-auto-rows: auto;
-    grid-template-rows: auto;
-    width: 100vw;
+@media screen and (max-width: 1000px){
+  .dashboard-box{
+    margin-left: 0;
   }
-  .box1, .box2, .box3, .box4, .box5, .box6 {
-    grid-row: auto;
-    grid-column: auto;
+  .box1-inner {
+    flex-wrap: wrap;
+    overflow-x: auto;
   }
-  .box2, .box3, .mainmeter, .submeter, .data_pattern{
-    min-width: 200px;
+  .box1-item {
+    width: calc(50% - 10px);
+    padding: 5px;
+  }
+  .box2 {
     width: 100%;
-    height: auto;
+  }
+  .box3 {
+    width: 100%;
+  }
+  .field-container {
+    width: 100%;
+  }
+  .field {
+    width: calc(50% - 20px);
+  }
+  .record_details {
+    width: 100%;
   }
 }
 
