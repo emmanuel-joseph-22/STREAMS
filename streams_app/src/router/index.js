@@ -5,6 +5,8 @@ import Reading from '../views/ReadingView.vue';
 import Confirmation from '../views/ConfirmationView.vue';
 import Settings from '../views/AccountSettings/SettingsView.vue';
 import Password from '../views/AccountSettings/PasswordView.vue';
+import DefName from '../views/AccountSettings/DefNameView.vue';
+import Feedback from '../views/others/FeedbackView.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
@@ -56,6 +58,16 @@ const routes = [
       path: '/password',
       name: 'password',
       component: Password
+    },
+    {
+      path: '/defname',
+      name: 'defname',
+      component: DefName
+    },
+    {
+      path: '/feedback',
+      name: 'feedback',
+      component: Feedback
     }
 ]
 

@@ -1,30 +1,24 @@
 <template>
     <div>
         <!-- nav bar for web -->
-        <div class="nav_bar" v-if="!isMobile">
-            <!-- STREAMS brand -->
-            <div class="branding_div">
-                <!-- STREAMS brand template -->
-                <img src="S.png" alt="Streams logo" class="brand_icon">
-                <h1>STREAMS</h1>
-                <div>Sustainable Tracking, Recording, Evaluating of Aqua Metering System</div>
-            </div>
-            <!-- dashboard/home div -->
-            <router-link class="navbar_link" :to="{ name: 'dashboard' }">
-                <div class="navbar_icon home_icon">
-                    <!-- nav icon -->
-                    <img class="icon" src="home2.png"/>
-                    <!-- nav link label -->
-                    <div class="navlink_label">Home</div>
+        <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }">
+            <header>
+                <div class="not-collapsed" v-show="!navbarCollapsed">
+                    <div class="text header-text">
+                        <span class="name">STREAMS</span>
+                    </div>
+                    <div class="toggle-close" @click="toggleNavbar" title="Close Bar">
+                        <span class="toggle-icon">
+                            <img src="fake_logo.png" alt="Toggle Icon">
+                        </span>
+                    </div>
                 </div>
-            </router-link>
-            <!-- report div -->
-            <router-link class="navbar_link" to="/report">
-                <div class="navbar_icon">
-                    <!-- nav icon -->
-                    <img class="icon" src="report.png"/>
-                    <div class="navlink_label">Report</div>
+                <div v-if="navbarCollapsed" class="toggle-open" @click="toggleNavbar" title="Open Bar">
+                    <span class="toggle-icon">
+                        <img src="fake_logo.png" alt="Toggle Icon">
+                    </span>
                 </div>
+<<<<<<< HEAD
             </router-link>
             <!-- reading div -->
             <router-link class="navbar_link" to="/reading" v-if="!admin">
@@ -32,44 +26,77 @@
                     <!-- nav icon -->
                     <img class="icon" src="metro.png"/>
                     <div class="navlink_label">Reading</div>
+=======
+                <!-- nav icon : if navbar is collapsed -->
+                <div v-if="navbarCollapsed" class="icons-collapsed">
+                    <router-link class="navbar_link" :to="{ name: 'dashboard' }" title="Dashboard">
+                        <!-- nav icon -->
+                        <img class="col-icon" src="home_icon.png"/>
+                    </router-link>
+                    <router-link class="navbar_link" to="/report" title="Report">
+                        <!-- nav icon -->
+                        <img class="col-icon" src="report_icon.png"/>
+                    </router-link>
+                    <router-link class="navbar_link" to="/map" title="Map">
+                        <!-- nav icon -->
+                        <img class="col-icon" src="map_icon.png"/>
+                    </router-link>
+>>>>>>> 1d3ffe0f5f82fd37d5e0d1cc60d1cc9c7dc3d017
                 </div>
-            </router-link>
-            <!-- map div -->
-            <router-link class="navbar_link" to="/map">
-                <div class="navbar_icon">
-                    <!-- nav icon -->
-                    <img class="icon" src="map2.png"/>
-                    <div class="navlink_label">Maps</div>
-                </div>
-            </router-link>
-
+                <router-link class="navbar_link" v-if="!navbarCollapsed" :to="{ name: 'dashboard' }">
+                    <div class="navbar_icon home_icon">
+                        <!-- nav icon -->
+                        <img class="icon" src="home_icon.png"/>
+                        <!-- nav link label -->
+                        <div class="navlink_label">Home</div>
+                    </div>
+                </router-link>
+                <!-- report div -->
+                <router-link class="navbar_link" v-if="!navbarCollapsed" to="/report">
+                    <div class="navbar_icon">
+                        <!-- nav icon -->
+                        <img class="icon" src="report_icon.png"/>
+                        <div class="navlink_label">Report</div>
+                    </div>
+                </router-link>
+                <!-- map div -->
+                <router-link class="navbar_link" v-if="!navbarCollapsed" to="/map">
+                    <div class="navbar_icon">
+                        <!-- nav icon -->
+                        <img class="icon" src="map_icon.png"/>
+                        <div class="navlink_label">Maps</div>
+                    </div>
+                </router-link>
+            </header>
             <div class="empty_space"></div>
-            <!-- hamburger icon -->
-            <div class="dropdown_menu" @click="showMoreOptions">
-                <div class="hamburger">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
+                <!-- hamburger icon -->
+                <div class="dropdown_menu" @click="showMoreOptions" v-show="!navbarCollapsed">
+                    <div class="hamburger">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="navlink_label">More</div>
                 </div>
-                <div class="navlink_label">More</div>
-            </div>
-            <div class="dropdown_content" v-if="more_settings">
-                <!-- feedback link -->
-                <router-link class="navbar_link" to="/">
-                    <div class="other_link_label"><span>Feedback</span></div>
-                </router-link>
-                <!-- convservation tips ewan san lalagay -->
-                <router-link class="navbar_link" to="/">
-                    <div class="other_link_label"><span>Tips</span></div>
-                </router-link>
-                <!-- profile view -->
-                <router-link class="navbar_link" to="/">
-                    <div class="other_link_label"><span>Account Settings</span></div>
-                </router-link>
-                <!-- baka bet nyo magdark mode
-                <div class="navlink_label" @click="switch_mode">Dark Mode</div>  -->
-                <div class="other_link_label" @click="logout"><span>Logout</span></div>
-            </div>
+                <div class="dropdown_content" v-if="more_settings">
+                    <!-- feedback link -->
+                    <router-link class="navbar_link" to="/feedback">
+                        <div class="other_link_label"><span>Feedback</span></div>
+                    </router-link>
+                    <!-- convservation tips ewan san lalagay -->
+                    <router-link class="navbar_link" to="/">
+                        <div class="other_link_label"><span>Tips</span></div>
+                    </router-link>
+                    <!-- profile view -->
+                    <router-link class="navbar_link" to="/settings">
+                        <div class="other_link_label"><span>Account Settings</span></div>
+                    </router-link>
+                    <!-- baka bet nyo magdark mode
+                    <div class="navlink_label" @click="switch_mode">Dark Mode</div>  -->
+                    <router-link class="nav_link" to="/">
+                    <div class="other_link_label" @click="logout"><span>Logout</span></div>
+                    </router-link>
+                </div>
         </div>
         <!-- bottom nav bar for mobile -->
         <div class="nav_mobile" v-if="isMobile">
@@ -111,7 +138,8 @@ export default {
             more_settings: false,
             dark_mode: false,
             isMobile: false,
-            admin: true
+            admin: true,
+            navbarCollapsed: true
         }
     },
     mounted(){
@@ -140,6 +168,12 @@ export default {
             const mobileThreshold = 766;
 
             this.isMobile = screenWidth <= mobileThreshold;
+        },
+        toggleNavbar() {
+            this.navbarCollapsed = !this.navbarCollapsed;
+            if (this.navbarCollapsed) {
+                this.more_settings = false;
+            }
         }
     }
 }
@@ -152,36 +186,70 @@ export default {
         left: 0; 
         top: 0;
         /* ansolute size */
-        width: 280px;
+        width: 250px;
         height: 100%;
-
         box-sizing: border-box;
-        padding: 10px 20px 10px 10px;
+        padding: 10px 14px;
         background-color: var(--navy);
         border-right: 1px solid var(--border);
-        transition: ease-in-out 0.3s;
+        transition: ease-in-out 0.6s;
         overflow: hidden;
         z-index: 10; /* oa nyan */
         display: flex;
         flex-direction: column;
     }
-    /* eto sa icon */
-    .branding_div{
-        display: flex;
-        width: 55px;
-        height: 50px;
+    .nav_bar.collapsed {
+        width: 70px;
+        transition: ease-in-out 0.4s;
     }
-    .brand_icon{
-        width: 100%;
-        height: 100%;
+
+    .icons-collapsed {
+        margin-top: 120px;
+        width: 45px;
+        height: 45px;
     }
+
+    .icons-collapsed img:hover{
+        background-color: var(--navbarHover);
+        transition: background-color 1s;
+        border-radius: 50%;
+        padding: 3px;
+    }
+    .icons-collapsed .navbar_link{
+        padding: 20px;
+    }
+
+    .nav_bar header{
+        position: relative;
+        top: 15px;
+    }
+    .header-text .name{
+        top: 2px;
+        font-weight: 600;
+    }
+    .toggle-close {
+        position: absolute;
+        top: 0;
+    }
+
+    .toggle-icon img:hover {
+        background-color: var(--navbarHover);
+        transition: background-color 1s;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .toggle-icon img {
+        width: 40px;
+        height: 40px;
+    }
+
     .navbar_icon{
         width: 95%;
         height: 70px;
         margin: 6px auto;
         text-align: center;
         display: flex;
-        transition: transform 0.24s ease-in-out;
     }
     .navbar_icon:hover{
         background-color: var(--navbarHover);
@@ -189,14 +257,13 @@ export default {
         cursor: pointer;
     }
     .home_icon{
-        margin-top: 20vh;
+        margin-top: 150px;
     }
     .icon{
         width: 44px;
         height: 42px;
         margin-top: 10px;
         margin-left: 41px;
-        flex-shrink: 0;
         fill: white;
     }
     .navlink_label, .other_link_label{
@@ -208,6 +275,13 @@ export default {
         color: white;
         font-size: 1.14rem;
         text-decoration: none;
+        cursor: pointer;
+    }
+
+    .other_link_label:hover{
+        background-color: var(--dropdownHover);
+        color: var( --text_color);
+        border-radius: 10px;
         cursor: pointer;
     }
     .navlink_label > span:hover{
@@ -230,6 +304,9 @@ kase di ko mababa ung nav icon last of type sa bottom */
         display: flex;
         position: relative;
         margin-bottom: auto;
+    }
+    .dropdown_menu:hover .dropdown_content{
+        display: block;
     }
     .dropdown_menu:hover{
         background-color: var(--navbarHover);
@@ -263,7 +340,7 @@ kase di ko mababa ung nav icon last of type sa bottom */
         background-color: var(--dropdown);
         color: var(--white);
         width: 250px;
-        height: 260px;
+        height: 290px;
         border-radius: 20px;
         text-decoration: none;
         z-index: 20;

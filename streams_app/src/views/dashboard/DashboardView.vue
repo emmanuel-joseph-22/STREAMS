@@ -1,110 +1,106 @@
 <template>
   <home-page>
+    <div class="dashboard-box">
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
       </header-bar>
       <dashboard-content>
+        <!-- highlighted data -->
         <div class="dashboard_grid">
-          <!-- highlighted data -->
-          <div class="dash_container box1" @mouseover="stopFlashing" @mouseleave="resumeFlashing">
+          <div class="box1" @mouseover="stopFlashing" @mouseleave="resumeFlashing">
             <div class="box1-inner">
-                <!-- idk pwede idagdag pero nagleave ako isa pang box para pantay -->
-                <div class="box1-item">
-                  <img src="th.jfif" class="w-600">
-                  <!-- insert laman -->
-                </div>
+              <!-- idk pwede idagdag pero nagleave ako isa pang box para pantay -->
               <div class="box1-item">
-                  <p>Average Water Consumption:</p>
-                  <span style="font-size: 1.5rem; font-weight: bold;">{{ averageWaterConsumption }} m3</span>
-                </div>
-                <!-- PREVIOUS WATER CONSUMPTION BOX -->
-                <div class="box1-item">
-                  <p>Previous Water Consumption:</p>
-                    <span style="font-size: 1.2rem;">
-                      <template v-if="showDeepWell">
-                        <p>Deep Well:</p>
-                        <p style="font-size: 1.2rem; font-weight: bold;">{{ previousWaterConsumptionDeepWell }} m3</p>
-                      </template>
-                      <template v-else>
-                        <p>Prime Water:</p>
-                        <p style="font-size: 1.2rem; font-weight: bold;">{{ previousWaterConsumptionPrimeWater }} m3</p>
-                      </template>
-                    </span>
-                </div>
-                <!-- CURRENT WATER CONSUMPTION BOX -->
-                <div class="box1-item">
-                  <p>Current Water Consumption:</p>
-                    <span style="font-size: 1.2rem;">
-                      <template v-if="showDeepWell">
-                        <p>Deep Well:</p>
-                        <p style="font-size: 1.2rem; font-weight: bold;">{{ currentWaterConsumptionDeepWell }} m3</p>
-                      </template>
-                      <template v-else>
-                        <p>Prime Water:</p>
-                        <p style="font-size: 1.2rem; font-weight: bold;">{{ currentWaterConsumptionPrimeWater }} m3</p>
-                      </template>
-                    </span>
-                </div>
+                <img src="th.jfif" class="w-full h-auto">
+                <!-- insert laman -->
+              </div>
+              <div class="box1-item">
+                <p>Average Water Consumption:</p>
+                <span class="text-lg font-bold">{{ averageWaterConsumption }} m3</span>
+              </div>
+              <div class="box1-item">
+                <p>Previous Water Consumption:</p>
+                <span class="text-base">
+                  <template v-if="showDeepWell">
+                    <p>Deep Well:</p>
+                    <p class="text-lg font-bold">{{ previousWaterConsumptionDeepWell }} m3</p>
+                  </template>
+                  <template v-else>
+                    <p>Prime Water:</p>
+                    <p class="text-lg font-bold">{{ previousWaterConsumptionPrimeWater }} m3</p>
+                  </template>
+                </span>
+              </div>
+              <div class="box1-item">
+                <p>Current Water Consumption:</p>
+                <span class="text-base">
+                  <template v-if="showDeepWell">
+                    <p>Deep Well:</p>
+                    <p class="text-lg font-bold">{{ currentWaterConsumptionDeepWell }} m3</p>
+                  </template>
+                  <template v-else>
+                    <p>Prime Water:</p>
+                    <p class="text-lg font-bold">{{ currentWaterConsumptionPrimeWater }} m3</p>
+                  </template>
+                </span>
+              </div>
             </div>
           </div>
           <!-- filter option -->
-          <div class="filter_toggle"></div>
+          <div class="filter_toggle">[filter]</div>
           <!-- main meter graph -->
-          <div class="dash_container box2">
-            <v-chart class="data_pattern" :option="consumption_chart"/>
-          </div>
-          <div class="dash_container box3" v-if="selectedGraph === 'mainMeter'">
-            <v-chart class="data_pattern mainmeter" :option="pie_main_meter" />
-                <!-- navigation buttons -->
-                <div class="navigation-buttons">
-                  <button class="arrow-button" @click="navigate('left')">◄</button>
-                  <button class="arrow-button" @click="navigate('right')">►</button>
-                </div>
-          </div>
-          <div class="dash_container box3" v-else-if="selectedGraph === 'subMeter'">
-            <v-chart class="data_pattern submeter" :option="submeter_graph" />
-              <!-- navigation buttons -->
-                <div class="navigation-buttons">
-                    <button class="arrow-button" @click="navigate('left')">◄</button>
-                    <button class="arrow-button" @click="navigate('right')">►</button>
-                  </div>
+          <v-chart class="box2 data_pattern" :option="consumption_chart"/>
+          <div v-if="selectedGraph === 'mainMeter'" class="box3">
+            <v-chart class="mainmeter data_pattern" :option="pie_main_meter" />
+            <!-- navigation buttons -->
+            <div class="navigation-buttons">
+              <button class="arrow-button" @click="navigate('left')">◄</button>
+              <button class="arrow-button" @click="navigate('right')">►</button>
             </div>
+          </div>
+          <div v-else-if="selectedGraph === 'subMeter'" class="box3">
+            <v-chart class="submeter data_pattern" :option="submeter_graph" />
+            <!-- navigation buttons -->
+            <div class="navigation-buttons">
+              <button class="arrow-button" @click="navigate('left')">◄</button>
+              <button class="arrow-button" @click="navigate('right')">►</button>
+            </div>
+          </div>
           <!-- specific reading details -->
-          <div class="dash_container box5 border border-black-500 inline-dashed p-5 bg-white-500">
-              <h3 class="font-bold text-3xl">Records</h3>
+          <div class="box5">
+            <h3 class="font-bold text-3xl">Records</h3>
             <div class="field-container">
               <select class="field">
-                  <option value="PW" class="dept_option">Prime Water</option>
-                  <option value="DW1" class="dept_option">Deep well 1</option>
-                  <option value="DW2" class="dept_option">Deep well 2</option>
-                  <option value="DW3" class="dept_option">Deep well 3</option>
-                  <option value="DW4" class="dept_option">Deep well 4</option>
-            </select>
-            <!-- record - date -->
-                  <input class="field" type="date"/>
+                <option value="PW" class="dept_option">Prime Water</option>
+                <option value="DW1" class="dept_option">Deep well 1</option>
+                <option value="DW2" class="dept_option">Deep well 2</option>
+                <option value="DW3" class="dept_option">Deep well 3</option>
+                <option value="DW4" class="dept_option">Deep well 4</option>
+              </select>
+              <!-- record - date -->
+              <input class="field" type="date"/>
             </div>
             <br/>
             <!-- record details -->
             <div class="record_details">
-                <div>Date: {{ date }}</div>
-                <div>Time: {{ time }}</div>
-                <div>m3: {{ meter }}</div>
+              <div>Date: {{ date }}</div>
+              <div>Time: {{ time }}</div>
+              <div>m3: {{ meter }}</div>
             </div>
           </div>
           <!-- quarterly box -->
-          <div class="dash_container box6">
+          <div class="box6">
             <div class="quarterly-box">
               <h3 class="font-bold text-3xl">Quarterly</h3>
             </div>
           </div>
         </div>
-          
       </dashboard-content>
+    </div>
   </home-page>
 </template>
 
 <script setup>
-
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { PieChart, LineChart, BarChart } from "echarts/charts";
@@ -285,19 +281,13 @@ export default {
 </script>
 
 <style scoped>
-.dashboard_grid {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.dash_container {
-  flex: 1 0 50%;
-  padding: 10px;
-  margin-right: 20px;
-}
-
-.box1, .box2, .box3, .box4, .box5, .box6 {
-  padding: 15px;
+.dashboard-box {
+  border: 1px solid black;
+  box-shadow: 0 15px 15px rgba(1, 1, 1, 1);
+  padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-left: 170px;
 }
 
 .box1-inner {
@@ -308,171 +298,136 @@ export default {
 
 .box1-item {
   flex: 0 0 auto;
-  width: 330px;
-  height: 100px;
-  margin-top: 5px;
-  margin-right: 5px;
+  width: calc(25% - 10px);
+  height: 120px;
+  margin-top: 15px;
+  margin-right: 10px;
+  margin-bottom: 20px;
   border: 2px solid black;
   border-radius: 10px;
   box-shadow: 0 2px 2px rgba(1, 1, 1, 1);
   transition: transform 0.3s ease;
   padding: 5px;
-  background-color: rgb(193, 221, 246);;
+  background-color: rgb(193, 221, 246);
 }
 .box1-item:hover {
-    transform: translateY(-3px);
-    background-color: rgb(121, 173, 218);;
-    color: white;
+  transform: translateY(-3px);
+  background-color: rgb(121, 173, 218);
+  color: white;
 }
-  
-
-@media screen and (max-width: 1000px) {
-  .dash_container {
-    flex-basis: 100%;
-    max-width: 100%;
-  }
+.filter_toggle{
+  border: 2px solid black;
+  background-color: rgb(254, 255, 255);
+  color: black;
+  left: 0;
+  width: 100px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 .box2 {
-  grid-row: 2;
-  width: 600px;
-  padding: 15px;
+  width: 100%;
+  padding: 10px;
 }
 
 .box3 {
-  grid-row: 2;
-  width: 30vw;
-  padding: 20px;
-  /*overflow-x: auto;*/
-  white-space: nowrap;
-  max-width: 600px;
-  min-width: 200px;
+  width: 70%;
+  margin: 0 auto;
+  padding: 10px;
 }
-/*
-.box3::-webkit-scrollbar {
-    width: 15px;
-    height: 12px;
-}
-*/  
-/* Define the thumb style */
-/*
-.box3::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom right, rgb(4, 4, 106) 0%, rgb(62, 62, 206) 100%);
-    border-radius: 4px;
-}
-*/  
-/* Define the track style */
-/*
-.box3::-webkit-scrollbar-track:horizontal {
-    background-color: lightgray;
-    box-shadow: inset 0 0 2px 2px lightgray;;
-}
-*/
 
-.box4 {
-  grid-row: 3 / span 1;
-  grid-column: 1;
-}
-/* specific reading details */
-.box5 {
-  grid-row: 3 / span 1;
-  grid-column: 2;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  border-radius: 10px;
-  margin-left: 13px;
-  width: 96%;
-}
 .field-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 130%;
+  padding: 5px;
 }
 
 .field {
-  margin: 5px;
+  margin: 10px;
+  padding: 10px;
 }
-.box6{ 
-  grid-row: 4;
-  grid-column: 1 / span 2;
+
+.box5 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  margin-left: 0;
+  width: 100%;
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.box6 { 
   width: 100%;
   height: 400px;
 }
-.quarterly-box {
+
+.quarterly-box{
+  margin-top: 15px;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 15px;
+  padding: 5px;
 }
+
 @media screen and (max-width: 1000px){
-  .dashboard_grid{
-    grid-template-columns: repeat(1, 1fr);
-    grid-auto-rows: auto;
-    grid-template-rows: auto;
-    width: 100vw;
+  .dashboard-box{
+    margin-left: 0;
   }
-  .box1, .box2, .box3, .box4, .box5, .box6 {
-    grid-row: auto;
-    grid-column: auto;
+  .box1-inner {
+    flex-wrap: wrap;
+    overflow-x: auto;
   }
-  .box2{
-    width: 600px;
+  .box1-item {
+    width: calc(50% - 10px);
+    padding: 5px;
   }
-}
-@media only screen and (max-width: 766px){
-  .dashboard_grid{
-    grid-template-columns: repeat(1, 1fr);
-    grid-auto-rows: auto;
-    grid-template-rows: auto;
-    width: 100vw;
-  }
-  .box1, .box2, .box3, .box4, .box5, .box6 {
-    grid-row: auto;
-    grid-column: auto;
-  }
-  .box2, .box3, .mainmeter, .submeter, .data_pattern{
-    min-width: 200px;
+  .box2 {
     width: 100%;
-    height: auto;
+  }
+  .box3 {
+    width: 100%;
+  }
+  .field-container {
+    width: 100%;
+  }
+  .field {
+    width: calc(50% - 20px);
+  }
+  .record_details {
+    width: 100%;
   }
 }
-.field{
-    width: 30%;
-    height: 50px;
-    border-radius: 12px;
-    border: 1px solid black;
-    background-color: rgb(193, 221, 246);
-    font-size: 1.1rem;
-    margin-top: 20px;
+
+.field {
+  width: 30%;
+  height: 50px;
+  border-radius: 12px;
+  border: 1px solid black;
+  background-color: rgb(193, 221, 246);
+  font-size: 1.1rem;
+  margin-top: 20px;
 }
 
 .dept_option {
-    width: 80px;
+  width: 80px;
 }
 
-.record_details{
-    text-align: left;
-    width: 80%;
-    height: 200px;
-    border-radius: 12px;
-    border: 1px solid black;
-    background-color: white;
+.record_details {
+  text-align: left;
+  width: 80%;
+  height: 200px;
+  border-radius: 12px;
+  border: 1px solid black;
+  background-color: white;
 }
-/* record details text */
-.record_details > div{
-    margin: 35px;
-    font-size: 1rem;
+
+.record_details > div {
+  margin: 35px;
+  font-size: 1rem;
 }
-.graph{
-    text-align: left;
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    border: 1px solid black;
-    background-color: rgba(193, 221, 246, 0.541);
-    padding: 10px 0;
-}
+
 .arrow-button {
   color: #333;
   cursor: pointer;
@@ -486,31 +441,15 @@ export default {
   border-radius: 15px;
 }
 
-</style>
+.consumption_category {
+  font-weight: bold;
+  font-size: 1rem;
+}
 
-<style scoped>
-/*more specific anik anik*/
-.consumption_category{
-    font-weight: bold;
-    font-size: 1rem;
-    margin: 10px 0;
-}
-.data_pattern{
-    height: 400px;
-    width: 105%;
-    background-color: rgb(255, 255, 255);
-    /*z-index: 21;*/
-    border: 1px solid black;
-    border-radius: 10px;
-}
-.mainmeter{
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 550px;
-}
-.submeter{
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 550px;
+.data_pattern {
+  height: 400px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid black;
+  border-radius: 10px;
 }
 </style>

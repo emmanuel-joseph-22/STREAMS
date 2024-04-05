@@ -27,7 +27,7 @@ export default {
     .main_content{
         position: relative;
         height: 200px;
-        left: 280px;
+        left: 95px;
         z-index: 16;
         width: calc(100% - 290px);
         background-color: rgba(136, 199, 255, 0);

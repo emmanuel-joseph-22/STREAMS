@@ -1,26 +1,23 @@
 <template>
     <home-page>
         <div class="default">
-        <div class="cont">
-        <div class="change">
-            <label for="input-change" class="change-label">Old Password</label>
-            <input autofocus id="input-change" type="text" name="change" required placeholder="Old Password" class="change-input"/>
+            <div class="cont">
+            <div class="change">
+                <label for="input-change" class="change-label">Default Name</label>
+                <input autofocus id="input-change" type="text" name="change" required placeholder="Default Name" class="change-input"/>
+            </div>
+            <div class="change-1">
+                <label for="input-change-1" class="change-1-label">New Default Name</label>
+                <input autofocus id="input-change-1" type="text" name="change-1" required placeholder="New Default Name" class="change-1-input"/>
+            </div>
+
+            <router-link to="/settings">
+            <div class="confirm">
+                <button>CONFRIM</button>
+            </div>
+            </router-link>
+            </div>
         </div>
-        <div class="change-1">
-            <label for="input-change-1" class="change-1-label">New Password</label>
-            <input autofocus id="input-change-1" type="text" name="change-1" required placeholder="New Password" class="change-1-input"/>
-        </div>
-        <div class="change-2">
-            <label for="input-change-2" class="change-2-label">Retype New Password</label>
-            <input autofocus id="input-change-2" type="text" name="change-2" required placeholder="Retype New Password" class="change-2-input"/>
-        </div>
-        <router-link to="/settings">
-        <div class="confirm">
-            <button>CONFRIM</button>
-        </div>
-        </router-link>
-        </div>
-    </div>
     </home-page>
 </template>
 
@@ -52,14 +49,13 @@ import AccountPageView from './AccountPageView.vue';
         background-color: #042334;
         border-radius: 20px;
         width: 50%;
-        height: 80vh;
-        margin-top: 55px;
+        height: 60vh;
+        margin-top: 80px;
         margin-left: 10px;
     }
 
     .change,
-    .change-1,
-    .change-2 {
+    .change-1 {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -75,15 +71,8 @@ import AccountPageView from './AccountPageView.vue';
         color: #FFFFFF;
     }
 
-    .change-2-label{
-        margin-right: 45%;
-        font-weight: bold;
-        color: #FFFFFF;
-    }
-
     .change-input,
-    .change-1-input,
-    .change-2-input { 
+    .change-1-input { 
         width: 90%;
         flex: 1;
         padding: 10px;
