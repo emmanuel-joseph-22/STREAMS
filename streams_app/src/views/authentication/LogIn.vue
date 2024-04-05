@@ -17,7 +17,13 @@
                 
                 <p v-if="errorMsg">{{ errorMsg }}</p>
             
-                <button v-on:click="login" class="submit bg-blue-700 text-blue-200 py-2 px-10 rounded-full mt-4 sm:mt-5 w-full sm:w-auto" id="sign-up" value="Sign Up">Log In</button>
+                <!--<button v-on:click="login" class="submit bg-blue-700 text-blue-200 py-2 px-10 rounded-full mt-4 sm:mt-5 w-full sm:w-auto" id="sign-up" value="Sign Up">Log In</button>-->
+                <div v-on:click="login" class="body">
+                        <a href="#">
+                            <span>Log In</span>
+                            <div class="wave"></div>
+                        </a>
+                </div>
                 <br/>
                 <label for="or-text" class="font-bold flex flex-col mb-1 text-mid my-5">-OR-</label>
                 <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-2 sm:my-5"><b>Guest</b></router-link>
@@ -87,6 +93,63 @@
       -1px 1px 0 #000,
       1px 1px 0 #000; /* Set the stroke effect */
   }
+  .body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 25vh;
+    }
+    .body a{
+        position: relative;
+        display: block;
+        padding: 10px 30px;
+        border: 2px solid #00aeff;
+        border-radius: 50px;
+        text-transform: uppercase;
+        font-size: 18px;
+        letter-spacing: 4px;
+        color: #00aeff;
+        text-decoration: none;
+        overflow: hidden
+    }
+    .body a span{
+        position: relative;
+        z-index: 1;
+        transition: 1s;
+    }
+    .body a .wave{
+        position: absolute;
+        top: calc(100% + 22px);
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #00aeff;
+        transition: 1s;
+    }
+    .body a:hover .wave{
+        top: 0;
+    }
+    .body a .wave::before{
+        content: '';
+        position: absolute;
+        top: -22px;
+        left: 0;
+        width: 100%;
+        height: 22px;
+        background: url(C:\Users\Asus\Downloads\wave.png);
+        animation: animate 0.5s linear infinite;
+    }
+    @keyframes animate{
+            0%
+        {
+            background-position-x: 0;
+            background-position-x: -22px;
+        }
+        100%
+        {
+            background-position-x: 118px;
+        }
+    }
 </style>
 
 <script setup>

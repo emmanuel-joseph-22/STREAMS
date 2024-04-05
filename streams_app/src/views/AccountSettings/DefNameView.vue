@@ -12,9 +12,12 @@
             </div>
 
             <router-link to="/settings">
-            <div class="confirm">
-                <button>CONFRIM</button>
-            </div>
+                <div class="body">
+                    <a href="#">
+                        <span>CONFIRM</span>
+                        <div class="wave"></div>
+                    </a>
+                </div>
             </router-link>
             </div>
         </div>
@@ -84,19 +87,61 @@ import AccountPageView from './AccountPageView.vue';
         outline: none;
     }
 
-    .confirm button{
-        background-color: #0E5E7B;
-        color: #F2F5F9;
-        width: 40%;
-        padding: 10px 20px;
-        margin-top: 40px;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+    .body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 25vh;
     }
-
-    .confirm button:hover{
-        background-color: #36B4E7;
+    .body a{
+        position: relative;
+        display: block;
+        padding: 10px 30px;
+        border: 2px solid #00aeff;
+        border-radius: 50px;
+        text-transform: uppercase;
+        font-size: 18px;
+        letter-spacing: 4px;
+        color: #00aeff;
+        text-decoration: none;
+        overflow: hidden
+    }
+    .body a span{
+        position: relative;
+        z-index: 1;
+        transition: 1s;
+    }
+    .body a .wave{
+        position: absolute;
+        top: calc(100% + 22px);
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #00aeff;
+        transition: 1s;
+    }
+    .body a:hover .wave{
+        top: 0;
+    }
+    .body a .wave::before{
+        content: '';
+        position: absolute;
+        top: -22px;
+        left: 0;
+        width: 100%;
+        height: 22px;
+        background: url(C:\Users\Asus\Downloads\wave.png);
+        animation: animate 0.5s linear infinite;
+    }
+    @keyframes animate{
+            0%
+        {
+            background-position-x: 0;
+            background-position-x: -22px;
+        }
+        100%
+        {
+            background-position-x: 118px;
+        }
     }
 </style>

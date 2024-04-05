@@ -37,9 +37,12 @@
                 </div>
 
                 <router-link to="/home">
-                <div class="save">
-                    <button>SAVE CHANGES</button>
-                </div>
+                    <div class="body">
+                        <a href="#">
+                            <span>SUBMIT</span>
+                            <div class="wave"></div>
+                        </a>
+                    </div>
                 </router-link>
             </div>
             </div>
@@ -140,19 +143,62 @@ export default {
         margin-left: 26vw;
     }
 
-    .save button{
-        background-color: #0E5E7B;
-        color: #F2F5F9;
-        width: 40%;
-        padding: 10px 20px;
-        margin-top: 35px;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+    .body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 25vh;
     }
-
-    .save button:hover{
-        background-color: #36B4E7;
+    .body a{
+        position: relative;
+        display: block;
+        padding: 10px 30px;
+        border: 2px solid #00aeff;
+        border-radius: 50px;
+        text-transform: uppercase;
+        font-size: 18px;
+        letter-spacing: 4px;
+        color: #00aeff;
+        text-decoration: none;
+        overflow: hidden
+    }
+    .body a span{
+        position: relative;
+        z-index: 1;
+        transition: 1s;
+    }
+    .body a .wave{
+        position: absolute;
+        top: calc(100% + 22px);
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #00aeff;
+        transition: 1s;
+    }
+    .body a:hover .wave{
+        top: 0;
+    }
+    .body a .wave::before{
+        content: '';
+        position: absolute;
+        top: -22px;
+        left: 0;
+        width: 100%;
+        height: 22px;
+        /*dl nyo yung wave.png na asa public then paltan nyo na lang areng url nung location nung wave sa device nyo*/
+        background: url(C:\Users\Asus\Downloads\wave.png);
+        animation: animate 0.5s linear infinite;
+    }
+    @keyframes animate{
+            0%
+        {
+            background-position-x: 0;
+            background-position-x: -22px;
+        }
+        100%
+        {
+            background-position-x: 118px;
+        }
     }
 </style>
