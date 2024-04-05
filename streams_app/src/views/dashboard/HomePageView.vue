@@ -30,7 +30,6 @@ export default {
         left: 95px;
         z-index: 16;
         width: calc(100% - 290px);
-        background-color: rgba(136, 199, 255, 0);
         transition: ease-in-out 0.3s;
     }
 

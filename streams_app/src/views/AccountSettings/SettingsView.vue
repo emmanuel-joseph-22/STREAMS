@@ -187,7 +187,7 @@ export default {
         width: 100%;
         height: 22px;
         /*dl nyo yung wave.png na asa public then paltan nyo na lang areng url nung location nung wave sa device nyo*/
-        background: url(C:\Users\Asus\Downloads\wave.png);
+        background-image: 'wave.png';
         animation: animate 0.5s linear infinite;
     }
     @keyframes animate{

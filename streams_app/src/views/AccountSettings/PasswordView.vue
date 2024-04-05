@@ -142,7 +142,7 @@ import AccountPageView from './AccountPageView.vue';
         left: 0;
         width: 100%;
         height: 22px;
-        background: url(C:\Users\Asus\Downloads\wave.png);
+        background-image: 'wave.png';
         animation: animate 0.5s linear infinite;
     }
     @keyframes animate{

@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LogIn from '../views/authentication/LogIn.vue';
 import SignUp from '../views/authentication/SignUp.vue';
-import Reading from '../views/ReadingView.vue';
-import Confirmation from '../views/ConfirmationView.vue';
+import Reading from '../views/reading/ReadingView.vue';
 import Settings from '../views/AccountSettings/SettingsView.vue';
 import Password from '../views/AccountSettings/PasswordView.vue';
 import DefName from '../views/AccountSettings/DefNameView.vue';
@@ -43,11 +42,6 @@ const routes = [
       path: '/reading',
       name: 'reading',
       component: Reading
-    },
-    {
-      path: '/confirmation',
-      name: 'confirmation',
-      component: Confirmation
     },
     {
       path: '/settings',

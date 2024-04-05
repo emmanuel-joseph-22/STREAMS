@@ -64,7 +64,7 @@ import {
   GridComponent
 } from 'echarts/components'; // Import components
 import { CanvasRenderer } from 'echarts/renderers'; // Import renderer
-import html2pdf from 'html2pdf.js';
+import html2pdf from './../../html2pdf.js';
 
 
 // Register components and renderer

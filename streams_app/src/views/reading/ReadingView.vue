@@ -3,7 +3,9 @@
         <header_bar>
             <h1>Reading</h1>
         </header_bar>
-        
+        <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
+            This will save the reading details in the database!
+        </confirm_pop_up>
         <div class="all">
             <div class="nav">
                 <div class="nav-links">
@@ -19,11 +21,6 @@
             </div>
 
             <div class="container">
-                <!-- so nilagyan ko ng control statements.
-                    by default naka true ung main meter so ang nakashow ay ung main meter selection
-                    tapos magsswitch if nagclick sa submeter 
-                    mahihide ung main meter selection and magshshow ung submeter selection, 
-                    then vice versa, para tipid sa code -->
                 <div class="content">
                     <!-- source for main meters -->
                     <div class="main" v-if="mainmeter">
@@ -37,7 +34,6 @@
                         </select>
                     </div>
                     <!-- source for submeters -->
-                    <!-- eto code mo sa submeterview.vue -->
                     <div class="main" v-if="!mainmeter">
                         <label for="main" class="main-label">Water Source</label>
                         <select id="main" class="main-dropdown" v-model="WaterSource">
@@ -53,24 +49,21 @@
                     </div>
                     <div class="m3-cont">
                         <label for="input_cubic" class="m3-label"></label>
-                        <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="m3-input"/>
+                        <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="m3-input" v-model="Consumption"/>
                     </div>
 
                     <div class="m3-cont-x">
                         <label for="input_x" class="x-label"></label>
-                        <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="x-input"/>
+                        <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="x-input" v-model="input_x"/>
                     </div>
 
                     <div class="m3-cont-x0">
                         <label for="input_x0" class="x0-label"></label>
-                        <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="x-input"/>
+                        <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="x-input" v-model="input_x0"/>
                     </div>
-
-                    <router-link to="/confirmation">
                     <div class="submit">
-                        <button @click="submitForm">SUBMIT</button>
+                        <button @click="stage_reading=true">SUBMIT</button>
                     </div>
-                    </router-link>
                 </div>
             </div>
         </div>
@@ -79,24 +72,44 @@
 
 <script>
 import { collection, doc, setDoc } from "firebase/firestore";
-import { firestore as db } from './../main.js';
-import header_component from "../components/header_component.vue";
-import HomePageView from "./dashboard/HomePageView.vue";
+import { firestore as db } from './../../main.js';
+import header_component from "../../components/header_component.vue";
+import HomePageView from "./../dashboard/HomePageView.vue";
+import confirmation_view from "./../../components/confirmation_view.vue";
 
 export default {
     components: {
         'header_bar': header_component,
-        'main-content': HomePageView
+        'main-content': HomePageView,
+        'confirm_pop_up': confirmation_view
     },  
     data() {
         return {
             WaterSource: '',
             BuildingDepartment: '',
             Consumption: '',
-            mainmeter: true
+            input_x: '',
+            input_x0: '',
+            mainmeter: true,
+            stage_reading: false,
         };
     },
     methods: {
+        confirm_window(value){
+            console.log("Confirmed value:", value);
+            // Call submit function or perform other actions based on the confirmed value
+            if (value) {
+                this.submitForm();
+            } else {
+                console.log("Submit cancelled")
+                this.WaterSource = ''
+                this.BuildingDepartment = ''
+                this.Consumption = ''
+                this.input_x = ''
+                this.input_x0 = ''
+            }
+            this.stage_reading = false;
+        },
         async submitForm() {
             const waterSource = this.WaterSource;
             const buildingDepartment = this.BuildingDepartment;
@@ -106,7 +119,9 @@ export default {
             // Construct the data object
             const data = {
                 consumption: consumption,
-                buildingDepartment: buildingDepartment
+                buildingDepartment: buildingDepartment,
+                input_x: this.input_x,
+                input_x0: this.input_x0
             };
             // path 
             const path = `meter_records/main_meter/${waterSource}`
