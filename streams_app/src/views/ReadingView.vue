@@ -28,7 +28,7 @@
                     <!-- source for main meters -->
                     <div class="main" v-if="mainmeter">
                         <label for="main" class="main-label">Water Source</label>
-                        <select id="main"  class="main-dropdown">
+                        <select id="main"  class="main-dropdown" v-model="WaterSource">
                             <option value="deep-well-1">Deep Well 1</option>
                             <option value="deep-well-2">Deep Well 2</option>
                             <option value="deep-well-3">Deep Well 3</option>
@@ -40,7 +40,7 @@
                     <!-- eto code mo sa submeterview.vue -->
                     <div class="main" v-if="!mainmeter">
                         <label for="main" class="main-label">Water Source</label>
-                        <select id="main" class="main-dropdown">
+                        <select id="main" class="main-dropdown" v-model="WaterSource">
                             <option value="fic-1">FIC 1</option>
                             <option value="fic-2"> FIC 2</option>
                             <option value="canteen-drinking-fountain">CANTEEN DRINKING FOUNTAIN</option>
@@ -101,20 +101,34 @@ export default {
             const waterSource = this.WaterSource;
             const buildingDepartment = this.BuildingDepartment;
             const consumption = this.Consumption;
-            //const timestamp = new Date().getTime(); wait
-            // Get current date in the format YYYY-MM-DD
             const currentDate = new Date().toISOString().split('T')[0];
             
-            const path = 'meter_records/main_meter/'+`${waterSource}`;
             // Construct the data object
             const data = {
                 consumption: consumption,
                 buildingDepartment: buildingDepartment
             };
+            // path 
+            const path = `meter_records/main_meter/${waterSource}`
+            
             // set doc function to customize ID as current Date
             try {
                 await setDoc(doc(collection(db, path), currentDate), data);
                 console.log("Meter record stored successfully!");
+            /*try {
+                const mainMeterSnapshot = await getDoc(mainMeterRef);
+                console.log('bitch eto 1')
+                if (mainMeterSnapshot.exists()) {
+                    console.log("Main meter document exists:", mainMeterSnapshot.exists());
+                    // The main_meter document exists
+                    // Access the subcollection
+                    const collectionRef = collection(mainMeterRef, waterSource);
+                    console.log('bitch eto 3')
+                    await setDoc(doc(collectionRef, currentDate), data);
+                    console.log("Meter record stored successfully!");
+                    // Now you can perform operations on the collectionRef
+                }
+                */
             } catch(error) {
                 console.error("Error storing meter record: ", error);
             }
