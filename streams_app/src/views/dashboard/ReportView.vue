@@ -64,6 +64,8 @@ import {
   GridComponent
 } from 'echarts/components'; // Import components
 import { CanvasRenderer } from 'echarts/renderers'; // Import renderer
+import html2pdf from 'html2pdf.js';
+
 
 // Register components and renderer
 echarts.use([
@@ -123,8 +125,11 @@ export default {
       }
     },
     handlePrint() {
-      console.log('Print button clicked');
-    },
+    // Select the content inside the box body
+    const boxBodyContent = document.querySelector('.box-body');
+    // Convert HTML content to PDF
+    html2pdf().from(boxBodyContent).save();
+  },
     PW_BarChart() {
       let chartContainer = this.$refs.chartContainer;
       if (chartContainer) {
