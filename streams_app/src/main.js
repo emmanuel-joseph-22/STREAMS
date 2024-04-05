@@ -20,6 +20,11 @@ const firebaseConfig = {
 
 // Initialize Firebase inside createApp
 export const app = createApp(App);
+
+// for offline/caching
+// Defaults to single-tab persistence if no tab manager is specified.
+initializeFirestore(app, {localCache: persistentLocalCache(/*settings*/{})});
+
 export const db_app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(db_app);
 

@@ -30,7 +30,7 @@
             <router-link class="navbar_link" to="/reading" v-if="!admin">
                 <div class="navbar_icon">
                     <!-- nav icon -->
-                    <img class="icon" src="metero.png"/>
+                    <img class="icon" src="metro.png"/>
                     <div class="navlink_label">Reading</div>
                 </div>
             </router-link>
@@ -314,8 +314,8 @@ kase di ko mababa ung nav icon last of type sa bottom */
     margin: 0 auto;
 }
 .mobile_icon{
-    height: 25px;
-    width: 25px;
+    height: 30px;
+    width: 30px;
 }
 .more_settings_button{
     position: fixed;

@@ -179,15 +179,15 @@ const consumption_chart = ref({
   },
   xAxis: [{
     type: 'category',
-    data: ['4', '5', '6', '7', '8', '9', '10', '11', '12', '15', '16', '17']
+    data: ['Jan 4', 'Jan 5', 'Jan 6', 'Jan 9', 'Jan 10', 'Jan 11', 'Jan 12', 'Jan 13', 'Jan 17', 'Jan 18', 'Jan 19', 'Jan 20', 'Jan 23', 'Jan 24', 'Jan 25', 'Jan 26', 'Jan 27', 'Jan 30', 'Jan 31']
   }],
   yAxis: {
     type: 'value'
   },
   series: [{
     name: 'Data',
-    type: 'line',
-    data: [ 0, 119, 24, 24, 33, 50, 23, 12, 125, 90, 40, 55, 11,]
+    type: 'bar',
+    data: [ 439.99, 74.07, 86.96, 245.9, 105.48, 72.18, 408.71, 81.79, 76.52, 80.31, 241.87, 105.57, 72.64, 66.05, 107.09, 323.82, 104]
     }]
 });
 //submeter_graph

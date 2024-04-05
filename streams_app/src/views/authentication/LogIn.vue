@@ -9,8 +9,8 @@
         <div class="container relative bottom-10 top-40 mx-auto w-full sm:w-3/4 text-black rounded-lg items-center justify-center p-5">
             <h1 class="signup font-black text-stroke text-4xl sm:text-5xl text-blue-300 mb-10 sm:mb-20 font-sans text-center">LOG-IN</h1>
             <div class="forms">
-                <label for="user_id" class="form_label font-bold flex flex-col mb-1 text-left"><b>User ID</b></label>
-                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="User ID" class="px-4 py-2 mb-4 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="email"/>
+                <label for="user_id" class="form_label font-bold flex flex-col mb-1 text-left"><b>Email</b></label>
+                <input autofocus id="input_userid" type="text" name="user_id" required placeholder="Email" class="px-4 py-2 mb-4 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="email"/>
         
                 <label for="password"  class="form_label font-bold flex flex-col mb-1 text-left"><b>Password</b></label>
                 <input type="password" id="input_password" name="password" required placeholder="Password" class="px-4 py-2 mb-4 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="password"/>
