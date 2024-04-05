@@ -18,15 +18,6 @@
                         <img src="fake_logo.png" alt="Toggle Icon">
                     </span>
                 </div>
-<<<<<<< HEAD
-            </router-link>
-            <!-- reading div -->
-            <router-link class="navbar_link" to="/reading" v-if="!admin">
-                <div class="navbar_icon">
-                    <!-- nav icon -->
-                    <img class="icon" src="metro.png"/>
-                    <div class="navlink_label">Reading</div>
-=======
                 <!-- nav icon : if navbar is collapsed -->
                 <div v-if="navbarCollapsed" class="icons-collapsed">
                     <router-link class="navbar_link" :to="{ name: 'dashboard' }" title="Dashboard">
@@ -41,7 +32,6 @@
                         <!-- nav icon -->
                         <img class="col-icon" src="map_icon.png"/>
                     </router-link>
->>>>>>> 1d3ffe0f5f82fd37d5e0d1cc60d1cc9c7dc3d017
                 </div>
                 <router-link class="navbar_link" v-if="!navbarCollapsed" :to="{ name: 'dashboard' }">
                     <div class="navbar_icon home_icon">
