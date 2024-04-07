@@ -4,7 +4,7 @@
             <h1 class="text-4xl font-semibold ml-3 mt-1">Reading</h1>
         </header_bar>
         <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
-            This will save the reading details in the database!
+            This will record water reading in the database!
         </confirm_pop_up>
         <div class="all">
             <div class="nav">
@@ -26,7 +26,6 @@
                     <div class="main" v-if="mainmeter">
                         <label for="main" class="main-label">Water Source</label>
                         <select id="main"  class="main-dropdown" v-model="WaterSource">
-                            <option value="" disabled selected>Select an option</option>
                             <option value="deep-well-1">Deep Well 1</option>
                             <option value="deep-well-2">Deep Well 2</option>
                             <option value="deep-well-3">Deep Well 3</option>
@@ -38,7 +37,6 @@
                     <div class="main" v-if="!mainmeter">
                         <label for="main" class="main-label">Water Source</label>
                         <select id="main" class="main-dropdown" v-model="WaterSource">
-                            <option value="" disabled selected>Select an option</option>
                             <option value="fic-1">FIC 1</option>
                             <option value="fic-2"> FIC 2</option>
                             <option value="canteen-drinking-fountain">CANTEEN DRINKING FOUNTAIN</option>
