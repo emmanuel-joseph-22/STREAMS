@@ -1,7 +1,7 @@
 <template>
   <home-page>
     <header-bar>
-      <h1>Report</h1>
+      <h1 class="text-2xl font-900 ml-2">Report</h1>
     </header-bar>
     <div class="content-container">
       <!-- Left content -->
@@ -314,7 +314,7 @@ export default {
   height: 50px; /* Adjust the height of the row container */
   padding: 10px;
   border-radius: 8px;
-  margin-bottom: 15px;
+  margin: 12px auto;
   box-shadow: 0 2px 2px rgba(1, 0, 0, 0.1);
   transition: transform 0.3s ease;
   background-color: #f5f5f5; /* Add background color */
@@ -323,6 +323,7 @@ export default {
 
 .row-container:hover {
   transform: translateY(-3px);
+  cursor: pointer;
 }
 
 .row-container.stroke {
@@ -375,8 +376,8 @@ export default {
 }
 
 .left-content {
-  align-items: flex-start;
-  margin-top: 5%;
+  align-items: center;
+  margin: 5% auto;
 }
 
 .right-content {

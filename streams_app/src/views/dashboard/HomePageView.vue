@@ -19,7 +19,7 @@ export default {
     .main_content{
         height: 200px;
         left: 85px;
-        width: calc(100% - 100px);
+        width: calc(100% - 89px);
     }
     @media screen and (max-width: 1000px){
         .main_content{
