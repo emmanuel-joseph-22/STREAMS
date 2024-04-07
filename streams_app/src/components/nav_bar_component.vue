@@ -7,7 +7,7 @@
                 <div v-show="!navbarCollapsed">
                     <div class="flex">
                         <span @click="toggleNavbar" title="Close Bar">
-                            <img src="fake_logo.png" alt="Toggle Icon">
+                            <img class="icon" src="fake_logo.png" alt="Toggle Icon">
                         </span>
                         <div class="name text font-bold text-xl transition ease-in-out 300">
                             STREAMS
@@ -16,7 +16,7 @@
                 </div>
                 <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar">
                     <span>
-                        <img src="fake_logo.png" alt="Toggle Icon">
+                        <img class="icon" src="fake_logo.png" alt="Toggle Icon">
                     </span>
                 </div>
 
