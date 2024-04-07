@@ -1,65 +1,47 @@
 <template>
   <home-page>
-    <div class="dashboard-box">
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
       </header-bar>
       <dashboard-content>
         <!-- highlighted data -->
-        <div class="dashboard_grid">
-          <div class="box1" @mouseover="stopFlashing" @mouseleave="resumeFlashing">
-            <div class="box1-inner">
-              <!-- idk pwede idagdag pero nagleave ako isa pang box para pantay -->
-              <div class="box1-item">
-                <img src="th.jfif" class="w-full h-auto">
-                <!-- insert laman -->
-              </div>
-              <div class="box1-item">
-                <p>Average Water Consumption:</p>
+        <div class="grid grid-cols-10 w-full gap-8 mt-5">
+          <div class="col-span-1" @mouseover="stopFlashing" @mouseleave="resumeFlashing">
+            <div class="flex flex-col w-auto my-5">
+              <div class="box1-item box border shadow">
                 <span class="text-lg font-bold">{{ averageWaterConsumption }} m3</span>
+                <p class="text-gray-400">Avg</p>
               </div>
-              <div class="box1-item">
-                <p>Previous Water Consumption:</p>
+              <div class="box1-item box border shadow">
                 <span class="text-base">
-                  <template v-if="showDeepWell">
-                    <p>Deep Well:</p>
-                    <p class="text-lg font-bold">{{ previousWaterConsumptionDeepWell }} m3</p>
-                  </template>
-                  <template v-else>
-                    <p>Prime Water:</p>
                     <p class="text-lg font-bold">{{ previousWaterConsumptionPrimeWater }} m3</p>
-                  </template>
                 </span>
+                <p class="text-gray-400">Prev</p>
               </div>
-              <div class="box1-item">
-                <p>Current Water Consumption:</p>
+              <div class="box1-item box border shadow">
                 <span class="text-base">
-                  <template v-if="showDeepWell">
-                    <p>Deep Well:</p>
-                    <p class="text-lg font-bold">{{ currentWaterConsumptionDeepWell }} m3</p>
-                  </template>
-                  <template v-else>
-                    <p>Prime Water:</p>
                     <p class="text-lg font-bold">{{ currentWaterConsumptionPrimeWater }} m3</p>
-                  </template>
                 </span>
+                <p class="text-gray-400">Current</p>
               </div>
             </div>
           </div>
-          <!-- filter option -->
-          <div class="filter_toggle">[filter]</div>
-          <!-- main meter graph -->
-          <v-chart class="box2 data_pattern" :option="consumption_chart"/>
-          <div v-if="selectedGraph === 'mainMeter'" class="box3">
-            <v-chart class="mainmeter data_pattern" :option="pie_main_meter" />
+          <!-- daily consumption chart -->
+          <v-chart class="col-span-4 box border shadow-md" style="height: 400px; width: 100%;" :option="consumption_chart"/>
+          <!-- filter option  
+          <div class="filter_toggle">[filter]</div>-->
+           <!-- main meter graph --> 
+           <div v-if="selectedGraph === 'mainMeter'" class="col-span-3 box border shadow-md" style="height: 400px; width: 100%;">
+            <v-chart class="mainmeter" :option="pie_main_meter" />
             <!-- navigation buttons -->
             <div class="navigation-buttons">
               <button class="arrow-button" @click="navigate('left')">◄</button>
               <button class="arrow-button" @click="navigate('right')">►</button>
             </div>
           </div>
-          <div v-else-if="selectedGraph === 'subMeter'" class="box3">
-            <v-chart class="submeter data_pattern" :option="submeter_graph" />
+          <!-- submeter graphhs-->
+          <div v-else-if="selectedGraph === 'subMeter'" class="box col-span-3 box border shadow-md" style="height: 400px; width: 100%;"> 
+            <v-chart class="submeter" :option="submeter_graph" />
             <!-- navigation buttons -->
             <div class="navigation-buttons">
               <button class="arrow-button" @click="navigate('left')">◄</button>
@@ -67,9 +49,9 @@
             </div>
           </div>
           <!-- specific reading details -->
-          <div class="box5">
-            <h3 class="font-bold text-3xl">Records</h3>
-            <div class="field-container">
+          <div class="box col-span-2 border shadow-md" style="height: 400px;">
+            <h3 class="font-bold text-xl">Eto search Records</h3>
+            <div class="flex flex-row">
               <select class="field">
                 <option value="PW" class="dept_option">Prime Water</option>
                 <option value="DW1" class="dept_option">Deep well 1</option>
@@ -82,21 +64,21 @@
             </div>
             <br/>
             <!-- record details -->
-            <div class="record_details">
+            <div class="record_details text-lg px-3">
               <div>Date: {{ date }}</div>
               <div>Time: {{ time }}</div>
               <div>m3: {{ meter }}</div>
             </div>
           </div>
           <!-- quarterly box -->
-          <div class="box6">
-            <div class="quarterly-box">
-              <h3 class="font-bold text-3xl">Quarterly</h3>
-            </div>
+          <div class="box col-span-4 border shadow-md" style="height: 400px;">
+            <v-chart :option="quarter_chart" />
+          </div>
+          <div class="box col-span-6 border shadow-md mb-10" style="height: 400px;">
+            <v-chart :option="twelve_month_chart" />
           </div>
         </div>
       </dashboard-content>
-    </div>
   </home-page>
 </template>
 
@@ -116,15 +98,26 @@ import { ref, provide, onMounted } from "vue";
 import { doc, getDocs, query, collection /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './../../main.js';
 
-//const dataObject = ref({})
+// water consumption 
 const yAxisConsumption = ref([])
 const xAxisDate = ref([])
-const water_source = 'prime-water'
+const main_meter = ['deep-well-1', 'deep-well-2', 'deep-well-3', 'deep-well-4', 'prime-water']
+const sub_meters = ['CICS-DF', 'FIC-1', 'FIC-2', 'RGR', 'SSC', 'canteen-DF', 'ceafa-faculty', 'executive-lounge']
+/*
+pedeng ang temp obj ay
 
+main / sub
+-> { pw: { date: 2023blabla, consumption: 232 },
+     dw1: { date: 2023blabla, consumption: 232 },
+     dw2: { date: 2023blabla, consumption: 232 }
+    }
+
+*/
 onMounted(async () => {
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter');
-    const collectionRef = collection(mainMeterRef, water_source);
+    const collectionRef = collection(mainMeterRef, main_meter[4]);
+    console.log(sub_meters)
     const consumption_query = query(collectionRef)
 
     try{
@@ -178,7 +171,7 @@ const pie_main_meter = ref({
   legend: {
     orient: "vertical",
     left: "left",
-    data: ["Prime Water", "Deep Well 1", "Deep Well 2", "Deep Well 3", "Deep Well 4"]
+    data: main_meter
   },
   series: [
     {
@@ -233,7 +226,7 @@ const submeter_graph = ref({
   },
   xAxis: {
     type: 'category',
-    data: ['FIC1', 'FIC2', 'RGR', 'CICS-DF', 'CEAFA Faculty', 'Executive Lounge', 'Canteen-DF', 'SSC']
+    data: sub_meters
   },
   yAxis: {
     type: 'value'
@@ -246,6 +239,50 @@ const submeter_graph = ref({
   ]
   
 });
+//quarter chart
+const quarter_chart = ref({
+  title: {
+    text: 'Q1 2024',
+    left: 'center'
+  },
+  xAxis: {
+    type: 'category',
+    data: ['Jan', 'Feb', 'March']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: [36700, 52523, 33542],
+      type: 'bar'
+    }
+  ]
+  
+});
+
+//quarter chart
+const twelve_month_chart = ref({
+  title: {
+    text: '12 month consumption',
+    left: 'center'
+  },
+  xAxis: {
+    type: 'category',
+    data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: [36700, 52523, 33542, 44444, 55984, 12345, 54652, 77897, 23455, 23323, 20989, 63464],
+      type: 'line'
+    }
+  ]
+  
+});
+
 // nav : main and sub meters
 const selectedGraph = ref('mainMeter');
 
@@ -267,10 +304,10 @@ const currentWaterConsumption = ref(0);
 currentWaterConsumption.value = 2003;
 
 // reactive var for water consumption values sa prime at dw (PREV&CURR)
-const previousWaterConsumptionDeepWell = ref(2003);
+//const previousWaterConsumptionDeepWell = ref(2003);
 const previousWaterConsumptionPrimeWater = ref(2010);
 
-const currentWaterConsumptionDeepWell = ref(3509);
+//const currentWaterConsumptionDeepWell = ref(3509);
 const currentWaterConsumptionPrimeWater = ref(3097);
 
 const showDeepWell = ref(true);
@@ -320,34 +357,20 @@ export default {
 </script>
 
 <style scoped>
-.dashboard-box {
-  border: 1px solid black;
-  box-shadow: 0 15px 15px rgba(1, 1, 1, 1);
-  padding: 20px;
-  max-width: 100%;
-  margin: 0 auto;
-  margin-left: 170px;
-}
 
 .box1-inner {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-direction: column;
+
 }
 
 .box1-item {
   flex: 0 0 auto;
-  width: calc(25% - 10px);
-  height: 120px;
-  margin-top: 15px;
-  margin-right: 10px;
-  margin-bottom: 20px;
-  border: 2px solid black;
-  border-radius: 10px;
-  box-shadow: 0 2px 2px rgba(1, 1, 1, 1);
+  width: 100%;
+  height: 80px;
   transition: transform 0.3s ease;
-  padding: 5px;
-  background-color: rgb(193, 221, 246);
+  background-color: white;
+  margin: 10px auto;
 }
 .box1-item:hover {
   transform: translateY(-3px);
@@ -363,57 +386,12 @@ export default {
   border-radius: 10px;
   margin-bottom: 20px;
 }
-.box2 {
-  width: 100%;
-  padding: 10px;
-}
-
-.box3 {
-  width: 70%;
-  margin: 0 auto;
-  padding: 10px;
-}
-
-.field-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 130%;
-  padding: 5px;
-}
-
-.field {
-  margin: 10px;
-  padding: 10px;
-}
-
-.box5 {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  margin-left: 0;
-  width: 100%;
-  border: 1px solid black;
-  padding: 20px;
-}
-
-.box6 { 
-  width: 100%;
-  height: 400px;
-}
-
-.quarterly-box{
-  margin-top: 15px;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 5px;
+.box{
+  background-color: rgb(255, 255, 255);
+  padding-top: 10px;
 }
 
 @media screen and (max-width: 1000px){
-  .dashboard-box{
-    margin-left: 0;
-  }
   .box1-inner {
     flex-wrap: wrap;
     overflow-x: auto;
@@ -422,51 +400,16 @@ export default {
     width: calc(50% - 10px);
     padding: 5px;
   }
-  .box2 {
-    width: 100%;
-  }
-  .box3 {
-    width: 100%;
-  }
-  .field-container {
-    width: 100%;
-  }
-  .field {
-    width: calc(50% - 20px);
-  }
   .record_details {
     width: 100%;
   }
 }
-
-.field {
-  width: 30%;
-  height: 50px;
-  border-radius: 12px;
-  border: 1px solid black;
-  background-color: rgb(193, 221, 246);
-  font-size: 1.1rem;
-  margin-top: 20px;
-}
-
-.dept_option {
-  width: 80px;
-}
-
 .record_details {
   text-align: left;
   width: 80%;
-  height: 200px;
+  margin: 20px auto;
   border-radius: 12px;
-  border: 1px solid black;
-  background-color: white;
 }
-
-.record_details > div {
-  margin: 35px;
-  font-size: 1rem;
-}
-
 .arrow-button {
   color: #333;
   cursor: pointer;
@@ -474,21 +417,21 @@ export default {
   padding: 3px 9px;
   margin: 0 5px;
 }
-
 .arrow-button:hover {
   background-color: #e0e0e0;
   border-radius: 15px;
 }
-
-.consumption_category {
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.data_pattern {
-  height: 400px;
-  background-color: rgb(255, 255, 255);
+.field {
+  width: 50%;
+  height: 40px;
+  border-radius: 12px;
   border: 1px solid black;
-  border-radius: 10px;
+  background-color: rgba(193, 221, 246, 0.521);
+  font-size: 1.1rem;
+  margin: 10px;
+  padding: 0 10px;
+}
+.dept_option {
+  width: 100px;
 }
 </style>

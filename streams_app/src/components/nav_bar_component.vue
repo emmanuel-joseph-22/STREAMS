@@ -189,7 +189,7 @@ export default {
         flex-direction: column;
     }
     .nav_bar.collapsed {
-        width: 70px;
+        width: 80px;
         transition: ease-in-out 0.4s;
     }
 
@@ -202,7 +202,7 @@ export default {
     .icons-collapsed img:hover{
         background-color: var(--navbarHover);
         transition: background-color 1s;
-        border-radius: 50%;
+        border-radius: 20%;
         padding: 3px;
     }
     .icons-collapsed .navbar_link{

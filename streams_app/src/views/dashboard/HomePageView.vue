@@ -27,9 +27,9 @@ export default {
     .main_content{
         position: relative;
         height: 200px;
-        left: 95px;
+        left: 85px;
         z-index: 16;
-        width: calc(100% - 290px);
+        width: calc(100% - 100px);
         transition: ease-in-out 0.3s;
     }
 

@@ -1,16 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content relative flex mx-4">
         <slot></slot>
     </div>
 </template>
-
-
-<style scoped>
-.content{
-    position: relative;
-    display: flex;
-    min-height: calc(100vh - 60px);
-    background-color: rgba(196, 0, 0, 0);
-    width: auto;
-}
-</style>
