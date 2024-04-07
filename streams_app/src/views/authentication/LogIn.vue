@@ -1,4 +1,5 @@
 <template>
+
 <div class="bg-cover bg-center inset-0 opacity-90 bg-[url('/public/Alangilan-entrance-facade.jpg')]">
     <div class="login relative flex flex-column">
         <h1 class="streams fixed left-10 mt-10 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl text-blue-400">STREAMS</h1>
@@ -7,6 +8,7 @@
             <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
             <img src="aquatech_v1.png" class="fixed left-72 pl-12 pt-8">
         </div>
+        <dark_blur/>
         <div class="cont relative w-full bg-white sm:w-5/6 md:w-4/6 lg:w-2/6 xl:w-2/6 mx-auto mt-44 sm:mt-40 mb-16 rounded-md">
             <div class="container relative bottom-0 top-0 mx-auto w-full sm:w-3/4 text-black rounded-lg items-center justify-center p-5">
                 <h1 class="signup relative top-4 font-black text-stroke text-4xl sm:text-5xl text-blue-5-0 mb-10 sm:mb-20 font-sans text-center">LOG-IN</h1>
@@ -31,6 +33,7 @@
                     <br/>
                     <router-link to="/signup" class="relative text-center">Sign Up</router-link>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -143,6 +146,7 @@
 import { ref } from 'vue';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+import dark_blur from '@/components/darkblur_component.vue';
 
 const email = ref("");
 const password = ref("");

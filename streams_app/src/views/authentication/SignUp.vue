@@ -7,7 +7,9 @@
             <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
             <img src="aquatech_v1.png" class="fixed left-72 pl-12 pt-8">
         </div>
+        <dark_blur/>
         <div class="cont relative w-full bg-white sm:w-5/6 md:w-4/6 lg:w-2/6 xl:w-2/6 mx-auto mt-44 sm:mt-28 mb-4 rounded-md">
+            
             <div class="container relative bottom-0 top-0 mx-auto w-full sm:w-3/4 text-black rounded-lg items-center justify-center p-5">
                 <h1 class="signup relative mt-4 font-black text-stroke text-4xl sm:text-5xl text-blue-5-0 mb-10 sm:mb-20 font-sans text-center">SIGN UP</h1>
                 <div class="forms">
@@ -37,7 +39,7 @@
 <style src="../../themes/auth.css"></style>
 
 <script setup>
-
+import dark_blur from '@/components/darkblur_component.vue';
 import { ref } from "vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 //may something dito

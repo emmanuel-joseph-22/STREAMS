@@ -1,7 +1,7 @@
 <template>
   <home-page>
     <header-bar>
-      <h1 class="text-2xl font-900 ml-2">Report</h1>
+      <h1 class="text-4xl font-semibold ml-3">Report</h1>
     </header-bar>
     <div class="content-container">
       <!-- Left content -->

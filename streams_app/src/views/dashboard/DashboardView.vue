@@ -6,8 +6,8 @@
       <dashboard-content>
         <!-- highlighted data -->
         <div class="grid grid-cols-10 w-full gap-8 mt-5">
-          <div class="col-span-1" @mouseover="stopFlashing" @mouseleave="resumeFlashing">
-            <div class="flex flex-col w-auto my-5">
+          <div class="col-span-10" @mouseover="stopFlashing" @mouseleave="resumeFlashing">
+            <div class="box1-inner my-5">
               <div class="box1-item box border shadow">
                 <span class="text-lg font-bold">{{ averageWaterConsumption }} m3</span>
                 <p class="text-gray-400">Avg</p>
@@ -24,25 +24,20 @@
                 </span>
                 <p class="text-gray-400">Current</p>
               </div>
+              <div class="box1-item box border shadow">
+
+              </div>
             </div>
           </div>
           <!-- daily consumption chart -->
-          <v-chart class="col-span-4 box border shadow-md" style="height: 400px; width: 100%;" :option="consumption_chart"/>
+          <v-chart class="col-span-5 box border shadow-md" style="height: 400px; width: 100%;" :option="consumption_chart"/>
           <!-- filter option  
           <div class="filter_toggle">[filter]</div>-->
            <!-- main meter graph --> 
-           <div v-if="selectedGraph === 'mainMeter'" class="col-span-3 box border shadow-md" style="height: 400px; width: 100%;">
-            <v-chart class="mainmeter" :option="pie_main_meter" />
-            <!-- navigation buttons -->
-            <div class="navigation-buttons">
-              <button class="arrow-button" @click="navigate('left')">◄</button>
-              <button class="arrow-button" @click="navigate('right')">►</button>
-            </div>
-          </div>
-          <!-- submeter graphhs-->
-          <div v-else-if="selectedGraph === 'subMeter'" class="box col-span-3 box border shadow-md" style="height: 400px; width: 100%;"> 
-            <v-chart class="submeter" :option="submeter_graph" />
-            <!-- navigation buttons -->
+          
+          <div class="col-span-3 box border shadow-md">
+            <v-chart class="mainmeter" :option="pie_main_meter" v-if="selectedGraph === 'mainMeter'" style="height: 350px; width: 100%;"/>
+            <v-chart class="submeter" :option="submeter_graph" v-else-if="selectedGraph === 'subMeter'" style="height: 350px; width: 100%;"/>
             <div class="navigation-buttons">
               <button class="arrow-button" @click="navigate('left')">◄</button>
               <button class="arrow-button" @click="navigate('right')">►</button>
@@ -50,9 +45,10 @@
           </div>
           <!-- specific reading details -->
           <div class="box col-span-2 border shadow-md" style="height: 400px;">
-            <h3 class="font-bold text-xl">Eto search Records</h3>
-            <div class="flex flex-row">
+            <h3 class="font-bold text-xl">Search Records</h3>
+            <div class="flex flex-col">
               <select class="field">
+                <option value="" disabled selected>Select a source</option>
                 <option value="PW" class="dept_option">Prime Water</option>
                 <option value="DW1" class="dept_option">Deep well 1</option>
                 <option value="DW2" class="dept_option">Deep well 2</option>
@@ -183,7 +179,7 @@ const pie_main_meter = ref({
 
   },
   legend: {
-    top: '6%',
+    top: '7%',
     left: "center",
     //data: main_meter
   },
@@ -192,7 +188,8 @@ const pie_main_meter = ref({
     {
       name: "Source",
       type: "pie",
-      radius: ["30%", "60%"],
+      top: '12%',
+      radius: ["30%", "70%"],
       avoidLabelOverlap: true,
       itemStyle: {
         borderRadius: 10,
@@ -285,7 +282,7 @@ const quarter_chart = ref({
       type: 'bar',
       itemStyle: {
           // Customize the color of the bars
-          color: 'red'
+          color: 'rgb(153, 0, 0)'
         }
     }
   ]
@@ -295,7 +292,7 @@ const quarter_chart = ref({
 //quarter chart
 const twelve_month_chart = ref({
   title: {
-    text: '12 month consumption',
+    text: 'Monthly Water Consumption',
     left: 'center'
   },
   xAxis: {
@@ -396,13 +393,15 @@ export default {
 
 .box1-inner {
   display: flex;
-  flex-direction: column;
-
+  flex-direction: row;
+  width: 75%;
+  margin: 20px auto;
+  background-color: rgb(241, 241, 241);
 }
 
 .box1-item {
   flex: 0 0 auto;
-  width: 100%;
+  width: 150px;
   height: 80px;
   transition: transform 0.3s ease;
   background-color: white;
@@ -458,7 +457,7 @@ export default {
   border-radius: 15px;
 }
 .field {
-  width: 50%;
+  width: 90%;
   height: 40px;
   border-radius: 12px;
   border: 1px solid black;
