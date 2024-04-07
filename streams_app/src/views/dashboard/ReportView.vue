@@ -3,210 +3,309 @@
     <header-bar>
       <h1>Report</h1>
     </header-bar>
-    <main-content>
-      <div class="content-container">
-        <!-- Left content -->
-        <div class="left-content">
-          <!-- Creative rows -->
-          <div class="row-container" v-for="(row, index) in rows" :key="row.id" @click="handleButtonClick(index)">
-            <div class="row-content">
-              <span class="row-text">{{ row.title }}</span>
-            </div>
-            <div class="button-container">
-              <button :class="{ 'button': true, 'active-button': activeButtonIndex === index }">Click Me</button>
-            </div>
+    <div class="content-container">
+      <!-- Left content -->
+      <div class="left-content">
+        <!-- Creative rows -->
+        <div class="row-container" v-for="(row, index) in rows" :key="row.id" @click="handleButtonClick(index)">
+          <div class="row-content">
+            <span class="row-text">{{ row.title }}</span>
           </div>
-          <!-- Print button -->
-          <div id="print_row">
-            <button id="print_button" class="button" @click="handlePrint">Print</button>
+          <div class="button-container">
+            <button :class="{ 'button': true, 'active-button': activeButtonIndex === index }">Click Me</button>
           </div>
         </div>
-        <!-- Right content -->
-        <div class="right-content">
-          <div class="box1">
-            <div class="box-header">Report</div>
-            <div class="box-body" v-if="activeButtonIndex === 0">
-              <!-- Table markup -->
-              <table class="elegant-table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in tableData" :key="item.id">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.title }}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End of table markup -->
-            </div>
-            <div class="box-body" v-else>
-              <div class="chart-container" ref="chartContainer"></div>
-            </div>
-          </div>
+        <!-- Print button -->
+        <div id="print_row">
+          <button id="print_button" class="button" @click="handlePrint">Print</button>
         </div>
       </div>
-    </main-content>
+      <!-- Right content -->
+      <div class="right-content">
+        <div class="box1">
+          <div class="box-header">Report</div>
+          <div class="box-body" v-if="activeButtonIndex === 0">
+            <!-- Table markup -->
+            <table class="elegant-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Deep Well 1</th>
+                  <th>Deep Well 2</th>
+                  <th>Deep Well 3</th>
+                  <th>Prime Water</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in tableData" :key="index">
+                  <td>{{ item.date }}</td>
+                  <td>{{ item.deepWell1 }}</td>
+                  <td>{{ item.deepWell2 }}</td>
+                  <td>{{ item.deepWell3 }}</td>
+                  <td>{{ item.primeWater }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- End of table markup -->
+          </div>
+          <div class="chart-container" v-if="activeButtonIndex === 2" id="pwChartContainer"></div>
+          <div class="chart-container" v-else-if="activeButtonIndex === 3" id="dw1ChartContainer"></div>
+          <div class="chart-container" v-else-if="activeButtonIndex === 4" id="dw2ChartContainer"></div>
+        </div>
+      </div>
+    </div>
   </home-page>
 </template>
 
 <script>
 import HomePageView from './HomePageView.vue';
 import header from './../../components/header_component.vue';
-import * as echarts from 'echarts/core'; // Import ECharts core
-import { BarChart } from 'echarts/charts'; // Import Bar chart
+import { ref, onMounted, nextTick } from "vue";
+import * as echarts from 'echarts';
+import { CanvasRenderer } from "echarts/renderers";
+import { BarChart } from "echarts/charts";
 import {
   TitleComponent,
   TooltipComponent,
   GridComponent
-} from 'echarts/components'; // Import components
-import { CanvasRenderer } from 'echarts/renderers'; // Import renderer
+} from "echarts/components";
+import { doc,  collection, getDocs } from "firebase/firestore";
+import { firestore as db } from './../../main.js';
 import html2pdf from 'html2pdf.js';
 
-
-// Register components and renderer
-echarts.use([
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  BarChart,
-  CanvasRenderer
-]);
+echarts.use([CanvasRenderer, BarChart, TitleComponent, TooltipComponent, GridComponent]);
 
 export default {
   components: {
     'home-page': HomePageView,
     'header-bar': header
   },
-  data() {
-    return {
-      rows: [
-        { id: 1, title: 'Daily Water Inventory' },
-        { id: 2, title: 'General Daily Water Consumption' },
-        { id: 3, title: 'PW Daily Water Consumption' },
-        { id: 4, title: 'DW1 Daily Water Consumption' },
-        { id: 5, title: 'DW2 Daily Water Consumption' }
-      ],
-      activeButtonIndex: null,
-      tableData: [
-        { id: 1, title: 'Sample Title 1' },
-        { id: 2, title: 'Sample Title 2' },
-        { id: 3, title: 'Sample Title 3' }
-      ]
-    };
-  },
-  watch: {
-    activeButtonIndex(newValue) {
-      if (newValue === 2) {
-        this.$nextTick(() => {
-          this.PW_BarChart();
-        });
-      } else if (newValue === 3) {
-        this.$nextTick(() => {
-          this.DW1_BarChart();
-        });
-      } else if (newValue === 4) {
-        this.$nextTick(() => {
-          this.DW2_BarChart();
-        });
-      }
-    }
-  },
-  methods: {
-    handleButtonClick(index) {
-      this.activeButtonIndex = index;
-      console.log('Button clicked for row', index);
-      if (index === 0) {
-        // Render table
-        this.activeContent = "Table content";
-      }
-    },
-    handlePrint() {
-    // Select the content inside the box body
-    const boxBodyContent = document.querySelector('.box-body');
-    // Convert HTML content to PDF
-    html2pdf().from(boxBodyContent).save();
-  },
-    PW_BarChart() {
-      let chartContainer = this.$refs.chartContainer;
-      if (chartContainer) {
-        let chart = echarts.init(chartContainer);
-        let option = {
-          color: ['#3398DB'], // Change bar color
-          xAxis: {
-            type: 'value'
-          },
-          yAxis: {
-            type: 'category',
-            data: ['Category A', 'Category B', 'Category C', 'Category D']
-          },
-          series: [{
-            data: [20, 35, 30, 40],
-            type: 'bar'
-          }]
-        };
-        chart.setOption(option);
-      } else {
-        console.error("Chart container element not found.");
-      }
-    },
-    DW1_BarChart() {
-      let chartContainer = this.$refs.chartContainer;
-      if (chartContainer) {
-        let chart = echarts.init(chartContainer);
-        let option = {
-          color: ['#FF5722'], // Change bar color
-          xAxis: {
-            type: 'value'
-          },
-          yAxis: {
-            type: 'category',
-            data: ['Category X', 'Category Y', 'Category 0']
-          },
-          series: [{
-            data: [30, 40, 20],
-            type: 'bar'
-          }]
-        };
-        chart.setOption(option);
-      } else {
-        console.error("Chart container element not found.");
-      }
-    },
-    DW2_BarChart() {
-      let chartContainer = this.$refs.chartContainer;
-      if (chartContainer) {
-        let chart = echarts.init(chartContainer);
-        let option = {
-          color: ['#8BC34A'], // Change bar color
-          xAxis: {
-            type: 'value'
-          },
-          yAxis: {
-            type: 'category',
-            data: ['Category X', 'Category Y', 'Category Z']
-          },
-          series: [{
-            data: [30, 40, 20],
-            type: 'bar'
-          }]
-        };
-        chart.setOption(option);
-      } else {
-        console.error("Chart container element not found.");
-      }
-    }
+  setup() {
+    const activeButtonIndex = ref(null);
+    const tableData = ref([]);
+    const rows = [
+      { id: 1, title: 'Daily Water Inventory' },
+      { id: 2, title: 'General Daily Water Consumption' },
+      { id: 3, title: 'PW Daily Water Consumption' },
+      { id: 4, title: 'DW1 Daily Water Consumption' },
+      { id: 5, title: 'DW2 Daily Water Consumption' }
+    ];
 
+    onMounted(async () => {
+      // Removed provide(THEME_KEY, "white");
+    });
+
+    const fetchWaterSourceData = async (waterSource) => {
+      const waterSourceRef = collection(doc(collection(db, 'meter_records'), 'main_meter'), waterSource);
+      const querySnapshot = await getDocs(waterSourceRef);
+      
+      const date_temp = [];
+      const value_temp = [];
+
+      querySnapshot.forEach((doc) => {
+        const date = new Date(doc.id);
+        const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+        date_temp.push(formattedDate);
+        value_temp.push(doc.data().consumption);
+      });
+
+      return { dates: date_temp, values: value_temp };
+    };
+
+    const handleButtonClick = async (index) => {
+      activeButtonIndex.value = index;
+      if (index === 0) {
+        try {
+          const deepWell1Data = await fetchWaterSourceData('deep-well-1');
+          const deepWell2Data = await fetchWaterSourceData('deep-well-2');
+          const deepWell3Data = await fetchWaterSourceData('deep-well-3');
+          const primeWaterData = await fetchWaterSourceData('prime-water');
+          
+          // Combine data from all sources
+          const combinedData = [];
+          const dates = new Set([...deepWell1Data.dates, ...deepWell2Data.dates, ...deepWell3Data.dates, ...primeWaterData.dates]);
+
+          for (const date of dates) {
+            const deepWell1Datum = deepWell1Data.dates.indexOf(date) !== -1 ? deepWell1Data.values[deepWell1Data.dates.indexOf(date)] : 0;
+            const deepWell2Datum = deepWell2Data.dates.indexOf(date) !== -1 ? deepWell2Data.values[deepWell2Data.dates.indexOf(date)] : 0;
+            const deepWell3Datum = deepWell3Data.dates.indexOf(date) !== -1 ? deepWell3Data.values[deepWell3Data.dates.indexOf(date)] : 0;
+            const primeWaterDatum = primeWaterData.dates.indexOf(date) !== -1 ? primeWaterData.values[primeWaterData.dates.indexOf(date)] : 0;
+
+            combinedData.push({
+              date,
+              deepWell1: deepWell1Datum,
+              deepWell2: deepWell2Datum,
+              deepWell3: deepWell3Datum,
+              primeWater: primeWaterDatum
+            });
+          }
+
+          tableData.value = combinedData;
+        } catch (error) {
+          console.error("Error fetching water source data:", error);
+        }
+      } else if (index === 2) {
+        await nextTick(); 
+        PW_BarChart();
+      } else if (index === 3) {
+        await nextTick(); 
+        DW1_BarChart();
+      } else if (index === 4) {
+        await nextTick(); 
+        DW2_BarChart();
+      }
+    };
+
+    const handlePrint = () => {
+      let contentElement;
+      if (activeButtonIndex.value === 0) {
+        contentElement = document.querySelector('.box-body table');
+      } else if ([2, 3, 4].includes(activeButtonIndex.value)) {
+        const chartContainerId = activeButtonIndex.value === 2 ? 'pwChartContainer' :
+                                 activeButtonIndex.value === 3 ? 'dw1ChartContainer' :
+                                 activeButtonIndex.value === 4 ? 'dw2ChartContainer' : null;
+        if (chartContainerId) {
+          contentElement = document.getElementById(chartContainerId);
+        }
+      }
+
+      if (contentElement) {
+        html2pdf().from(contentElement).save();
+      } else {
+        console.error("Content not found.");
+      }
+    };
+
+    const PW_BarChart = async () => {
+      try {
+        const primeWaterData = await fetchWaterSourceData('prime-water');
+        
+        const dates = primeWaterData.dates;
+        const consumptions = primeWaterData.values;
+
+        let chartContainer = document.getElementById("pwChartContainer");
+        if (chartContainer) {
+          let chart = echarts.init(chartContainer);
+          let option = {
+            color: ['#3398DB'], 
+            xAxis: {
+              type: 'category',
+              data: dates
+            },
+            yAxis: {
+              type: 'value'
+            },
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'shadow'
+              }
+            },
+            series: [{
+              data: consumptions,
+              type: 'bar'
+            }]
+          };
+          chart.setOption(option);
+        } else {
+          console.error("Chart container element not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching water source data:", error);
+      }
+    };
+
+    const DW1_BarChart = async () => {
+      try {
+        const dw1Data = await fetchWaterSourceData('deep-well-1');
+        
+        const dates = dw1Data.dates;
+        const consumptions = dw1Data.values;
+
+        let chartContainer = document.getElementById("dw1ChartContainer");
+        if (chartContainer) {
+          let chart = echarts.init(chartContainer);
+          let option = {
+            color: ['#FF5722'], 
+            xAxis: {
+              type: 'category',
+              data: dates
+            },
+            yAxis: {
+              type: 'value'
+            },
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'shadow'
+              }
+            },
+            series: [{
+              data: consumptions,
+              type: 'bar'
+            }]
+          };
+          chart.setOption(option);
+        } else {
+          console.error("Chart container element not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching water source data:", error);
+      }
+    };
+
+    const DW2_BarChart = async () => {
+      try {
+        const dw2Data = await fetchWaterSourceData('deep-well-2');
+        
+        const dates = dw2Data.dates;
+        const consumptions = dw2Data.values;
+
+        let chartContainer = document.getElementById("dw2ChartContainer");
+        if (chartContainer) {
+          let chart = echarts.init(chartContainer);
+          let option = {
+            color: ['#8BC34A'], 
+            xAxis: {
+              type: 'category',
+              data: dates
+            },
+            yAxis: {
+              type: 'value'
+            },
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'shadow'
+              }
+            },
+            series: [{
+              data: consumptions,
+              type: 'bar'
+            }]
+          };
+          chart.setOption(option);
+        } else {
+          console.error("Chart container element not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching water source data:", error);
+      }
+    };
+
+    return {
+      activeButtonIndex,
+      tableData,
+      rows, 
+      handleButtonClick,
+      handlePrint
+    };
   }
 };
 </script>
 
 <style scoped>
 /* Creative row styles */
-
 .row-container {
   display: flex;
   align-items: center;
