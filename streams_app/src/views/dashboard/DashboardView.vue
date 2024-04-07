@@ -105,15 +105,24 @@ const main_meter = ['deep-well-1', 'deep-well-2', 'deep-well-3', 'deep-well-4', 
 const sub_meters = ['CICS-DF', 'FIC-1', 'FIC-2', 'RGR', 'SSC', 'canteen-DF', 'ceafa-faculty', 'executive-lounge']
 /*
 pedeng ang temp obj ay
-
 main / sub
 -> { pw: { date: 2023blabla, consumption: 232 },
      dw1: { date: 2023blabla, consumption: 232 },
      dw2: { date: 2023blabla, consumption: 232 }
     }
-
 */
+
+/* Event listener for window resize
+const handleResize = () => {
+  twelve_month_chart.value.responsive = true;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});*/
+
 onMounted(async () => {
+    
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter');
     const collectionRef = collection(mainMeterRef, main_meter[4]);
@@ -145,6 +154,11 @@ onMounted(async () => {
     }
 });
 
+/*
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+});
+*/
 use([
   CanvasRenderer,
   PieChart,
@@ -166,19 +180,25 @@ const pie_main_meter = ref({
   tooltip: {
     trigger: "item",
     // idk pa ano toh
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
+
   },
   legend: {
-    orient: "vertical",
-    left: "left",
-    data: main_meter
+    top: '6%',
+    left: "center",
+    //data: main_meter
   },
+
   series: [
     {
-      name: "Sources: Main Meters",
+      name: "Source",
       type: "pie",
-      radius: "55%",
-      center: ["50%", "60%"],
+      radius: ["30%", "60%"],
+      avoidLabelOverlap: true,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
       data: [
         { value: 735, name: "Prime Water" },
         { value: 510, name: "Deep Well 1" },
@@ -187,12 +207,19 @@ const pie_main_meter = ref({
         { value: 20, name: "Deep Well 4" }
       ],
       emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: "rgba(0, 0, 0, 0.5)"
+        label: {
+          show: true,
+          fontSize: 20,
+          fontWeight: 'bold'
         }
-      }
+      },
+      labelLine: {
+        show: false
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
     }
   ]
 });
@@ -255,7 +282,11 @@ const quarter_chart = ref({
   series: [
     {
       data: [36700, 52523, 33542],
-      type: 'bar'
+      type: 'bar',
+      itemStyle: {
+          // Customize the color of the bars
+          color: 'red'
+        }
     }
   ]
   
@@ -277,7 +308,11 @@ const twelve_month_chart = ref({
   series: [
     {
       data: [36700, 52523, 33542, 44444, 55984, 12345, 54652, 77897, 23455, 23323, 20989, 63464],
-      type: 'line'
+      type: 'line',
+      itemStyle: {
+            // Customize the color of the bars
+        color: 'green'
+      }
     }
   ]
   
@@ -326,6 +361,10 @@ setInterval(() => {
     showDeepWell.value = !showDeepWell.value;
   }
 }, 5000); // interval : 5s
+
+
+
+
 </script>
 <script>
 /* eslint-disable */
@@ -349,9 +388,6 @@ export default {
             meter: '10m^3'
             
         };
-    },
-    mounted(){
-      
     }
 }
 </script>
