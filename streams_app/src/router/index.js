@@ -6,6 +6,7 @@ import Settings from '../views/AccountSettings/SettingsView.vue';
 import Password from '../views/AccountSettings/PasswordView.vue';
 import DefName from '../views/AccountSettings/DefNameView.vue';
 import Feedback from '../views/others/FeedbackView.vue';
+import Tips from '../views/others/TipsView.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
@@ -62,6 +63,11 @@ const routes = [
       path: '/feedback',
       name: 'feedback',
       component: Feedback
+    },
+    {
+      path: '/tips',
+      name: 'tips',
+      component: Tips
     }
 ]
 

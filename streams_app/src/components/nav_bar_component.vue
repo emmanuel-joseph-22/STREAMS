@@ -9,13 +9,13 @@
                     </div>
                     <div class="toggle-close" @click="toggleNavbar" title="Close Bar">
                         <span class="toggle-icon">
-                            <img src="fake_logo.png" alt="Toggle Icon">
+                            <img src="434125806_3735243030054989_6921727807783063100_n.png" alt="Toggle Icon">
                         </span>
                     </div>
                 </div>
                 <div v-if="navbarCollapsed" class="toggle-open" @click="toggleNavbar" title="Open Bar">
                     <span class="toggle-icon">
-                        <img src="fake_logo.png" alt="Toggle Icon">
+                        <img src="434125806_3735243030054989_6921727807783063100_n.png" alt="Toggle Icon">
                     </span>
                 </div>
                 <!-- nav icon : if navbar is collapsed -->
@@ -74,7 +74,7 @@
                         <div class="other_link_label"><span>Feedback</span></div>
                     </router-link>
                     <!-- convservation tips ewan san lalagay -->
-                    <router-link class="navbar_link" to="/">
+                    <router-link class="navbar_link" to="/tips">
                         <div class="other_link_label"><span>Tips</span></div>
                     </router-link>
                     <!-- profile view -->

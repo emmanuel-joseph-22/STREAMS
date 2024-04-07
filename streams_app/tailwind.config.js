@@ -8,6 +8,9 @@ module.exports = {
   //purge: [],
   theme: {
     extend: {
+      backgroundImage:{
+        'bsu-entrance': "url('/public/Alangilan-entrance-facade.jpg')"
+      },
       width: {
         'custom-15': '15%',
         'custom-20': '20%',
