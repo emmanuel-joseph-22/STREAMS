@@ -3,70 +3,57 @@
         <!-- nav bar for web -->
         <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }">
             <header>
-                <div class="not-collapsed" v-show="!navbarCollapsed">
-                    <div class="text header-text">
-                        <span class="name">STREAMS</span>
-                    </div>
-                    <div class="toggle-close" @click="toggleNavbar" title="Close Bar">
-                        <span class="toggle-icon">
+                <!-- tinanggal ko class=icon ang cute nagzzooom -->
+                <div v-show="!navbarCollapsed">
+                    <div class="flex">
+                        <span @click="toggleNavbar" title="Close Bar">
                             <img src="fake_logo.png" alt="Toggle Icon">
                         </span>
+                        <div class="name text font-bold text-xl transition ease-in-out 300">
+                            STREAMS
+                        </div>
                     </div>
                 </div>
-                <div v-if="navbarCollapsed" class="toggle-open" @click="toggleNavbar" title="Open Bar">
-                    <span class="toggle-icon">
+                <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar">
+                    <span>
                         <img src="fake_logo.png" alt="Toggle Icon">
                     </span>
                 </div>
-                <!-- nav icon : if navbar is collapsed -->
-                <div v-if="navbarCollapsed" class="icons-collapsed">
-                    <router-link class="navbar_link" :to="{ name: 'dashboard' }" title="Dashboard">
-                        <!-- nav icon -->
-                        <img class="col-icon" src="home_icon.png"/>
-                    </router-link>
-                    <router-link class="navbar_link" to="/report" title="Report">
-                        <!-- nav icon -->
-                        <img class="col-icon" src="report_icon.png"/>
-                    </router-link>
-                    <router-link class="navbar_link" to="/map" title="Map">
-                        <!-- nav icon -->
-                        <img class="col-icon" src="map_icon.png"/>
-                    </router-link>
-                </div>
-                <router-link class="navbar_link" v-if="!navbarCollapsed" :to="{ name: 'dashboard' }">
+
+                <router-link class="navbar_link" :to="{ name: 'dashboard' }" title="Home">
                     <div class="navbar_icon home_icon">
                         <!-- nav icon -->
-                        <img class="icon" src="home_icon.png"/>
+                        <img ref="navIcon" class="icon" src="home_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
                         <!-- nav link label -->
-                        <div class="navlink_label">Home</div>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Home</div>
                     </div>
                 </router-link>
                 <!-- report div -->
-                <router-link class="navbar_link" v-if="!navbarCollapsed" to="/report">
+                <router-link class="navbar_link" to="/report" title="Reports">
                     <div class="navbar_icon">
                         <!-- nav icon -->
-                        <img class="icon" src="report_icon.png"/>
-                        <div class="navlink_label">Report</div>
+                        <img ref="navIcon" class="icon" src="report_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Report</div>
                     </div>
                 </router-link>
                 <!-- map div -->
-                <router-link class="navbar_link" v-if="!navbarCollapsed" to="/map">
+                <router-link class="navbar_link" to="/map" title="Maps">
                     <div class="navbar_icon">
                         <!-- nav icon -->
-                        <img class="icon" src="map_icon.png"/>
-                        <div class="navlink_label">Maps</div>
+                        <img class="icon" src="map_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Maps</div>
                     </div>
                 </router-link>
             </header>
             <div class="empty_space"></div>
                 <!-- hamburger icon -->
-                <div class="dropdown_menu" @click="showMoreOptions" v-show="!navbarCollapsed">
-                    <div class="hamburger">
+                <div class="dropdown_menu" @click="showMoreOptions">
+                    <div class="hamburger" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }">
                         <div class="bar"></div>
                         <div class="bar"></div>
                         <div class="bar"></div>
                     </div>
-                    <div class="navlink_label">More</div>
+                    <div class="navlink_label" v-if="!navbarCollapsed">More</div>
                 </div>
                 <div class="dropdown_content" v-if="more_settings">
                     <!-- feedback link -->
@@ -88,6 +75,7 @@
                     </router-link>
                 </div>
         </div>
+
         <!-- bottom nav bar for mobile -->
         <div class="nav_mobile" v-if="isMobile">
             <div class="flexbox_icons">
@@ -96,12 +84,6 @@
                         <img class="mobile_icon" src="home2.png" />
                     </router-link>
                 </div>
-                <!--
-                <div class="mobile_link">
-                    <router-link to="/report" class="mobile_link">
-                        <img class="mobile_icon" src="report.png" alt="report" />
-                    </router-link>            
-                </div>-->
                 <div class="mobile_link">
                     <router-link to="/reading">
                         <img class="mobile_icon" src="metro.png" />
@@ -114,6 +96,7 @@
                 </div>
             </div>
         </div>
+
         <!-- top bar for mobile -->
         <div class="more_settings_button" v-if="isMobile">
             <img src="account.png" alt="more settings"/>
@@ -175,7 +158,6 @@ export default {
         position: fixed;
         left: 0; 
         top: 0;
-        /* ansolute size */
         width: 250px;
         height: 100%;
         box-sizing: border-box;
@@ -189,61 +171,28 @@ export default {
         flex-direction: column;
     }
     .nav_bar.collapsed {
-        width: 80px;
+        width: 90px;
         transition: ease-in-out 0.4s;
     }
-
-    .icons-collapsed {
-        margin-top: 120px;
-        width: 45px;
-        height: 45px;
-    }
-
-    .icons-collapsed img:hover{
-        background-color: var(--navbarHover);
-        transition: background-color 1s;
-        border-radius: 20%;
-        padding: 3px;
-    }
-    .icons-collapsed .navbar_link{
-        padding: 20px;
-    }
-
-    .nav_bar header{
+    .nav_bar > header {
         position: relative;
         top: 15px;
     }
-    .header-text .name{
-        top: 2px;
-        font-weight: 600;
+    .navbar_link{
+        text-decoration: none;
     }
-    .toggle-close {
-        position: absolute;
-        top: 0;
-    }
-
-    .toggle-icon img:hover {
-        background-color: var(--navbarHover);
-        transition: background-color 1s;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .toggle-icon img {
-        width: 40px;
-        height: 40px;
-    }
-
     .navbar_icon{
         width: 95%;
         height: 70px;
-        margin: 6px auto;
         text-align: center;
         display: flex;
+        padding-left: 7px;
+        margin: 5px auto;
     }
     .navbar_icon:hover{
         background-color: var(--navbarHover);
-        border-radius: 15px;
+        transition: background-color 0.5s;
+        border-radius: 12px;
         cursor: pointer;
     }
     .home_icon{
@@ -253,8 +202,8 @@ export default {
         width: 44px;
         height: 42px;
         margin-top: 10px;
-        margin-left: 41px;
         fill: white;
+        transition: ease-in-out 0.6s;
     }
     .navlink_label, .other_link_label{
         transition: ease-in-out 0.3s;
@@ -267,7 +216,6 @@ export default {
         text-decoration: none;
         cursor: pointer;
     }
-
     .other_link_label:hover{
         background-color: var(--dropdownHover);
         color: var( --text_color);
@@ -280,24 +228,16 @@ export default {
     .empty_space{
         height: 100%;
     }
-    .navbar_link{
-        text-decoration: none;
-    }
-
-    /* styles tulad ng nav icon pero para sa hamburger 
-kase di ko mababa ung nav icon last of type sa bottom */
     .dropdown_menu{
         width: 95%;
-        height: 70px;
         margin: 15px auto;
         text-align: center;
         display: flex;
-        position: relative;
         margin-bottom: auto;
+        padding-left: 6px;
+        transition: ease-in-out 0.3s
     }
-    .dropdown_menu:hover .dropdown_content{
-        display: block;
-    }
+
     .dropdown_menu:hover{
         background-color: var(--navbarHover);
         border-radius: 15px;
@@ -307,16 +247,16 @@ kase di ko mababa ung nav icon last of type sa bottom */
         width: 45px;
         height: 65px;
         margin-top: 10px;
-        margin-left: 45px;
         display: inline-block;
         text-align: center;
+        transition: ease-in-out 0.6s;
     }
     .bar{
         width: 35px;
         height: 5px;
         background-color: var(--white);
         margin: 8px 0 8px 5px;
-        /*
+        /* idk
         -webkit-box-shadow: 0 0 3px var(--box-shadow-color);
         box-shadow: 0 0 3px var(--box-shadow-color);*/
     }
@@ -326,34 +266,15 @@ kase di ko mababa ung nav icon last of type sa bottom */
         bottom: 100px;
         left: 10px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        padding: 12px 20px;
+        padding: 10px 20px;
         background-color: var(--dropdown);
         color: var(--white);
         width: 250px;
         height: 290px;
         border-radius: 20px;
         text-decoration: none;
-        z-index: 20;
+        z-index: 19;
         text-align: left;
-    }
-
-    @media screen and (max-width: 1000px) {
-        .nav_bar{
-            width: 90px;
-            padding: 5px;
-        }
-        .icon, .hamburger{
-            margin: 12px 16px;
-        }
-        .navlink_label{
-            visibility: hidden;
-        }
-        .dropdown_content{
-            width: 200px;
-        }
-    }
-    @media screen and (max-width: 766px) {
-        /* imobile */
     }
 </style>
 <style scoped>

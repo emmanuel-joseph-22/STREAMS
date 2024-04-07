@@ -1,5 +1,5 @@
 <template> 
-        <div class="main_content">
+        <div class="main_content relative transition ease-in-out duration-300">
             <nav-bar/>
             <slot></slot>
         </div>
@@ -11,28 +11,16 @@ import nav_bar from '../../components/nav_bar_component.vue';
 export default {
     components: {
         "nav-bar": nav_bar
-    },
-    data(){
-        return{
-
-        }
-    },
-    methods: {
-        
     }
 }
 </script>
 
 <style scoped>
     .main_content{
-        position: relative;
         height: 200px;
         left: 85px;
-        z-index: 16;
         width: calc(100% - 100px);
-        transition: ease-in-out 0.3s;
     }
-
     @media screen and (max-width: 1000px){
         .main_content{
             left: 90px;
@@ -45,5 +33,4 @@ export default {
             width: 100%;
         }
     }
-
 </style>
