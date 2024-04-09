@@ -24,7 +24,7 @@
                     
                     <p v-if="errorMsg">{{ errorMsg }}</p>
                     
-                    <button  @click="signup" class="submit bg-blue-700 text-blue-200 py-2 px-20 rounded-full mt-5" id="sign-up" value="Sign Up">Log In</button>
+                    <button  @click="signup" class="submit bg-blue-700 text-blue-200 py-2 px-20 rounded-full mt-5" id="sign-up" value="Sign Up">Sign Up</button>
                     <label for="or-text" class="font-bold relative flex flex-col mb-1 text-mid my-5">-OR-</label>
                     <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-2 sm:my-5"><b>Guest</b></router-link>
                     <br/>
@@ -76,3 +76,4 @@ const signup = () => {
 }
 
 </script>
+

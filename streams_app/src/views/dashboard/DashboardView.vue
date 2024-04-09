@@ -175,8 +175,8 @@ const pie_main_meter = ref({
   },
   tooltip: {
     trigger: "item",
-    // idk pa ano toh
-
+    // format including percentage
+    formatter: "{a} <br/>{b} : {c} ({d}%)"
   },
   legend: {
     top: '7%',
@@ -282,7 +282,7 @@ const quarter_chart = ref({
       type: 'bar',
       itemStyle: {
           // Customize the color of the bars
-          color: 'rgb(153, 0, 0)'
+          color: 'blue'
         }
     }
   ]
@@ -308,7 +308,7 @@ const twelve_month_chart = ref({
       type: 'line',
       itemStyle: {
             // Customize the color of the bars
-        color: 'green'
+        color: 'blue'
       }
     }
   ]
@@ -368,7 +368,7 @@ setInterval(() => {
 import HomePageView from './HomePageView.vue';
 import header from '../../components/header_component.vue';
 import dashboard_content from '../../components/dashboard_content.vue';
-
+import { Capacitor } from '@capacitor/core'; // Import Capacitor from Capacitor
 
 export default {
     components: {
@@ -385,6 +385,25 @@ export default {
             meter: '10m^3'
             
         };
+    },
+    mounted() {
+      document.addEventListener('backbutton', this.handleBackButton);
+    },
+    unmounted() {
+      document.removeEventListener('backbutton', this.handleBackButton);
+    },
+    methods: { 
+      handleBackButton() {
+        if (Capacitor.isNative) {
+          if (this.$router.currentRoute.path !== '/') {
+            this.$router.go(-1); // Navigate back if not on the home page
+          } else {
+            if (window.confirm('Do you want to exit the app?')) {
+              navigator.app.exitApp(); // Exit the app if on the home page
+            }
+          }
+        }
+      }
     }
 }
 </script>
@@ -406,12 +425,12 @@ export default {
   transition: transform 0.3s ease;
   background-color: white;
   margin: 10px auto;
-}
+}/*
 .box1-item:hover {
   transform: translateY(-3px);
   background-color: rgb(121, 173, 218);
   color: white;
-}
+}*/
 .filter_toggle{
   border: 2px solid black;
   background-color: rgb(254, 255, 255);

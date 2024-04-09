@@ -6,17 +6,17 @@
                 <!-- tinanggal ko class=icon ang cute nagzzooom -->
                 <div v-show="!navbarCollapsed">
                     <div class="flex">
-                        <span @click="toggleNavbar" title="Close Bar">
-                            <img class="icon" src="fake_logo.png" alt="Toggle Icon">
+                        <span @click="toggleNavbar" title="Close Bar" style="margin-left: 45px; transition: ease-in-out 1s; cursor: pointer;">
+                            <img class="icon" src="fake_logo.png" alt="Toggle Icon"  >
                         </span>
-                        <div class="name text font-bold text-xl transition ease-in-out 300">
+                        <div class="name text font-bold text-xl transition ease-in-out 300 pt-4 pl-1">
                             STREAMS
                         </div>
                     </div>
                 </div>
-                <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar">
+                <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar" style="margin-left: 10px; transition: ease-in-out 1s; cursor: pointer;">
                     <span>
-                        <img class="icon" src="fake_logo.png" alt="Toggle Icon">
+                        <img class="icon" src="fake_logo.png" alt="Toggle Icon" >
                     </span>
                 </div>
 
