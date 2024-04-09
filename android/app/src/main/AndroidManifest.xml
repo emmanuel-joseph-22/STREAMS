@@ -24,7 +24,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="@string/custom_url_scheme" />
             </intent-filter>
-
         </activity>
 
         <provider
