@@ -101,6 +101,9 @@
         text-decoration: none;
         overflow: hidden
     }
+    .body a:hover{
+        color: white;
+    }
     .body a span{
         position: relative;
         z-index: 1;
