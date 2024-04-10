@@ -22,10 +22,15 @@
 
             <div class="container">
                 <div class="content">
+                    
+                    <div class="main">
+                        <label for="date" >Date</label>
+                        <input id="date"  type="date" class="date_field" v-model="temp_date"/>
+                    </div>
                     <!-- source for main meters -->
                     <div class="main" v-if="mainmeter">
                         <label for="main" class="main-label">Water Source</label>
-                        <select id="main"  class="main-dropdown" v-model="WaterSource">
+                        <select id="main"  class="main-dropdown" disabled v-model="WaterSource">
                             <option value="deep-well-1">Deep Well 1</option>
                             <option value="deep-well-2">Deep Well 2</option>
                             <option value="deep-well-3">Deep Well 3</option>
@@ -86,6 +91,7 @@ export default {
     },  
     data() {
         return {
+            temp_date: '',
             WaterSource: '',
             BuildingDepartment: '',
             Consumption: '',
@@ -119,6 +125,7 @@ export default {
                 this.submitForm();
             } else {
                 console.log("Submit cancelled")
+                this.temp_date = ''
                 this.WaterSource = ''
                 this.BuildingDepartment = ''
                 this.Consumption = ''
@@ -128,11 +135,12 @@ export default {
             this.stage_reading = false;
         },
         async submitForm() {
-            const waterSource = this.WaterSource;
+            const set_date = this.temp_date
+            const waterSource = 'CICS-DF';
             const buildingDepartment = this.BuildingDepartment;
             const consumption = this.Consumption;
-            const currentDate = new Date().toISOString().split('T')[0];
-            
+            //const currentDate = new Date(set_date).toISOString();
+
             // Construct the data object
             const data = {
                 consumption: consumption,
@@ -140,12 +148,12 @@ export default {
                 input_x: this.input_x,
                 input_x0: this.input_x0
             };
-            // path 
-            const path = `meter_records/main_meter/${waterSource}`
+            // temp wait
+            const path = `meter_records/submeter/${waterSource}`
             
-            // set doc function to customize ID as current Date
+            // curr date as doc id
             try {
-                await setDoc(doc(collection(db, path), currentDate), data);
+                await setDoc(doc(collection(db, path), set_date), data);
                 console.log("Meter record stored successfully!");
             /*try {
                 const mainMeterSnapshot = await getDoc(mainMeterRef);
@@ -161,6 +169,13 @@ export default {
                     // Now you can perform operations on the collectionRef
                 }
                 */
+                //reset the values after
+                this.temp_date = ''
+                this.WaterSource = ''
+                this.BuildingDepartment = ''
+                this.Consumption = ''
+                this.input_x = ''
+                this.input_x0 = ''
             } catch(error) {
                 console.error("Error storing meter record: ", error);
             }
@@ -250,7 +265,7 @@ export default {
         text-align: justify;
     }
 
-    .main-dropdown{
+    .main-dropdown, .date_field{
         width: 100%;
         padding: 10px;
         font-size: 16px;
