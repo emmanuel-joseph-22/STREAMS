@@ -35,14 +35,21 @@ export default {
         if (newValue && !oldValue) {
           const apiKey = '3Giyb8izMH7QvlPNRm0I';
           const initialState = { lng: 121.074490, lat: 13.784249, zoom: 18 };
+          const bounds = [
+            [121.073466, 13.783145], // Southwest coordinates
+            [121.075113, 13.785380] // Northeast coordinates
+          ];
 
           map.value = markRaw(
             new Map({
               container: newValue,
               style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${apiKey}`,
               center: [initialState.lng, initialState.lat],
-              zoom: initialState.zoom
-            })
+              zoom: initialState.zoom,
+              minZoom: initialState.zoom,
+              pitch: 45,
+              bearing: -45,
+              maxBounds: bounds,            })
           );
         }
       }
