@@ -25,7 +25,6 @@
                 <p class="text-gray-400">Current</p>
               </div>
               <div class="box1-item box border shadow">
-
               </div>
             </div>
           </div>
@@ -94,7 +93,7 @@ import { ref, provide, onMounted } from "vue";
 import { doc, getDocs, query, collection /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './../../main.js';
 
-// water consumption 
+// water consumption
 const yAxisConsumption = ref([])
 const xAxisDate = ref([])
 const main_meter = ['deep-well-1', 'deep-well-2', 'deep-well-3', 'deep-well-4', 'prime-water']

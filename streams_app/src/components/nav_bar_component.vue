@@ -105,6 +105,8 @@
 </template>
 
 <script>
+
+import { getAuth, signOut } from 'firebase/auth';
 export default {
     data(){
         return {
@@ -130,8 +132,10 @@ export default {
             this.dark_mode = !this.dark_mode
         },
         logout(){
-            // call nalang si log out function
-            console.log('logged out')
+            const auth = getAuth()
+            signOut(auth).then(() => {
+                console.log("Logged out!");
+            })
         },
         showMoreOptions(){
             this.more_settings = !this.more_settings
