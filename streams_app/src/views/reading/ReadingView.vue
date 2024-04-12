@@ -81,8 +81,6 @@ import { firestore as db } from './../../main.js';
 import header_component from "../../components/header_component.vue";
 import HomePageView from "./../dashboard/HomePageView.vue";
 import confirmation_view from "./../../components/confirmation_view.vue";
-import { Capacitor } from '@capacitor/core'; // Import Capacitor from Capacitor
-
 export default {
     components: {
         'header_bar': header_component,
@@ -100,24 +98,8 @@ export default {
             mainmeter: true,
             stage_reading: false,
         };
-    },    mounted() {
-      document.addEventListener('backbutton', this.handleBackButton);
-    },
-    unmounted() {
-      document.removeEventListener('backbutton', this.handleBackButton);
-    },
+    },    
     methods: {
-        handleBackButton() {
-            if (Capacitor.isNative) {
-                if (this.$router.currentRoute.path !== '/') {
-                this.$router.go(-1); // Navigate back if not on the home page
-                } else {
-                if (window.confirm('Do you want to exit the app?')) {
-                    navigator.app.exitApp(); // Exit the app if on the home page
-                }
-                }
-            }
-        },
         confirm_window(value){
             console.log("Confirmed value:", value);
             // Call submit function or perform other actions based on the confirmed value

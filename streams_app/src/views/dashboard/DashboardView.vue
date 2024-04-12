@@ -117,7 +117,6 @@ onMounted(() => {
 });*/
 
 onMounted(async () => {
-    
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter');
     const collectionRef = collection(mainMeterRef, main_meter[4]);

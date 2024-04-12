@@ -27,7 +27,6 @@ export default {
     const mapContainer = shallowRef(null);
     const map = shallowRef(null);
 
-
     // Watch for changes to mapContainer.value
     watch(
       () => mapContainer.value,

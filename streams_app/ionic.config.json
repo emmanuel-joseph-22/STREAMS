@@ -1,0 +1,7 @@
+{
+  "name": "streams_app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}

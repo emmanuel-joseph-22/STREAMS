@@ -20,33 +20,32 @@
 <script>
 import { App } from '@capacitor/app';
 import router from './router/index';
-
+import { onMounted, onUnmounted } from 'vue';
 export default {
-  setup(){
+  setup() {
+    const allowedRoutes = ['/home', '/reading', '/map'];
+
     // Function to handle back button press
     const handleBackButton = () => {
-      // Check if the user is on the last screen of the navigation stack
-      if (router.currentRoute.value.path === '/home') { // Adjust 'Home' to match your home route name
+      // Check if the user is on one of the allowed routes
+      if (allowedRoutes.includes(router.currentRoute.value.path)) {
         // Show confirmation dialog
-        if (confirm('Do you want to exit the app?')) {
+        
+        const confirmation = confirm('Do you want to exit the app?');
+        if (confirmation) {
           // If the user confirms, exit the app
           App.exitApp();
         }
-      } else {
-        // If not on the last screen, navigate back
-        router.go(-1);
       }
     };
-
-    // Add listener for back button
-    App.addListener('backButton', handleBackButton);
-
-    // Remove listener when component is unmounted
-    const beforeUnmount = () => {
-      App.removeListener('backButton', handleBackButton);
-    };
-
-    return { beforeUnmount };
+    onMounted(() => {
+       // Add listener for back button
+        App.addListener('backButton', handleBackButton);
+    });
+    // Remove listener when component is unmounted or when leaving allowed routes
+    onUnmounted(() => {
+      App.removeAllListeners();
+    });
   }
 }
 
