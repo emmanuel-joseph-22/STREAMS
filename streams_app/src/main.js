@@ -37,7 +37,7 @@ const auth = getAuth(db_app);
 onAuthStateChanged(auth, user => {
   if (user) {
     // User is already authenticated, proceed with auto-login
-    router.push('/home'); // Redirect to the home page or any authenticated page
+    router.push('/'); // Redirect to the home page or any authenticated page
   } else {
     // User is not authenticated, redirect to the login page or perform any other action
     router.push('/login');
