@@ -1,47 +1,27 @@
 <template>
     <main-content>
         <header_bar>
-            <h1 class="text-4xl font-semibold ml-3 mt-1">Reading</h1>
+            <h1 class="text-4xl text-left text-blue-300 font-semibold ml-3 mt-1">Reading</h1>
         </header_bar>
         <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
             This will record water reading in the database!
-        </confirm_pop_up>
-        <div class="all">
-            <div class="nav">
-                <div class="nav-links">
-                    <!-- pinaltan ko ng div ung unordered list
-                    kase hirap i-symmetrically center ung list -->
-                    <div class="reading_label" @click="mainmeter=true">
-                        <a href="#">MAIN</a>  
-                    </div>
-                    <div class="reading_label" @click="mainmeter=false">
-                        <a href="#">SUBMETER</a>
-                    </div>
-                </div>
-            </div>
+        </confirm_pop_up>   
 
-            <div class="container">
-                <div class="content">
-                    
-                    <div class="main">
+        <div class="reading bg-blue-900 flex justify-center items-center h-screen">
+                <div class="content flex-1 p-2 mb-96 mt-12 mx-7 overflow-y-auto w-full">
+                    <!--INI COMMENT KO MUNA TO HA PARA MAKITA KO-->
+                    <!--<div class="main">
                         <label for="date" >Date</label>
                         <input id="date"  type="date" class="date_field" v-model="temp_date"/>
-                    </div>
-                    <!-- source for main meters -->
+                    </div>-->
                     <div class="main" v-if="mainmeter">
-                        <label for="main" class="main-label">Water Source</label>
-                        <select id="main"  class="main-dropdown" disabled v-model="WaterSource">
+                        <label for="main" class="main-label font-bold block mt-12 my-2.5 text-justify"><b class="text-blue-200 font-bold text-lg">Water Source</b></label>
+                        <select id="main"  class="main-dropdown p-2.5 h-14 text-base border-solid border-4 border-blue-300 text-blue-300 box-border rounded w-full" disabled v-model="WaterSource">
                             <option value="deep-well-1">Deep Well 1</option>
                             <option value="deep-well-2">Deep Well 2</option>
                             <option value="deep-well-3">Deep Well 3</option>
                             <option value="deep-well-4">Deep Well 4</option>
                             <option value="prime-water">Prime Water</option>
-                        </select>
-                    </div>
-                    <!-- source for submeters -->
-                    <div class="main" v-if="!mainmeter">
-                        <label for="main" class="main-label">Water Source</label>
-                        <select id="main" class="main-dropdown" v-model="WaterSource">
                             <option value="fic-1">FIC 1</option>
                             <option value="fic-2"> FIC 2</option>
                             <option value="canteen-drinking-fountain">CANTEEN DRINKING FOUNTAIN</option>
@@ -51,26 +31,34 @@
                             <option value="cics-drinking-fountain">CICS DRINKING FOUNTAIN</option>
                             <option value="ssc">SSC</option>
                         </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-caret-down text-gray-400"></i>
+                        </div>
                     </div>
-                    <div class="m3-cont">
-                        <label for="input_cubic" class="m3-label"></label>
-                        <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="m3-input" v-model="Consumption"/>
-                    </div>
-
-                    <div class="m3-cont-x">
-                        <label for="input_x" class="x-label"></label>
-                        <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="x-input" v-model="input_x"/>
+                    <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
+                        <label for="input_cubic" class="m3-label mr-2.5 font-bold"></label>
+                        <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-blue-300 rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
                     </div>
 
-                    <div class="m3-cont-x0">
-                        <label for="input_x0" class="x0-label"></label>
-                        <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="x-input" v-model="input_x0"/>
+                    <div class="m3-cont-x  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
+                        <label for="input_x" class="x-label mr-2.5 font-bold"></label>
+                        <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="flex-1 p-2.5 border-solid border-4 border-blue-300 rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x"/>
                     </div>
-                    <div class="submit">
+
+                    <div class="m3-cont-x0  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
+                        <label for="input_x0" class="x0-label mr-2.5 font-bold"></label>
+                        <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="flex-1 p-2.5 border-solid border-4 border-blue-300 rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x0"/>
+                    </div>
+                    <!--<div class="submit">
                         <button @click="stage_reading=true">SUBMIT</button>
+                    </div>-->
+                    <div class="body mt-4">
+                        <a href="#">
+                            <span @click="stage_reading=true">SUBMIT</span>
+                            <div class="wave"></div>
+                        </a>
                     </div>
                 </div>
-            </div>
         </div>
     </main-content>
 </template>
@@ -168,140 +156,33 @@ export default {
 </script>
 
 <style scoped>
-    .all{
-        font-family: 'Times New Roman', Times, serif;
-        background-color: #F2F5F9;
-        height: 100vh;
-        width: auto;
-        margin: 0;
-        padding: 0;
-    }
-
-    .nav{
+      .body{
         display: flex;
         justify-content: center;
-        background-color: #3B5271;
-        border-radius: 40px;
-        color: #FFFFFF;
-        height: 40px;
-        margin: 40px auto 20px auto;
-        padding: 0;
-        min-width: 200px;
-        max-width: 420px;
+        align-items: center;
+        margin-top: 5rem;
     }
-
-    .nav-links{
-        display: flex;
-        list-style-type: none; 
-        width: 100%;
-    }
-    
-    .reading_label{
-        font-weight: bold;
-        width: 50%;
-        padding: 0;
-    }
-
-    .reading_label > a{
-        text-decoration: none;
-        color: #FFFFFF;
-        font-size: 16px;
-        transition: all ease 0.5s;
-        margin-top: 8px;
-        padding: 0 10px;
-        display: inline-block;
-    }
-
-    .reading_label > a:hover{
-        background-color: #C9D8EC;
-        color: #3B5271;
-        border-radius: 10px;
-    }
-
-    .container{
-        display: flex;
-        background-color: #FFFFFF;
-        border: 2px solid #3B5271;
-        border-radius: 20px;
-        margin: 10px auto;
-        height: auto;
-        padding: 0 1rem;
-        max-width: 420px;
-        min-width: 250px;
-    }
-
-    .content{
-        flex: 1;
-        padding: 8px;
-        margin: 40px auto 20px auto;
-        overflow-y: auto;
-        width: 100%;
-    }
-
-
-    .main label{
-        font-weight: bold;
+    .body a{
+        position: relative;
         display: block;
-        margin-bottom: 10px;
-        margin-top: 10px;
-        text-align: justify;
-    }
-
-    .main-dropdown, .date_field{
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 2px solid #5F88BF;
-        color: #3B5271;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    .m3-cont,
-    .m3-cont-x,
-    .m3-cont-x0 {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 90%;
-        margin: 30px 12px 0px auto;
-    }
-
-    .m3-label,
-    .x-label,
-    .x0-label {
-        margin-right: 10px;
-        font-weight: bold;
-    }
-
-    .m3-input,
-    .x-input,
-    .x0-input {
-        width: 100%;
-        flex: 1;
-        padding: 10px;
-        border: 2px solid #5F88BF;
-        border-radius: 4px;
-        font-size: 16px;
-        color: #3B5271;
-        box-sizing: border-box;
-        outline: none;
-    }
-
-    .submit button{
-        background-color: #5F88BF;
-        color: #F2F5F9;
-        width: 40%;
-        padding: 15px 25px;
-        margin-top: 70px;
-        border: none;
+        padding: 10px 30px;
+        border: 4px solid #00aeff;
         border-radius: 50px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        text-transform: uppercase;
+        font-size: 18px;
+        letter-spacing: 3px;
+        background-color: #FFFFFF;
+        color: #00aeff;
+        text-decoration: none;
+        overflow: hidden
     }
-
-    .submit button:hover{
-        background-color: #3B5271;
+    .body a:hover{
+        color: white;
     }
-
+    .body a span{
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+        transition: 1s;
+    }
 </style>

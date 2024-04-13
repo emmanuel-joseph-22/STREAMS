@@ -18,7 +18,7 @@
     "@vue/cli": "^5.0.8",
     "core-js": "^3.8.3",
     "echarts": "^5.5.0",
-    "firebase": "^10.10.0",
+    "firebase": "^10.11.0",
     "html2pdf.js": "^0.10.1",
     "maplibre-gl": "^4.1.2",
     "vue": "^3.2.13",
