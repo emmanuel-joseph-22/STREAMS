@@ -51,6 +51,8 @@
           <div class="chart-container" v-if="activeButtonIndex === 2" id="pwChartContainer"></div>
           <div class="chart-container" v-else-if="activeButtonIndex === 3" id="dw1ChartContainer"></div>
           <div class="chart-container" v-else-if="activeButtonIndex === 4" id="dw2ChartContainer"></div>
+          <!-- Text input field -->
+          <textarea v-model="userReport" v-if="activeButtonIndex !== null" placeholder="Type your report here..." rows="4"></textarea>
         </div>
       </div>
     </div>
@@ -71,7 +73,10 @@ import {
 } from "echarts/components";
 import { doc,  collection, getDocs } from "firebase/firestore";
 import { firestore as db } from './../../main.js';
-import html2pdf from 'html2pdf.js';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
 echarts.use([CanvasRenderer, BarChart, TitleComponent, TooltipComponent, GridComponent]);
 
@@ -83,12 +88,14 @@ export default {
   setup() {
     const activeButtonIndex = ref(null);
     const tableData = ref([]);
+    const userReport = ref('');
     const rows = [
       { id: 1, title: 'Daily Water Inventory' },
       { id: 2, title: 'General Daily Water Consumption' },
       { id: 3, title: 'PW Daily Water Consumption' },
       { id: 4, title: 'DW1 Daily Water Consumption' },
-      { id: 5, title: 'DW2 Daily Water Consumption' }
+      { id: 5, title: 'DW2 Daily Water Consumption' },
+      { id: 6, title: 'Event Report' },
     ];
 
     onMounted(async () => {
@@ -154,148 +161,250 @@ export default {
         await nextTick(); 
         DW2_BarChart();
       }
-    };
 
-    const handlePrint = () => {
-      let contentElement;
-      if (activeButtonIndex.value === 0) {
-        contentElement = document.querySelector('.box-body table');
-      } else if ([2, 3, 4].includes(activeButtonIndex.value)) {
-        const chartContainerId = activeButtonIndex.value === 2 ? 'pwChartContainer' :
-                                 activeButtonIndex.value === 3 ? 'dw1ChartContainer' :
-                                 activeButtonIndex.value === 4 ? 'dw2ChartContainer' : null;
-        if (chartContainerId) {
-          contentElement = document.getElementById(chartContainerId);
-        }
-      }
-
-      if (contentElement) {
-        html2pdf().from(contentElement).save();
-      } else {
-        console.error("Content not found.");
+      // Clear userReport value when a different button index is clicked
+      if (index !== null) {
+        userReport.value = '';
       }
     };
 
-    const PW_BarChart = async () => {
-      try {
-        const primeWaterData = await fetchWaterSourceData('prime-water');
-        
-        const dates = primeWaterData.dates;
-        const consumptions = primeWaterData.values;
+    const handlePrint = async () => {
+  let chartImage = '';
 
-        let chartContainer = document.getElementById("pwChartContainer");
-        if (chartContainer) {
-          let chart = echarts.init(chartContainer);
-          let option = {
-            color: ['#3398DB'], 
-            xAxis: {
-              type: 'category',
-              data: dates
-            },
-            yAxis: {
-              type: 'value'
-            },
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'shadow'
-              }
-            },
-            series: [{
-              data: consumptions,
-              type: 'bar'
-            }]
-          };
-          chart.setOption(option);
-        } else {
-          console.error("Chart container element not found.");
-        }
-      } catch (error) {
-        console.error("Error fetching water source data:", error);
-      }
-    };
+  // Determine content element based on active button index
+  if ([2, 3, 4].includes(activeButtonIndex.value)) {
+    const chartContainerId = activeButtonIndex.value === 2 ? 'pwChartContainer' :
+                             activeButtonIndex.value === 3 ? 'dw1ChartContainer' :
+                             activeButtonIndex.value === 4 ? 'dw2ChartContainer' : null;
+    if (chartContainerId) {
+      const chartContainer = document.getElementById(chartContainerId);
+      // Convert the chart to an image
+      chartImage = await getChartImage(chartContainer);
+    }
+  }
 
-    const DW1_BarChart = async () => {
-      try {
-        const dw1Data = await fetchWaterSourceData('deep-well-1');
-        
-        const dates = dw1Data.dates;
-        const consumptions = dw1Data.values;
+  const textareaContent = userReport.value;
 
-        let chartContainer = document.getElementById("dw1ChartContainer");
-        if (chartContainer) {
-          let chart = echarts.init(chartContainer);
-          let option = {
-            color: ['#FF5722'], 
-            xAxis: {
-              type: 'category',
-              data: dates
-            },
-            yAxis: {
-              type: 'value'
-            },
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'shadow'
-              }
-            },
-            series: [{
-              data: consumptions,
-              type: 'bar'
-            }]
-          };
-          chart.setOption(option);
-        } else {
-          console.error("Chart container element not found.");
-        }
-      } catch (error) {
-        console.error("Error fetching water source data:", error);
-      }
-    };
+  // Generate the PDF from the combined content
+  generatePDF(chartImage, textareaContent);
+};
 
-    const DW2_BarChart = async () => {
-      try {
-        const dw2Data = await fetchWaterSourceData('deep-well-2');
-        
-        const dates = dw2Data.dates;
-        const consumptions = dw2Data.values;
+const generatePDF = (chartImage, textContent) => {
+  const docDefinition = {
+    content: [
+      // Add chart image as an image element
+      { image: chartImage, width: 500 }, // Adjust width as needed
+      // Add text content as a paragraph
+      { text: textContent, margin: [0, 20, 0, 0] } // Add margin to separate from the chart
+    ]
+  };
 
-        let chartContainer = document.getElementById("dw2ChartContainer");
-        if (chartContainer) {
-          let chart = echarts.init(chartContainer);
-          let option = {
-            color: ['#8BC34A'], 
-            xAxis: {
-              type: 'category',
-              data: dates
-            },
-            yAxis: {
-              type: 'value'
-            },
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'shadow'
-              }
-            },
-            series: [{
-              data: consumptions,
-              type: 'bar'
-            }]
-          };
-          chart.setOption(option);
-        } else {
-          console.error("Chart container element not found.");
-        }
-      } catch (error) {
-        console.error("Error fetching water source data:", error);
-      }
-    };
+  // Use a PDF generation library like pdfMake
+  pdfMake.createPdf(docDefinition).download('report.pdf');
+};
+
+
+
+
+
+
+
+// Function to convert ECharts chart to image
+const getChartImage = async (chartContainer) => {
+  const chart = echarts.getInstanceByDom(chartContainer);
+  const base64Image = await chart.getDataURL({
+    pixelRatio: window.devicePixelRatio || 1,
+    backgroundColor: '#fff'
+  });
+  return base64Image;
+};
+
+
+
+
+
+const PW_BarChart = async () => {
+  try {
+    const primeWaterData = await fetchWaterSourceData('prime-water');
+    
+    const dates = primeWaterData.dates;
+    const consumptions = primeWaterData.values;
+
+    let chartContainer = document.getElementById("pwChartContainer");
+    if (chartContainer) {
+      let chart = echarts.init(chartContainer);
+      let option = {
+        color: ['#3398DB'], 
+        title: {
+          text: 'PW Daily Water Consumption', // Name of the graph
+          top: 5, // Adjust the gap from the top
+          textStyle: {
+            fontWeight: 'bold' // Make the name bold
+          }
+        },
+        xAxis: {
+          type: 'category',
+          name: 'Date',
+          nameLocation: 'center', // Center the label
+          nameTextStyle: {
+            fontWeight: 'bold' // Make the label bold
+          },
+          nameGap: 35, // Move the label outward
+          data: dates
+        },
+        yAxis: {
+          type: 'value',
+          name: 'Consumption per day (cubic meter)',
+          nameLocation: 'center', // Center the label
+          nameTextStyle: {
+            fontWeight: 'bold' // Make the label bold
+          },
+          nameGap: 35, // Move the label outward
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        series: [{
+          name: 'Prime Water Consumption',
+          data: consumptions,
+          type: 'bar'
+        }]
+      };
+      chart.setOption(option);
+    } else {
+      console.error("Chart container element not found.");
+    }
+  } catch (error) {
+    console.error("Error fetching water source data:", error);
+  }
+};
+
+const DW1_BarChart = async () => {
+  try {
+    const dw1Data = await fetchWaterSourceData('deep-well-1');
+    
+    const dates = dw1Data.dates;
+    const consumptions = dw1Data.values;
+
+    let chartContainer = document.getElementById("dw1ChartContainer");
+    if (chartContainer) {
+      let chart = echarts.init(chartContainer);
+      let option = {
+        color: ['#FF5722'], 
+        title: {
+          text: 'DW1 Daily Water Consumption', // Name of the graph
+          top: 5, // Adjust the gap from the top
+          textStyle: {
+            fontWeight: 'bold' // Make the name bold
+          }
+        },
+        xAxis: {
+          type: 'category',
+          name: 'Date',
+          nameLocation: 'center', // Center the label
+          nameTextStyle: {
+            fontWeight: 'bold' // Make the label bold
+          },
+          nameGap: 35, // Move the label outward
+          data: dates
+        },
+        yAxis: {
+          type: 'value',
+          name: 'Consumption per day (cubic meter)',
+          nameLocation: 'center', // Center the label
+          nameTextStyle: {
+            fontWeight: 'bold' // Make the label bold
+          },
+          nameGap: 35, // Move the label outward
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        series: [{
+          name: 'DW1 Consumption',
+          data: consumptions,
+          type: 'bar'
+        }]
+      };
+      chart.setOption(option);
+    } else {
+      console.error("Chart container element not found.");
+    }
+  } catch (error) {
+    console.error("Error fetching water source data:", error);
+  }
+};
+
+const DW2_BarChart = async () => {
+  try {
+    const dw2Data = await fetchWaterSourceData('deep-well-2');
+    
+    const dates = dw2Data.dates;
+    const consumptions = dw2Data.values;
+
+    let chartContainer = document.getElementById("dw2ChartContainer");
+    if (chartContainer) {
+      let chart = echarts.init(chartContainer);
+      let option = {
+        color: ['#8BC34A'], 
+        title: {
+          text: 'DW2 Daily Water Consumption', // Name of the graph
+          top: 5, // Adjust the gap from the top
+          textStyle: {
+            fontWeight: 'bold' // Make the name bold
+          }
+        },
+        xAxis: {
+          type: 'category',
+          name: 'Date',
+          nameLocation: 'center', // Center the label
+          nameTextStyle: {
+            fontWeight: 'bold' // Make the label bold
+          },
+          nameGap: 35, // Move the label outward
+          data: dates
+        },
+        yAxis: {
+          type: 'value',
+          name: 'Consumption per day (cubic meter)',
+          nameLocation: 'center', // Center the label
+          nameTextStyle: {
+            fontWeight: 'bold' // Make the label bold
+          },
+          nameGap: 35, // Move the label outward
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        series: [{
+          name: 'DW2 Consumption',
+          data: consumptions,
+          type: 'bar'
+        }]
+      };
+      chart.setOption(option);
+    } else {
+      console.error("Chart container element not found.");
+    }
+  } catch (error) {
+    console.error("Error fetching water source data:", error);
+  }
+};
+
 
     return {
       activeButtonIndex,
       tableData,
+      userReport,
       rows, 
       handleButtonClick,
       handlePrint
@@ -366,21 +475,25 @@ export default {
 .content-container {
   display: flex;
   justify-content: space-between;
-}
-
-.left-content,
-.right-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  padding-left: 320px; /* Adjust padding to prevent overlap with fixed left content */
 }
 
 .left-content {
-  align-items: center;
-  margin: 5% auto;
+  position: fixed;
+  top: 150px;
+  left: 120px;
+  bottom: 0;
+  width: 300px; /* Adjust width as needed */
+  background-color: #fff; /* White background color for left content */
+
+  z-index: 1; /* Ensure left content is above other content */
 }
 
 .right-content {
+  margin-left: 320px; /* Adjust margin to accommodate fixed left content */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: flex-end;
 }
 
@@ -437,5 +550,15 @@ export default {
 
 .chart-container {
   height: 400px; /* Set height for the chart container */
+}
+
+/* Textarea styles */
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
 }
 </style>
