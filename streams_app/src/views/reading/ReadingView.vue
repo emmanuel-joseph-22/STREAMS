@@ -1,22 +1,22 @@
 <template>
     <main-content>
-        <header_bar>
-            <h1 class="text-4xl text-left text-blue-300 font-semibold ml-3 mt-1">Reading</h1>
+       <header_bar>
+            <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-3 mt-1">Reading</h1>
         </header_bar>
         <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
             This will record water reading in the database!
-        </confirm_pop_up>   
+        </confirm_pop_up>  
 
-        <div class="reading bg-blue-900 flex justify-center items-center h-screen">
-                <div class="content flex-1 p-2 mb-96 mt-12 mx-7 overflow-y-auto w-full">
+        <div class="reading bg-bsu-blue flex justify-center items-center h-screen">
+                <div class="content flex-1 p-2 mb-auto mt-12 mx-7 overflow-y-auto w-full">
                     <!--INI COMMENT KO MUNA TO HA PARA MAKITA KO-->
                     <!--<div class="main">
                         <label for="date" >Date</label>
                         <input id="date"  type="date" class="date_field" v-model="temp_date"/>
                     </div>-->
                     <div class="main" v-if="mainmeter">
-                        <label for="main" class="main-label font-bold block mt-12 my-2.5 text-justify"><b class="text-blue-200 font-bold text-lg">Water Source</b></label>
-                        <select id="main"  class="main-dropdown p-2.5 h-14 text-base border-solid border-4 border-blue-300 text-blue-300 box-border rounded w-full" disabled v-model="WaterSource">
+                        <label for="main" class="main-label font-bold block mt-12 my-2.5 text-justify whitespace-nowrap"><b class="text-bsu-borders font-bold text-lg">Water Source</b></label>
+                        <select id="main" class="main-dropdown p-2.5 h-14 text-base rounded-xl border-solid border-4 border-bsu-borders text-bsu-borders box-border rounded w-full" v-model="WaterSource">
                             <option value="deep-well-1">Deep Well 1</option>
                             <option value="deep-well-2">Deep Well 2</option>
                             <option value="deep-well-3">Deep Well 3</option>
@@ -31,23 +31,20 @@
                             <option value="cics-drinking-fountain">CICS DRINKING FOUNTAIN</option>
                             <option value="ssc">SSC</option>
                         </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <i class="fas fa-caret-down text-gray-400"></i>
-                        </div>
                     </div>
                     <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
                         <label for="input_cubic" class="m3-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-blue-300 rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
+                        <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
                     </div>
 
                     <div class="m3-cont-x  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
                         <label for="input_x" class="x-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="flex-1 p-2.5 border-solid border-4 border-blue-300 rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x"/>
+                        <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x"/>
                     </div>
 
                     <div class="m3-cont-x0  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
                         <label for="input_x0" class="x0-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="flex-1 p-2.5 border-solid border-4 border-blue-300 rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x0"/>
+                        <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x0"/>
                     </div>
                     <!--<div class="submit">
                         <button @click="stage_reading=true">SUBMIT</button>
