@@ -54,6 +54,7 @@
           <!-- Text input field -->
           <textarea v-model="userReport" v-if="activeButtonIndex !== null" placeholder="Type your report here..." rows="4"></textarea>
         </div>
+        <router-link to="/events" class="elative px-4 py-2 bg-blue-900 text-white">Events</router-link>
       </div>
     </div>
   </home-page>

@@ -53,24 +53,56 @@
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-3xl font-bold">{{ totalAccumulated }} m3</span>
                 <p class="text-white">Total Accumulated</p>
+                <div class="flex flex-row px-8">
+                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>20234</p>
+                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>15907</p>
+                </div>
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ avgQuarterly }} m3</p>
                 </span>
                 <p class="text-white">AVG Quarterly</p>
+                <div class="flex flex-row px-8">
+                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>20234</p>
+                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>15907</p>
+                </div>
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ avgMonthly }} m3</p>
                 </span>
                 <p class="text-white">AVG Monthly</p>
+                <div class="flex flex-row px-8">
+                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>20234</p>
+                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>15907</p>
+                </div>
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ avgDaily }} m3</p>
                 </span>
                 <p class="text-white">AVG Daily</p>
+                <div class="flex flex-row px-8">
+                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>20234</p>
+                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                    </svg>15907</p>
+                </div>
               </div>
             </div>
           </div> 
@@ -116,7 +148,12 @@
                   <option class="dept_option">Last ...</option>
               </select>
             </div>
-            <v-chart :option="quarter_chart" />
+            <v-chart :option="quarter_chart" @click="togglePopup1"/>
+            <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20"></div>
+            <div v-if="quarPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
+              <h2 class="text-xl font-bold mt-4">Quarterly Record</h2>
+              <button @click="togglePopup1" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
+            </div>
           </div>
           <div class="box col-span-6 border shadow-md mb-10" style="height: 400px;">
             <div class="filter-button flex justify-end mr-4">
@@ -127,7 +164,12 @@
                   <option class="dept_option">Last ...</option>
               </select>
             </div>
-            <v-chart :option="twelve_month_chart" />
+            <v-chart :option="twelve_month_chart" @click="togglePopup2"/>
+            <div v-if="monthlyPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20"></div>
+            <div v-if="monthlyPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
+              <h2 class="text-xl font-bold mt-4">Monthly Record</h2>
+              <button @click="togglePopup2" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
+            </div>
           </div>
         </div>
       </dashboard-content>
@@ -416,7 +458,7 @@ const twelve_month_chart = ref({
   series: [
     {
       data: [36700, 52523, 33542, 44444, 55984, 12345, 54652, 77897, 23455, 23323, 20989, 63464],
-      type: 'line',
+      type: 'bar',
       itemStyle: {
         color: 'blue'
       }
@@ -460,6 +502,19 @@ const showRecord = ref(false);
 const toggleRecord = () => {
   showRecord.value = !showRecord.value;
 };
+
+const quarPopup = ref(false);
+
+const togglePopup1 = () => {
+  quarPopup.value = !quarPopup.value;
+}
+
+const monthlyPopup = ref(false);
+
+const togglePopup2 = () => {
+  monthlyPopup.value = !monthlyPopup.value;
+}
+
 
 </script>
 <script>
