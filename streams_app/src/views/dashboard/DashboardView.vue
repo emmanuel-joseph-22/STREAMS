@@ -200,7 +200,7 @@ import { firestore as db } from './../../main.js';
 const yAxisConsumption = ref([])
 const xAxisDate = ref([])
 const main_meter = ['deep-well-1', 'deep-well-2', 'deep-well-3', 'deep-well-4', 'prime-water']
-const sub_meters = ['CICS-DF', 'FIC-1', 'FIC-2', 'RGR', 'SSC', 'canteen-DF', 'ceafa-faculty', 'executive-lounge']
+//const sub_meters = ['CICS-DF', 'FIC-1', 'FIC-2', 'RGR', 'SSC', 'canteen-DF', 'ceafa-faculty', 'executive-lounge']
 /*
 pedeng ang temp obj ay
 main / sub
@@ -506,8 +506,6 @@ const toggleRecord = () => {
   showRecord.value = !showRecord.value;
 };
 
-<<<<<<< HEAD
-=======
 const quarPopup = ref(false);
 
 const togglePopup1 = () => {
@@ -521,7 +519,6 @@ const togglePopup2 = () => {
 }
 
 
->>>>>>> 77cf86cec0a2357deb76f62e21950bbbf2bfafb8
 </script>
 <script>
 /* eslint-disable */
