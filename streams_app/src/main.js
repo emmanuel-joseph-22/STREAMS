@@ -6,7 +6,7 @@ import './assets/tailwind.css';
 
 /* firebase */
 import { initializeApp } from "firebase/app";
-import { getFirestore/*, initializeFirestore, persistentLocalCache*/ } from "firebase/firestore";
+import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 
 
 /*web app's Firebase configuration*/
@@ -25,9 +25,9 @@ export const db_app = initializeApp(firebaseConfig);
 
 // for offline/caching
 // Defaults to single-tab persistence if no tab manager is specified.
-//initializeFirestore(db_app, { 
-  //localCache: persistentLocalCache(/*settings*/{}) 
-//});
+initializeFirestore(db_app, { 
+  localCache: persistentLocalCache(/*settings*/{}) 
+});
 export const firestore = getFirestore(db_app);
 
 // Provide Firestore instance to all components via provide/inject

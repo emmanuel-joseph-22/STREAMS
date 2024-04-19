@@ -110,11 +110,13 @@
 <!-- daily consumption chart -->
           <div class="col-span-6 box border shadow-md">
             <div class="filter-button flex justify-end mr-4">
-              <select class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
-                  <option value="" disabled selected>Filter</option>
-                  <option class="dept_option text-[#042334]">Latest</option>
-                  <option class="dept_option text-[#042334]">Last ...</option>
-                  <option class="dept_option text-[#042334]">Last ...</option>
+              <select v-model="filter_output" @change="daily_filter" class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
+                  <option value="total_consumption" class="dept_option text-[#042334]">Total Consumption</option>
+                  <option value="prime-water" class="dept_option text-[#042334]">Prime Water</option>
+                  <option value="deep-well-1" class="dept_option text-[#042334]">Deep Well 1</option>
+                  <option value="deep-well-2" class="dept_option text-[#042334]">Deep Well 2</option>
+                  <option value="deep-well-3" class="dept_option text-[#042334]">Deep Well 3</option>
+                  <option value="deep-well-4" class="dept_option text-[#042334]">Deep Well 4</option>
               </select>
             </div>
             <v-chart class="col-span-6 box border shadow-md" style="height: 400px;" :option="consumption_chart"/>
@@ -193,22 +195,17 @@ import {
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
 
-import { doc, getDocs, query, collection /*getDocFromCache*/ } from "firebase/firestore";
-import { firestore as db } from './../../main.js';
+// dito ko lilipat ung mga pag fetch ng data and pagstore ng computed data 
+import { daily_consumption } from './../../dashboard_query.js'
 
-// water consumption
+// daily water consumption
 const yAxisConsumption = ref([])
 const xAxisDate = ref([])
-const main_meter = ['deep-well-1', 'deep-well-2', 'deep-well-3', 'deep-well-4', 'prime-water']
+const daily_water_consumption_container = ref({})
+const filter_output = ref("")
+
+//ewan ko if need pa toh
 //const sub_meters = ['CICS-DF', 'FIC-1', 'FIC-2', 'RGR', 'SSC', 'canteen-DF', 'ceafa-faculty', 'executive-lounge']
-/*
-pedeng ang temp obj ay
-main / sub
--> { pw: { date: 2023blabla, consumption: 232 },
-     dw1: { date: 2023blabla, consumption: 232 },
-     dw2: { date: 2023blabla, consumption: 232 }
-    }
-*/
 
 /* Event listener for window resize
 const handleResize = () => {
@@ -220,32 +217,13 @@ onMounted(() => {
 });*/
 
 onMounted(async () => {
-    
-    const meterRecordsRef = collection(db, 'meter_records');
-    const mainMeterRef = doc(meterRecordsRef, 'main_meter');
-    const collectionRef = collection(mainMeterRef, main_meter[4]);
-    const consumption_query = query(collectionRef)
-
     try{
-      const querySnapshot = await getDocs(consumption_query);
-      const value_temp = []
-      const date_temp = []
-      querySnapshot.forEach((doc) => {
-        // ni format date into text format (e.g., "April 20, 2022")
-        const date = new Date(doc.id)
-        const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' /* pede iadd ung year: 'numeric' */}).format(date);
-        date_temp.push(formattedDate);
-        value_temp.push(doc.data().consumption);
-      });
-      xAxisDate.value = date_temp;
-      yAxisConsumption.value = value_temp;
-      /* eto kapag whole object structure
-      const newDataObject = {}
-      querySnapshot.forEach((doc) => {
-        // Convert the Firestore document data into an object
-        newDataObject[doc.id] = doc.data();
-      }); 
-      dataObject.value = newDataObject;*/
+      await daily_consumption(daily_water_consumption_container);
+      console.log(daily_water_consumption_container)
+      // eslint-disable-next-line
+      xAxisDate.value = daily_water_consumption_container['date'] 
+      // eslint-disable-next-line
+      yAxisConsumption.value = daily_water_consumption_container['total_consumption']
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -516,6 +494,10 @@ const monthlyPopup = ref(false);
 
 const togglePopup2 = () => {
   monthlyPopup.value = !monthlyPopup.value;
+}
+
+const daily_filter = () => {
+  yAxisConsumption.value = daily_water_consumption_container[filter_output.value];
 }
 
 

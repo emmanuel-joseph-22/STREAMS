@@ -32,6 +32,10 @@
                             <option value="ssc">SSC</option>
                         </select>
                     </div>
+                    <div class="main">
+                        <label for="date" >Date</label>
+                        <input id="date"  type="date" class="date_field" v-model="temp_date"/>
+                    </div>
                     <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
                         <label for="input_cubic" class="m3-label mr-2.5 font-bold"></label>
                         <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
@@ -103,7 +107,7 @@ export default {
         },
         async submitForm() {
             const set_date = this.temp_date
-            const waterSource = 'CICS-DF';
+            const waterSource = this.WaterSource;
             const buildingDepartment = this.BuildingDepartment;
             const consumption = this.Consumption;
             //const currentDate = new Date(set_date).toISOString();
@@ -116,7 +120,7 @@ export default {
                 input_x0: this.input_x0
             };
             // temp wait
-            const path = `meter_records/submeter/${waterSource}`
+            const path = `meter_records/main_meter/${waterSource}`
             
             // curr date as doc id
             try {
