@@ -27,15 +27,17 @@ export default {
 
     // Function to handle back button press
     const handleBackButton = () => {
-      // Check if the user is on one of the allowed routes
-      if (allowedRoutes.includes(router.currentRoute.value.path)) {
-        // Show confirmation dialog
-        
-        const confirmation = confirm('Do you want to exit the app?');
-        if (confirmation) {
-          // If the user confirms, exit the app
-          App.exitApp();
+      try {
+        // Check if the user is on one of the allowed routes
+        if (allowedRoutes.includes(router.currentRoute.value.path)) {
+            App.exitApp();
+        } else {
+          // Navigate back to the previous route (equivalent to pressing the back button)
+          router.go(-1);
         }
+      } catch (error) {
+          // Handle any errors that occur during execution
+          console.error('An error occurred:', error);
       }
     };
     onMounted(() => {

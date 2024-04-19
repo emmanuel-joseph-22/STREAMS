@@ -120,7 +120,6 @@ onMounted(async () => {
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter');
     const collectionRef = collection(mainMeterRef, main_meter[4]);
-    console.log(sub_meters)
     const consumption_query = query(collectionRef)
 
     try{
@@ -356,9 +355,6 @@ setInterval(() => {
     showDeepWell.value = !showDeepWell.value;
   }
 }, 5000); // interval : 5s
-
-
-
 
 </script>
 <script>

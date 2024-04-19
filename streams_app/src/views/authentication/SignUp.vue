@@ -43,7 +43,7 @@ import dark_blur from '@/components/darkblur_component.vue';
 import { ref } from "vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 //may something dito
-import { db_app as db } from 'firebase/database';
+import { db_app as db } from '../../main';
 import { useRouter } from 'vue-router';
 const email = ref("");
 const password = ref("");
