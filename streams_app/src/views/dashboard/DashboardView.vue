@@ -8,7 +8,7 @@
         <button @click="togglePopup" class="circle-button absolute top-1 right-0 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">
             <img src="search-button.png" alt="Search icon" class="w-6 h-6">
         </button>
-        <div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20"></div>
+        <div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>
         <div v-if="showPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
           <h2 class="text-xl font-bold mt-4">Search Record</h2>
           <div class="box">
@@ -28,7 +28,8 @@
           </div>
           <button @click="togglePopup" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
         </div>
-<!-- duisplay record -->
+<!-- display record -->
+      <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
         <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
           <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
           <h2 class="text-3xl font-bold mt-14">{{ water_source }}</h2>
@@ -149,12 +150,14 @@
               </select>
             </div>
             <v-chart :option="quarter_chart" @click="togglePopup1"/>
-            <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20"></div>
+
+            <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup1"></div>
             <div v-if="quarPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
               <h2 class="text-xl font-bold mt-4">Quarterly Record</h2>
               <button @click="togglePopup1" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
             </div>
           </div>
+<!-- monthly box -->
           <div class="box col-span-6 border shadow-md mb-10" style="height: 400px;">
             <div class="filter-button flex justify-end mr-4">
               <select class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
@@ -165,7 +168,8 @@
               </select>
             </div>
             <v-chart :option="twelve_month_chart" @click="togglePopup2"/>
-            <div v-if="monthlyPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20"></div>
+
+            <div v-if="monthlyPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup2"></div>
             <div v-if="monthlyPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
               <h2 class="text-xl font-bold mt-4">Monthly Record</h2>
               <button @click="togglePopup2" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
