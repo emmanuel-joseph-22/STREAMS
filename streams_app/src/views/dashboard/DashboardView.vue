@@ -107,24 +107,8 @@
               </div>
             </div>
           </div> 
-<!-- daily consumption chart -->
-          <div class="col-span-6 box border shadow-md">
-            <div class="filter-button flex justify-end mr-4">
-              <select v-model="filter_output" @change="daily_filter" class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
-                  <option value="total_consumption" class="dept_option text-[#042334]">Total Consumption</option>
-                  <option value="prime-water" class="dept_option text-[#042334]">Prime Water</option>
-                  <option value="deep-well-1" class="dept_option text-[#042334]">Deep Well 1</option>
-                  <option value="deep-well-2" class="dept_option text-[#042334]">Deep Well 2</option>
-                  <option value="deep-well-3" class="dept_option text-[#042334]">Deep Well 3</option>
-                  <option value="deep-well-4" class="dept_option text-[#042334]">Deep Well 4</option>
-              </select>
-            </div>
-            <v-chart class="col-span-6 box border shadow-md" style="height: 400px;" :option="consumption_chart"/>
-          </div>
-          <!-- filter option  
-          <div class="filter_toggle">[filter]</div>-->
-           <!-- main meter graph --> 
-          <div class="col-span-4 box border shadow-md">
+          <!-- main meter graph --> 
+                     <div class="col-span-4 box border shadow-md">
             <div class="filter-button flex justify-end mr-4">
               <select class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
                   <option value="" disabled selected>Filter</option>
@@ -140,26 +124,21 @@
               <button class="arrow-button" @click="navigate('right')">►</button>
             </div>
           </div>
-          <!-- specific reading details -->
-<!-- quarterly box -->
-          <div class="box col-span-4 border shadow-md" style="height: 400px;">
+          <!-- daily consumption chart -->
+          <div class="col-span-6 box border shadow-md">
             <div class="filter-button flex justify-end mr-4">
-              <select class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
-                  <option value="" disabled selected>Filter</option>
-                  <option class="dept_option">Latest</option>
-                  <option class="dept_option">Last ...</option>
-                  <option class="dept_option">Last ...</option>
+              <select v-model="filter_output" @change="daily_filter" class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
+                  <option value="total_consumption" class="dept_option text-[#042334]">Total Consumption</option>
+                  <option value="prime-water" class="dept_option text-[#042334]">Prime Water</option>
+                  <option value="deep-well-1" class="dept_option text-[#042334]">Deep Well 1</option>
+                  <option value="deep-well-2" class="dept_option text-[#042334]">Deep Well 2</option>
+                  <option value="deep-well-3" class="dept_option text-[#042334]">Deep Well 3</option>
+                  <option value="deep-well-4" class="dept_option text-[#042334]">Deep Well 4</option>
               </select>
             </div>
-            <v-chart :option="quarter_chart" @click="togglePopup1"/>
-
-            <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup1"></div>
-            <div v-if="quarPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
-              <h2 class="text-xl font-bold mt-4">Quarterly Record</h2>
-              <button @click="togglePopup1" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
-            </div>
+            <v-chart class="col-span-6 box border shadow-md" style="height: 400px;" :option="consumption_chart"/>
           </div>
-<!-- monthly box -->
+          <!-- monthly box -->
           <div class="box col-span-6 border shadow-md mb-10" style="height: 400px;">
             <div class="filter-button flex justify-end mr-4">
               <select class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
@@ -177,6 +156,25 @@
               <button @click="togglePopup2" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
             </div>
           </div>
+          <!-- quarterly box -->
+          <div class="box col-span-4 border shadow-md" style="height: 400px;">
+            <div class="filter-button flex justify-end mr-4">
+              <select class="filter rounded-md p-2 w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
+                  <option value="" disabled selected>Filter</option>
+                  <option class="dept_option">Latest</option>
+                  <option class="dept_option">Last ...</option>
+                  <option class="dept_option">Last ...</option>
+              </select>
+            </div>
+            <v-chart :option="quarter_chart" @click="togglePopup1"/>
+
+            <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup1"></div>
+            <div v-if="quarPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
+              <h2 class="text-xl font-bold mt-4">Quarterly Record</h2>
+              <button @click="togglePopup1" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
+            </div>
+          </div>
+
         </div>
       </dashboard-content>
   </home-page>
