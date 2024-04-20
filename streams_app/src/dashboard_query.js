@@ -12,9 +12,21 @@ export async function daily_consumption(object){
         //temporaries for date and time
         const value_temp = []
         const date = []
+        /* saka na tong previous month pag realtime na ginagawa reading
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth(); // Month is zero-based
+        const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Handle January edge case
+        const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+        const currentDay = currentDate.getDate();
+        
+        const last_month_query = */
         // kapag 30 day count
         const last_30_query = query(collection(mainMeterRef, main_meter[i]), orderBy('__name__', 'desc'), limit(30));
         
+        // saka na pag latest na tlga ung date
+        //const curr_date = new Date().toISOString().split('T')[0];
+        //const daily_query = query(collection(mainMeterRef, main_meter[i]),)
         const querySnapshot = await getDocs(last_30_query);
         console.log(i)
         querySnapshot.forEach(doc => {
