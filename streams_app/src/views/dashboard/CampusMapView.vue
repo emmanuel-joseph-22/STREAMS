@@ -60,31 +60,39 @@
               })
             );
   
-            // Define marker coordinates
-            const markerCoordinates = [
-              [121.075121, 13.783806],
-              [121.075185, 13.783749],
-              [121.075218, 13.783957],
-              [121.075147, 13.784504],
-              [121.075121, 13.784442],
-              [121.074717, 13.784218],
-              [121.074304, 13.784650],
-              [121.074224, 13.785317],
-              [121.073612, 13.785098],
-              [121.074256, 13.784009],
-              [121.074191, 13.783405],
-              [121.074143, 13.783327]
+            // Define marker coordinates and names
+            const markerData = [
+              { coordinate: [121.075121, 13.783806], name: "METRO FIC A" },
+              { coordinate: [121.075185, 13.783749], name: "METRO FIC B" },
+              { coordinate: [121.075218, 13.783957], name: "BEHIND CANTEEN - DRINKING FOUNTAIN" },
+              { coordinate: [121.075147, 13.784504], name: "CEAFA - DEEP WELL 1" },
+              { coordinate: [121.075121, 13.784442], name: "EXECUTIVE LOUNGE SUPPLY" },
+              { coordinate: [121.074717, 13.784218], name: "SUPPLY 2ND FLOOR FACULTY" },
+              { coordinate: [121.074304, 13.784650], name: "SSC SUPPLY" },
+              { coordinate: [121.074224, 13.785317], name: "MAIN PRIME WATER" },
+              { coordinate: [121.073612, 13.785098], name: "CIT METER" },
+              { coordinate: [121.074256, 13.784009], name: "CICS - DRINKING FOUNTAIN" },
+              { coordinate: [121.074191, 13.783405], name: "RGR" },
+              { coordinate: [121.074143, 13.783327], name: "CICS - DEEP WELL 2" },
             ];
   
             // Create and add multiple markers
-            markerCoordinates.forEach((coordinate, index) => {
+            markerData.forEach(({ coordinate, name }) => {
               const marker = new Marker() // Create the marker
                 .setLngLat(coordinate) // Set marker position
                 .addTo(map.value); // Add marker to the map
   
+              // Create a label element
+              const label = document.createElement('div');
+              label.className = 'marker-label';
+              label.textContent = name; // Set the custom label text
+  
+              // Append the label to the marker element
+              marker.getElement().appendChild(label);
+  
               // Add click event listener to the marker
               marker.getElement().addEventListener('click', () => {
-                popupContent.value = `Marker ${index + 1} clicked at ${coordinate[0]}, ${coordinate[1]}!`;
+                popupContent.value = `${name} clicked at ${coordinate[0]}, ${coordinate[1]}!`;
                 showPopup.value = true;
               });
             });
@@ -161,4 +169,17 @@
     border-radius: 5px;
     cursor: pointer;
   }
+  
+  .marker-label {
+    position: absolute;
+    top: -15px; /* Adjust the position of the label */
+    left: -15px; /* Adjust the position of the label */
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #333;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+  }
   </style>
+  
