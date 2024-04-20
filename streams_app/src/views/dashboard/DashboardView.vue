@@ -204,6 +204,9 @@ const xAxisDate = ref([])
 const daily_water_consumption_container = ref({})
 const filter_output = ref("")
 
+// monthly water consumption data
+
+
 //ewan ko if need pa toh
 //const sub_meters = ['CICS-DF', 'FIC-1', 'FIC-2', 'RGR', 'SSC', 'canteen-DF', 'ceafa-faculty', 'executive-lounge']
 
@@ -321,6 +324,10 @@ const consumption_chart = ref({
     data: yAxisConsumption
     }]
 });
+
+//consumption_chart.on('click', 'series', handleBarClick);
+
+
 //submeter_graph
 /*const submeter_graph = ref({
   title: {
