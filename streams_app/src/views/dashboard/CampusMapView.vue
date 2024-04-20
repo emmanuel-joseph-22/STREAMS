@@ -1,89 +1,164 @@
 <template>
     <home-page>
-        <main-content>
-          <div class="map-wrap">
-            <a href="https://www.maptiler.com" class="watermark"><img
-            src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"/></a>
-            <div class="map" ref="mapContainer"></div>
+      <main-content>
+        <div class="map-wrap">
+          <a href="https://www.maptiler.com" class="watermark">
+            <img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"/>
+          </a>
+          <div class="map" ref="mapContainer"></div>
+          <div v-if="showPopup" class="popup">
+            <div class="popup-content">
+              <h3>{{ popupContent }}</h3>
+              <button @click="hidePopup">Close</button>
+            </div>
           </div>
-        </main-content>
+        </div>
+      </main-content>
     </home-page>
-</template>
-
-<script>
-import HomePageView from './HomePageView.vue';
-import dashboard_content from '../../components/dashboard_content.vue'
-import { Map } from 'maplibre-gl';
-import { shallowRef, onUnmounted, markRaw, watch } from 'vue';
-
-
-export default {
-  components: {
-    'home-page': HomePageView,
-    'main-content': dashboard_content
-  },
-  name: "MapComponent",
-  setup() {
-    const mapContainer = shallowRef(null);
-    const map = shallowRef(null);
-
-    // Watch for changes to mapContainer.value
-    watch(
-      () => mapContainer.value,
-      (newValue, oldValue) => {
-        if (newValue && !oldValue) {
-          const apiKey = '3Giyb8izMH7QvlPNRm0I';
-          const initialState = { lng: 121.074490, lat: 13.784249, zoom: 18 };
-          const bounds = [
-            [121.073466, 13.783145], // Southwest coordinates
-            [121.075113, 13.785380] // Northeast coordinates
-          ];
-
-          map.value = markRaw(
-            new Map({
-              container: newValue,
-              style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${apiKey}`,
-              center: [initialState.lng, initialState.lat],
-              zoom: initialState.zoom,
-              minZoom: initialState.zoom,
-              pitch: 45,
-              bearing: -45,
-              maxBounds: bounds,            })
-          );
+  </template>
+  
+  <script>
+  import HomePageView from './HomePageView.vue';
+  import dashboard_content from '../../components/dashboard_content.vue'
+  import { Map, Marker } from 'maplibre-gl';
+  import { shallowRef, onUnmounted, markRaw, watch, ref } from 'vue';
+  
+  export default {
+    components: {
+      'home-page': HomePageView,
+      'main-content': dashboard_content
+    },
+    name: "MapComponent",
+    setup() {
+      const mapContainer = shallowRef(null);
+      const map = shallowRef(null);
+      const showPopup = ref(false);
+      const popupContent = ref('');
+  
+      // Watch for changes to mapContainer.value
+      watch(
+        () => mapContainer.value,
+        (newValue, oldValue) => {
+          if (newValue && !oldValue) {
+            const apiKey = '3Giyb8izMH7QvlPNRm0I';
+            const initialState = { lng: 121.074490, lat: 13.784249, zoom: 15};
+            const bounds = [
+              [121.073247, 13.783082], // Southwest coordinates
+              [121.075437, 13.785484]  // Northeast coordinates
+            ];
+  
+            map.value = markRaw(
+              new Map({
+                container: newValue,
+                style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${apiKey}`,
+                center: [initialState.lng, initialState.lat],
+                zoom: initialState.zoom,
+                minZoom: initialState.zoom,
+                pitch: 45,
+                bearing: -45,
+                maxBounds: bounds
+              })
+            );
+  
+            // Define marker coordinates
+            const markerCoordinates = [
+              [121.075121, 13.783806],
+              [121.075185, 13.783749],
+              [121.075218, 13.783957],
+              [121.075147, 13.784504],
+              [121.075121, 13.784442],
+              [121.074717, 13.784218],
+              [121.074304, 13.784650],
+              [121.074224, 13.785317],
+              [121.073612, 13.785098],
+              [121.074256, 13.784009],
+              [121.074191, 13.783405],
+              [121.074143, 13.783327]
+            ];
+  
+            // Create and add multiple markers
+            markerCoordinates.forEach((coordinate, index) => {
+              const marker = new Marker() // Create the marker
+                .setLngLat(coordinate) // Set marker position
+                .addTo(map.value); // Add marker to the map
+  
+              // Add click event listener to the marker
+              marker.getElement().addEventListener('click', () => {
+                popupContent.value = `Marker ${index + 1} clicked at ${coordinate[0]}, ${coordinate[1]}!`;
+                showPopup.value = true;
+              });
+            });
+          }
         }
-      }
-    );
-    onUnmounted(() => {
-      map.value?.remove();
-    });
-
-    return {
-      map,
-      mapContainer
-    };
+      );
+  
+      const hidePopup = () => {
+        showPopup.value = false;
+      };
+  
+      onUnmounted(() => {
+        map.value?.remove();
+      });
+  
+      return {
+        map,
+        mapContainer,
+        showPopup,
+        popupContent,
+        hidePopup
+      };
+    }
+  };
+  </script>
+  
+  <style scoped>
+  @import '~maplibre-gl/dist/maplibre-gl.css';
+  
+  .map-wrap {
+    position: center;
+    width: 100%;
+    height: calc(100vh - 77px); /* calculate height of the screen minus the heading */
   }
-};
-</script>
-
-<style scoped>
-@import '~maplibre-gl/dist/maplibre-gl.css';
-
-.map-wrap {
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 77px); /* calculate height of the screen minus the heading */
-}
-
-.map {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.watermark {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  z-index: 999;
-}
-</style>
+  
+  .map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .watermark {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 999;
+  }
+  
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    text-align: center;
+  }
+  
+  .popup-content h3 {
+    margin-bottom: 10px;
+  }
+  
+  .popup-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  </style>
