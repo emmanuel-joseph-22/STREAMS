@@ -48,3 +48,27 @@ export async function daily_consumption(object){
     object['total_consumption'] = total
     return object
 }
+/*
+export async function monthly_consumption(object){
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear().toString();
+    const currentMonth = (currentDate.getMonth() + 1)
+    for(let i = 0; i < currentMonth; i++){
+        // set the search substring
+        const substringID = currentYear + '-' + currentMonth.toString().padStart(2, '0');
+        // for main meter
+        for(let j = 0; j < main_meter.length; j++){
+            // dito query  
+            // Create a query to search for documents containing the specified substring
+            const monthly_query = query(collection(mainMeterRef, main_meter[j]), where("searchSubstrings", "array-contains", substringID));
+            // snapshot loop then increment the value of consumption
+            // store final into the object 
+        }
+        // store the total
+        // for loop for submeters
+        // store the total 
+    }
+    return object
+}
+export async function quarterly_consumption(object){
+}*/

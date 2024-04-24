@@ -86,7 +86,7 @@
                 </div>
                 <div class="mobile_link">
                     <router-link to="/reading">
-                        <img class="mobile_icon" src="metro.png" />
+                        <img class="mobile_icon" src="reading_icon.png" />
                     </router-link>            
                 </div>
                 <div class="mobile_link">

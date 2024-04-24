@@ -32,23 +32,24 @@
                             <option value="ssc">SSC</option>
                         </select>
                     </div>
+                    <!--
                     <div class="main">
                         <label for="date" >Date</label>
                         <input id="date"  type="date" class="date_field" v-model="temp_date"/>
-                    </div>
+                    </div>-->
                     <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
                         <label for="input_cubic" class="m3-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_cubic" type="text" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
+                        <input autofocus id="input_cubic" type="tel" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
                     </div>
 
                     <div class="m3-cont-x  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
                         <label for="input_x" class="x-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_x" type="text" name="x" required placeholder="x0.001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x"/>
+                        <input autofocus id="input_x" type="tel" name="x" required placeholder="x0.001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x"/>
                     </div>
 
                     <div class="m3-cont-x0  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
                         <label for="input_x0" class="x0-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_x0" type="text" name="x0" required placeholder="x0.0001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x0"/>
+                        <input autofocus id="input_x0" type="tel" name="x0" required placeholder="x0.0001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x0"/>
                     </div>
                     <!--<div class="submit">
                         <button @click="stage_reading=true">SUBMIT</button>
@@ -78,7 +79,7 @@ export default {
     },  
     data() {
         return {
-            temp_date: '',
+            //temp_date: '',
             WaterSource: '',
             BuildingDepartment: '',
             Consumption: '',
@@ -96,21 +97,21 @@ export default {
                 this.submitForm();
             } else {
                 console.log("Submit cancelled")
-                this.temp_date = ''
-                this.WaterSource = ''
-                this.BuildingDepartment = ''
-                this.Consumption = ''
-                this.input_x = ''
-                this.input_x0 = ''
+                //this.temp_date = ''
             }
+            this.WaterSource = '';
+            this.BuildingDepartment = '';
+            this.Consumption = '';
+            this.input_x = '';
+            this.input_x0 = '';
             this.stage_reading = false;
         },
         async submitForm() {
-            const set_date = this.temp_date
+            //const set_date = this.temp_date
             const waterSource = this.WaterSource;
             const buildingDepartment = this.BuildingDepartment;
             const consumption = this.Consumption;
-            //const currentDate = new Date(set_date).toISOString();
+            const currentDate = new Date().toISOString();
 
             // Construct the data object
             const data = {
@@ -124,7 +125,7 @@ export default {
             
             // curr date as doc id
             try {
-                await setDoc(doc(collection(db, path), set_date), data);
+                await setDoc(doc(collection(db, path), currentDate), data);
                 console.log("Meter record stored successfully!");
             /*try {
                 const mainMeterSnapshot = await getDoc(mainMeterRef);
@@ -140,13 +141,6 @@ export default {
                     // Now you can perform operations on the collectionRef
                 }
                 */
-                //reset the values after
-                this.temp_date = ''
-                this.WaterSource = ''
-                this.BuildingDepartment = ''
-                this.Consumption = ''
-                this.input_x = ''
-                this.input_x0 = ''
             } catch(error) {
                 console.error("Error storing meter record: ", error);
             }
