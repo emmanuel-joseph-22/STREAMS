@@ -3,7 +3,6 @@
     <!--<img src="image23.png">-->
     <router-view/>
   </div>
-  
 </template>
 
 <style>
@@ -18,27 +17,37 @@
 </style>
 
 <script>
-import { Capacitor } from '@capacitor/core'; // Import Capacitor from Capacitor
-
+import { App } from '@capacitor/app';
+import router from './router/index';
+import { onMounted, onUnmounted } from 'vue';
 export default {
-  mounted() {
-    document.addEventListener('backbutton', this.handleBackButton);
-  },
-  unmounted() {
-    document.removeEventListener('backbutton', this.handleBackButton);
-  },
-  methods: {
-    handleBackButton() {
-      if (Capacitor.isNative) {
-        if (this.$router.currentRoute.path !== '/') {
-          this.$router.go(-1); // Navigate back if not on the home page
+  setup() {
+    const allowedRoutes = ['/home', '/reading', '/map'];
+
+    // Function to handle back button press
+    const handleBackButton = () => {
+      try {
+        // Check if the user is on one of the allowed routes
+        if (allowedRoutes.includes(router.currentRoute.value.path)) {
+            App.exitApp();
         } else {
-          if (window.confirm('Do you want to exit the app?')) {
-            navigator.app.exitApp(); // Exit the app if on the home page
-          }
+          // Navigate back to the previous route (equivalent to pressing the back button)
+          router.go(-1);
         }
+      } catch (error) {
+          // Handle any errors that occur during execution
+          console.error('An error occurred:', error);
       }
-    }
+    };
+    onMounted(() => {
+       // Add listener for back button
+        App.addListener('backButton', handleBackButton);
+    });
+    // Remove listener when component is unmounted or when leaving allowed routes
+    onUnmounted(() => {
+      App.removeAllListeners();
+    });
   }
-};
+}
+
 </script>

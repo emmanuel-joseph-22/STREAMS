@@ -7,12 +7,13 @@ import Password from '../views/AccountSettings/PasswordView.vue';
 import DefName from '../views/AccountSettings/DefNameView.vue';
 import Feedback from '../views/others/FeedbackView.vue';
 import Tips from '../views/others/TipsView.vue';
+import Events from '../views/dashboard/EventsView.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/home'
     },
     {
       path: '/login',
@@ -68,6 +69,11 @@ const routes = [
       path: '/tips',
       name: 'tips',
       component: Tips
+    },
+    {
+      path: '/events',
+      name: 'events',
+      component: Events
     }
 ]
 
