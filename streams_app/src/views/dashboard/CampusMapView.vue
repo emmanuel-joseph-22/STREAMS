@@ -2,9 +2,6 @@
     <home-page>
       <main-content>
         <div class="map-wrap">
-          <a href="https://www.maptiler.com" class="watermark">
-            <img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"/>
-          </a>
           <div class="map" ref="mapContainer"></div>
           <div v-if="showPopup" class="popup">
             <div class="popup-content">
@@ -22,6 +19,9 @@
   import dashboard_content from '../../components/dashboard_content.vue'
   import { Map, Marker } from 'maplibre-gl';
   import { shallowRef, onUnmounted, markRaw, watch, ref } from 'vue';
+  import { Capacitor } from '@capacitor/core';
+  import { Geolocation } from '@capacitor/geolocation';
+  
   
   export default {
     components: {
@@ -34,11 +34,56 @@
       const map = shallowRef(null);
       const showPopup = ref(false);
       const popupContent = ref('');
-  
+
+    async function checkPermissions() {
+      const permStatus = await Geolocation.checkPermissions();
+        if (permStatus.location === 'denied') {
+          await Geolocation.requestPermissions();
+  }
+}
+    async function getCurrentLocation() {
+      // Check if the app is running on a mobile device
+      if (Capacitor.getPlatform() === 'android' || Capacitor.getPlatform() === 'ios') {
+        await checkPermissions();
+        try {
+          const coordinates = await Geolocation.getCurrentPosition();
+          if (isWithinBounds(coordinates.coords)) {
+            centerMapOnLocation(coordinates.coords);
+          } else {
+            console.log("User's location is outside the defined map bounds.");
+          }
+          return coordinates.coords;
+        } catch (error) {
+          console.error('Error getting location:', error);
+        }
+      } else {
+        console.log("Geolocation skipped: not on a mobile device.");
+      }
+    }
+
+    function isWithinBounds(coords) {
+      const bounds = map.value.getMaxBounds(); // use the map's set bounds
+      return (
+        coords.longitude >= bounds.getWest() &&
+        coords.longitude <= bounds.getEast() &&
+        coords.latitude >= bounds.getSouth() &&
+        coords.latitude <= bounds.getNorth()
+      );
+    }
+
+    function centerMapOnLocation(coords) {
+      if (map.value) {
+        map.value.flyTo({
+          center: [coords.longitude, coords.latitude],
+          essential: true
+        });
+      }
+    }
+
       // Watch for changes to mapContainer.value
       watch(
         () => mapContainer.value,
-        (newValue, oldValue) => {
+        async (newValue, oldValue) => {
           if (newValue && !oldValue) {
             const apiKey = '3Giyb8izMH7QvlPNRm0I';
             const initialState = { lng: 121.074490, lat: 13.784249, zoom: 15};
@@ -46,7 +91,7 @@
               [121.073247, 13.783082], // Southwest coordinates
               [121.075437, 13.785484]  // Northeast coordinates
             ];
-  
+
             map.value = markRaw(
               new Map({
                 container: newValue,
@@ -75,7 +120,7 @@
               { coordinate: [121.074191, 13.783405], name: "RGR" },
               { coordinate: [121.074143, 13.783327], name: "CICS - DEEP WELL 2" },
             ];
-  
+              
             // Create and add multiple markers
             markerData.forEach(({ coordinate, name }) => {
               const marker = new Marker() // Create the marker
@@ -96,6 +141,7 @@
                 showPopup.value = true;
               });
             });
+            await getCurrentLocation();
           }
         }
       );
@@ -182,4 +228,3 @@
     font-weight: bold;
   }
   </style>
-  
