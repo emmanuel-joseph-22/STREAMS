@@ -251,6 +251,7 @@ const PW_BarChart = async () => {
             fontWeight: 'bold' // Make the label bold
           },
           nameGap: 35, // Move the label outward
+          formatter: '{value} m3',
           data: dates
         },
         yAxis: {
@@ -266,7 +267,10 @@ const PW_BarChart = async () => {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          }
+          },
+          formatter: function(params) {
+            return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+      }
         },
         series: [{
           name: 'Prime Water Consumption',
@@ -310,6 +314,7 @@ const DW1_BarChart = async () => {
             fontWeight: 'bold' // Make the label bold
           },
           nameGap: 35, // Move the label outward
+          formatter: '{value} m3',
           data: dates
         },
         yAxis: {
@@ -325,7 +330,10 @@ const DW1_BarChart = async () => {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          }
+          },
+          formatter: function(params) {
+            return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+      }
         },
         series: [{
           name: 'DW1 Consumption',
@@ -369,6 +377,7 @@ const DW2_BarChart = async () => {
             fontWeight: 'bold' // Make the label bold
           },
           nameGap: 35, // Move the label outward
+          formatter: '{value} m3',
           data: dates
         },
         yAxis: {
@@ -384,7 +393,10 @@ const DW2_BarChart = async () => {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          }
+          },
+          formatter: function(params) {
+            return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+      }
         },
         series: [{
           name: 'DW2 Consumption',

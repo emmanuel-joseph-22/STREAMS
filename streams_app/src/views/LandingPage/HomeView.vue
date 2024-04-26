@@ -3,7 +3,7 @@
     <header>
       <div class="logo">
         <img src="aquatech_v1.png" alt="Aquatech Logo">
-        <img src="Batangas_State_Logo 2.png" alt="Batangas State Logo">
+        <img src="Batangas_State_Logo_2.png" alt="Batangas State Logo">
         <img src="sdo.png" alt="SDO Logo">
       </div>
       <nav>
@@ -57,11 +57,34 @@
         <img src="mountain.png" alt="Mountain Image" class="mountain-image">
       </section>
 
-
       <section id="contact" class="full-screen dark-color-3">
         <h2>STREAMS</h2>
-        
-         <img src="paint.png" alt="splash Image" class="paint-image">
+        <img src="paint.png" alt="Splash Image" class="paint-image">
+
+        <!-- Contact Form -->
+
+        <div class="contact-info">
+          <!-- Facebook Link -->
+          <div class="contact-item">
+            <img src="fb.png" alt="Facebook Icon" class="contact-icon">
+            <span><a href="https://www.facebook.com/your-facebook-link" target="_blank">Your Facebook Page</a></span>
+          </div>
+          <!-- Address -->
+          <div class="contact-item">
+            <img src="address.png" alt="Address Icon" class="contact-icon">
+            <span>123 Your Street, Your City, Your State, Your Zip</span>
+          </div>
+          <!-- Phone -->
+          <div class="contact-item">
+            <img src="phone.png" alt="Phone Icon" class="contact-icon">
+            <span>(123) 456-7890</span>
+          </div>
+
+          <div class="contact-item">
+            <img src="mail.png" alt="Phone Icon" class="contact-icon">
+            <span>aaronpogi@gmail.com</span>
+          </div>
+        </div>
 
       </section>
 
@@ -99,20 +122,17 @@ export default {
     };
   },
   mounted() {
-    
     window.addEventListener('scroll', this.handleScroll);
   },
   unmounted() {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
-    // Move to the previous slide
     prevSlide() {
       if (this.currentSlide > 0) {
         this.currentSlide--;
       }
     },
-    // Move to the next slide
     nextSlide() {
       if (this.currentSlide < this.slides.length - 1) {
         this.currentSlide++;
@@ -121,203 +141,100 @@ export default {
     handleScroll() {
       const scrollPosition = window.scrollY || window.pageYOffset;
 
-// Get the mountain image element
-const mountainImage = document.querySelector('.mountain-image');
+      // Scroll handling logic for various images and text overlays
+      this.handleImageScrollEffects(scrollPosition);
 
-// Get the section containing the mountain image
-const aboutSection = document.querySelector('#about');
-
-if (aboutSection) {
-  // Calculate the top and bottom position of the about section relative to the current scroll position
-  const aboutTop = aboutSection.getBoundingClientRect().top + window.scrollY;
-  const aboutBottom = aboutTop + aboutSection.offsetHeight;
-
-  // Check if the scroll position is within the bounds of the about section
-  if (scrollPosition >= aboutTop && scrollPosition <= aboutBottom) {
-    // Calculate the halfway point of the about section
-    const halfwayPoint = aboutTop + (aboutSection.offsetHeight / 1);
-
-    // Calculate the scroll factor
-    let scrollFactor;
-    if (scrollPosition <= halfwayPoint) {
-      // Normal scroll effect before the halfway point
-      scrollFactor = (scrollPosition - aboutTop) * 1.9;
-    } else {
-      // Reverse scroll effect after the halfway point
-      scrollFactor = (aboutBottom - scrollPosition) * -1.9;
-    }
-
-    // Apply the scroll effect to the mountain image
-    if (mountainImage) {
-      mountainImage.style.transform = `translateY(${scrollFactor}px)`;
-    }
-  } else {
-    // Reset the mountain image position when the about section is not in view
-    if (mountainImage) {
-      mountainImage.style.transform = 'translateY(0)';
-    }
-  }
-}
-
-// Get the land image element
-const landImage = document.querySelector('.land-image');
-const benchImage = document.querySelector('.bench-image');
-// Get the section containing the land image
-const about3Section = document.querySelector('#about3');
-
-if (about3Section) {
-  // Calculate the top and bottom position of the about3 section relative to the current scroll position
-  const about3Top = about3Section.getBoundingClientRect().top + window.scrollY;
-  const about3Bottom = about3Top + about3Section.offsetHeight;
-
-  // Check if the scroll position is within the bounds of the about3 section
-  if (scrollPosition >= about3Top && scrollPosition <= about3Bottom) {
-    // Calculate the halfway point of the about3 section
-    const halfwayPoint = about3Top + (about3Section.offsetHeight / 2);
-
-    // Calculate the scroll factor
-    let scrollFactor;
-    let scrollFactor_1;
-    if (scrollPosition <= halfwayPoint) {
-      // Normal scroll effect before the halfway point
-      scrollFactor = (scrollPosition - about3Top) * 1.9;
-      scrollFactor_1 = (scrollPosition - about3Top) * 2.5;
-    } else {
-      // Reverse scroll effect after the halfway point
-      scrollFactor = (about3Bottom - scrollPosition) * -1.9;
-      scrollFactor_1 = (about3Bottom - scrollPosition) * -1.9;
-    }
-
-    // Apply the scroll effect to the land image
-    if (landImage) {
-      landImage.style.transform = `translateY(${scrollFactor}px)`;
-    }
-    if (benchImage) {
-      benchImage.style.transform = `translateY(${scrollFactor_1}px)`;
-    }
-  } else {
-    // Reset the land image position when the about3 section is not in view
-    if (benchImage) {
-      benchImage.style.transform = 'translateY(0)';
-    }
-  }
-  
-}
-
-// Get the mountain image element
-const kiteImage = document.querySelector('.kite-image');
-
-// Get the section containing the mountain image
-const about4Section = document.querySelector('#about4');
-
-if (about4Section) {
-  // Calculate the top and bottom position of the about section relative to the current scroll position
-  const about4Top = about4Section.getBoundingClientRect().top + window.scrollY;
-  const about4Bottom = about4Top + about4Section.offsetHeight;
-
-  // Check if the scroll position is within the bounds of the about section
-  if (scrollPosition >= about4Top && scrollPosition <= about4Bottom) {
-    // Calculate the halfway point of the about section
-    const halfwayPoint = about4Top + (about4Section.offsetHeight / 1);
-
-    // Calculate the scroll factor
-    let scrollFactor;
-    if (scrollPosition <= halfwayPoint) {
-      // Normal scroll effect before the halfway point
-      scrollFactor = (scrollPosition - about4Top) * 1.9;
-    } else {
-      // Reverse scroll effect after the halfway point
-      scrollFactor = (about4Bottom - scrollPosition) * -1.9;
-    }
-
-    // Apply the scroll effect to the mountain image
-    if (kiteImage) {
-      kiteImage.style.transform = `translateY(${scrollFactor}px)`;
-    }
-  }
-}
+      // Limit the scroll position to the bottom of the FAQ section if the user scrolls past it
+      const faqSection = document.querySelector('#faq');
+      if (faqSection) {
+        const faqBottom = faqSection.getBoundingClientRect().bottom + window.scrollY;
+        if (scrollPosition > faqBottom - window.innerHeight) {
+          window.scrollTo(0, faqBottom - window.innerHeight);
+        }
+      }
+    },
+    handleImageScrollEffects(scrollPosition) {
+      // Adjust vertical and horizontal positions of various images and text based on scroll position
+      const waterImage = document.querySelector('.water-image');
+      const moonImage = document.querySelector('.moon-image');
+      const mountainImage = document.querySelector('.mountain-image');
+      const paintImage = document.querySelector('.paint-image');
+      const textOverlay = document.querySelector('.text-overlay');
+      const contactSection = document.querySelector('#contact');
+      const SText = document.querySelector('.dark-color-3 h2');
+      const conInfo = document.querySelector('.contact-info');
 
 
+      if (SText) {
+        // Use a smaller transformation factor for the parallax effect
+        // This will make the moon image move more slowly as you scroll down
+        SText.style.transform = `translateX(-${scrollPosition * 0.9}px)`;
+      }
 
-  // Adjust the vertical position of the water image based on the scroll position
-  const waterImage = document.querySelector('.water-image');
-  if (waterImage) {
-    waterImage.style.transform = `translateY(${scrollPosition * 1.9}px)`;
-  }
+      // Handle water image scroll effect
+      if (waterImage) {
+        waterImage.style.transform = `translateY(${scrollPosition * 1.9}px)`;
+      }
 
-  // Adjust the vertical position of the moon image based on the scroll position for parallax effect
-  const moonImage = document.querySelector('.moon-image');
-  if (moonImage) {
-    // Use a smaller transformation factor for the parallax effect
-    // This will make the moon image move more slowly as you scroll down
-    moonImage.style.transform = `translateX(${scrollPosition * 0.5}px)`;
-  }
+      // Handle moon image scroll effect
+      if (moonImage) {
+        moonImage.style.transform = `translateX(${scrollPosition * 0.5}px)`;
+      }
 
-  
+      // Handle mountain image scroll effect
+      if (mountainImage) {
+        const aboutSection = document.querySelector('#about');
+        const aboutTop = aboutSection.getBoundingClientRect().top + window.scrollY;
+        const aboutBottom = aboutTop + aboutSection.offsetHeight;
+        if (scrollPosition >= aboutTop && scrollPosition <= aboutBottom) {
+          const halfwayPoint = aboutTop + (aboutSection.offsetHeight / 1);
+          let scrollFactor;
+          if (scrollPosition <= halfwayPoint) {
+            scrollFactor = (scrollPosition - aboutTop) * 1.9;
+          } else {
+            scrollFactor = (aboutBottom - scrollPosition) * -1.9;
+          }
+          mountainImage.style.transform = `translateY(${scrollFactor}px)`;
+        } else {
+          mountainImage.style.transform = 'translateY(0)';
+        }
+      }
 
-  const SText = document.querySelector('.dark-color-3 h2');
-  if (SText) {
-    // Use a smaller transformation factor for the parallax effect
-    // This will make the moon image move more slowly as you scroll down
-    SText.style.transform = `translateX(-${scrollPosition * 0.9}px)`;
-  }
+      // Handle paint image scroll effect
+      if (paintImage && conInfo) {
+        const contactSectionTop = contactSection.getBoundingClientRect().top + window.scrollY;
+        const contactSectionBottom = contactSectionTop + contactSection.offsetHeight;
+        if (scrollPosition >= contactSectionTop && scrollPosition <= contactSectionBottom) {
+          const halfwayPoint = contactSectionTop + (contactSection.offsetHeight / 2);
+          let scrollFactor;
+          let scrollFactor_1;
+          if (scrollPosition <= halfwayPoint) {
+            scrollFactor = (scrollPosition - contactSectionTop) * 2.3;
+            scrollFactor_1 = (scrollPosition - contactSectionTop) * 1.2;
+          } else {
+            scrollFactor = (contactSectionBottom - scrollPosition) * -2.3;
+            scrollFactor_1 = (contactSectionBottom - scrollPosition) * -1.2;
+          }
+          paintImage.style.transform = `translateY(${scrollFactor}px)`;
+          conInfo.style.transform = `translateX(${scrollFactor_1}px)`;
+          
+        } else {
+          paintImage.style.transform = 'translateY(0)';
+          conInfo.style.transform = 'translateX(0)';
+        }
+      }
 
-  // Get the land image element
-const paintImage = document.querySelector('.paint-image');
-
-// Get the section containing the land image
-const contactSection = document.querySelector('#contact');
-
-if (contactSection) {
-  // Calculate the top and bottom position of the about3 section relative to the current scroll position
-  const about3Top = contactSection.getBoundingClientRect().top + window.scrollY;
-  const about3Bottom = about3Top + contactSection.offsetHeight;
-
-  // Check if the scroll position is within the bounds of the about3 section
-  if (scrollPosition >= about3Top && scrollPosition <= about3Bottom) {
-    // Calculate the halfway point of the about3 section
-    const halfwayPoint = about3Top + (contactSection.offsetHeight / 2);
-
-    // Calculate the scroll factor
-    let scrollFactor;
-
-    if (scrollPosition <= halfwayPoint) {
-      // Normal scroll effect before the halfway point
-      scrollFactor = (scrollPosition - about3Top) * 1.9;
-    } else {
-      // Reverse scroll effect after the halfway point
-      scrollFactor = (about3Bottom - scrollPosition) * -1.9;
-    }
-
-    // Apply the scroll effect to the land image
-    if (paintImage) {
-      paintImage.style.transform = `translateY(${scrollFactor}px)`;
-    }
-  } 
-}
-
-
-  // Adjust the horizontal position of the text overlay based on the scroll position
-  const textOverlay = document.querySelector('.text-overlay');
-  if (textOverlay) {
-    textOverlay.style.transform = `translateX(-${scrollPosition * 0.5}px)`;
-  }
-
-  // Limit the scroll position to the bottom of the FAQ section if the user scrolls past it
-  const faqSection = document.querySelector('#faq');
-  if (faqSection) {
-    const faqBottom = faqSection.getBoundingClientRect().bottom + window.scrollY;
-    if (scrollPosition > faqBottom - window.innerHeight) {
-      window.scrollTo(0, faqBottom - window.innerHeight);
-    }
-  }
-}
-
-  }
+      // Handle text overlay scroll effect
+      if (textOverlay) {
+        textOverlay.style.transform = `translateX(-${scrollPosition * 0.5}px)`;
+      }
+    },
+  },
 };
 </script>
 
 <style>
+/* Existing styles from your provided code */
 /* CSS styles */
 body {
   font-family: Arial, sans-serif;
@@ -596,6 +513,7 @@ section.full-screen {
 }
 
 .dark-color-3 h2{
+  position: absolute;
   font-size: 5em;
   font-weight: 600;
   margin-left: 130%;
@@ -605,6 +523,34 @@ section.full-screen {
   -webkit-text-stroke: 2px #030303; /* Neon blue stroke */
 }
 
+.contact-info {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 60%; /* Move the form to the right side */
+}
 
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Space between each contact item */
+}
 
+.contact-icon {
+  background-color: #fffcfc;
+  border-radius: 40%;
+  width: 24px; /* Adjust icon width as needed */
+  height: 24px; /* Adjust icon height as needed */
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.contact-item span {
+  color: #fff; /* Text color */
+}
+
+.contact-item a {
+  color: #fff; /* Text color */
+  text-decoration: none; /* Remove underline */
+}
 </style>

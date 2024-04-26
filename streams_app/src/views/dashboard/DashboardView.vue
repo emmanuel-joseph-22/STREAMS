@@ -1,6 +1,6 @@
 <template>
   <home-page>
-      <header-bar style="background-color: #0E5E7B;">
+      <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
       </header-bar>
       <dashboard-content>
@@ -167,7 +167,7 @@
               </select>
             </div>
             <v-chart :option="quarter_chart" @click="togglePopup1"/>
-
+            <!-- pop up-->
             <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup1"></div>
             <div v-if="quarPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
               <h2 class="text-xl font-bold mt-4">Quarterly Record</h2>
@@ -257,7 +257,7 @@ const pie_main_meter = ref({
   tooltip: {
     trigger: "item",
     // format including percentage
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
+    formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
   },
   legend: {
     top: '7%',
@@ -301,53 +301,7 @@ const pie_main_meter = ref({
     }
   ]
 });
-//line chart ni consumption
-const consumption_chart = ref({
-  title: {
-    text: 'Daily Water Consumption',
-    left: 'center'
-  },
-  tooltip: {
-    trigger: 'axis'
-  },
-  xAxis: [{
-    type: 'category',
-    data: xAxisDate
-  }],
-  yAxis: {
-    type: 'value'
-  },
-  series: [{
-    name: 'Data',
-    type: 'bar',
-    data: yAxisConsumption
-    }]
-});
-
-//consumption_chart.on('click', 'series', handleBarClick);
-
-
-//submeter_graph
-/*const submeter_graph = ref({
-  title: {
-    text: 'Submeters',
-    left: 'center'
-  },
-  xAxis: {
-    type: 'category',
-    data: sub_meters
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: [
-    {
-      data: [18.5606, 12.4779, 259.8951, 1.1255, 1.149901, 29.6338, 6.242, 122.9587],
-      type: 'bar'
-    }
-  ]
-  
-});*/
+//submeter graph
 const submeter_graph = ref({
   title: {
     text: "Submeters",
@@ -356,7 +310,7 @@ const submeter_graph = ref({
   tooltip: {
     trigger: "item",
     // format including percentage
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
+    formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
   },
   legend: {
     top: '7%',
@@ -404,21 +358,147 @@ const submeter_graph = ref({
     }
   ]
 });
-//quarter chart
-const quarter_chart = ref({
+//line chart ni consumption
+const consumption_chart = ref({
   title: {
-    text: 'Q1 2024',
+    text: 'Daily Water Consumption',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis',
+    formatter: function(params) {
+      return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+    }
+  },
+  xAxis: [{
+    type: 'category',
+    data: xAxisDate,
+    name: 'Date',
+    nameLocation: 'center', 
+    nameTextStyle: {
+      fontWeight: 'bold' 
+    },
+      nameGap: 35,
+  }],
+  yAxis: {
+    type: 'value',
+    name: 'Cubic Meter (m3)',
+    nameLocation: 'center', 
+    nameTextStyle: {
+      fontWeight: 'bold' 
+    },
+      nameGap: 35, 
+  },
+  series: [{
+    name: 'Data',
+    type: 'bar',
+    data: yAxisConsumption
+    }]
+});
+
+//consumption_chart.on('click', 'series', handleBarClick);
+
+
+//submeter_graph
+/*const submeter_graph = ref({
+  title: {
+    text: 'Submeters',
     left: 'center'
   },
   xAxis: {
     type: 'category',
-    data: ['Jan', 'Feb', 'March']
+    data: sub_meters
   },
   yAxis: {
     type: 'value'
   },
   series: [
     {
+      data: [18.5606, 12.4779, 259.8951, 1.1255, 1.149901, 29.6338, 6.242, 122.9587],
+      type: 'bar'
+    }
+  ]
+  
+});*/
+
+//monthly chart
+const twelve_month_chart = ref({
+  title: {
+    text: 'Monthly Water Consumption',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis',
+    formatter: function(params) {
+      return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+    }
+  },
+  xAxis: {
+    type: 'category',
+    data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    name: 'Months',
+    nameLocation: 'center', 
+    nameTextStyle: {
+      fontWeight: 'bold' 
+    },
+      nameGap: 35,
+  },
+  yAxis: {
+    type: 'value',
+    name: 'Cubic Meter (m3)',
+    nameLocation: 'center', 
+    nameTextStyle: {
+      fontWeight: 'bold' 
+    },
+      nameGap: 35,
+  },
+  series: [
+    {
+      name: 'Data',
+      data: [36700, 52523, 33542, 44444, 55984, 12345, 54652, 77897, 23455, 23323, 20989, 63464],
+      type: 'bar',
+      itemStyle: {
+        color: 'blue'
+      }
+    }
+  ]
+  
+});
+
+//quarter chart
+const quarter_chart = ref({
+  title: {
+    text: 'Quarterly',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis',
+    formatter: function(params) {
+      return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+    }
+  },
+  xAxis: {
+    type: 'category',
+    data: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+    name: 'Quarters',
+    nameLocation: 'center', 
+    nameTextStyle: {
+      fontWeight: 'bold' 
+    },
+      nameGap: 35,
+  },
+  yAxis: {
+    type: 'value',
+    name: 'Cubic Meter (m3)',
+    nameLocation: 'center', 
+    nameTextStyle: {
+      fontWeight: 'bold' 
+    },
+      nameGap: 35,
+  },
+  series: [
+    {
+      name: 'Data',
       data: [36700, 52523, 33542],
       type: 'bar',
       itemStyle: {
@@ -429,30 +509,7 @@ const quarter_chart = ref({
   
 });
 
-//quarter chart
-const twelve_month_chart = ref({
-  title: {
-    text: 'Monthly Water Consumption',
-    left: 'center'
-  },
-  xAxis: {
-    type: 'category',
-    data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: [
-    {
-      data: [36700, 52523, 33542, 44444, 55984, 12345, 54652, 77897, 23455, 23323, 20989, 63464],
-      type: 'bar',
-      itemStyle: {
-        color: 'blue'
-      }
-    }
-  ]
-  
-});
+
 
 // nav : main and sub meters
 const selectedGraph = ref('mainMeter');
