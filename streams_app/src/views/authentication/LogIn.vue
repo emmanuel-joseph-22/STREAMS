@@ -1,43 +1,48 @@
 <template>
+    <div class="bg-cover bg-center opacity-90 bg-[url('/public/Alangilan-entrance-facade.jpg')] h-screen">
+        <div class="login relative flex flex-column">
+            <h1 class="streams fixed left-10 mt-10 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl text-blue-400">STREAMS</h1>
+            <div class="prj-name absolute flex">
+                <img src="Batangas_State_Logo 2.png" class="fixed left-44 pl-10 pt-8">
+                <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
+                <img src="aquatech_v1.png" class="fixed left-72 pl-12 pt-8">
+            </div>
+            <dark_blur/>
+            <div class="cont relative w-full shadow-black shadow-md bg-white bg-opacity-70 sm:w-5/6 md:w-4/6 lg:w-2/6 xl:w-2/6 mx-auto mt-44 sm:mt-40 mb-16 rounded-none sm:rounded-md">
+                <div class="container relative bottom-0 top-0 mx-auto w-full sm:w-3/4 text-black rounded-lg items-center justify-center p-5">
+                    <h1 class="signup relative top-4 font-black text-stroke text-4xl sm:text-5xl text-blue-5-0 mb-10 sm:mb-10 font-sans text-center">STREAMS</h1>
+                    <div class="forms">
+                        <label for="user_id" class="form_label font-bold flex flex-col mb-1 text-left"><b>Email</b></label>
+                        <input autofocus id="input_userid" :class="{ 'border-red-600 border-2': errorMsg && !emailIsValid() }" type="text" name="user_id" required placeholder="Email" class="px-4 py-2 mb-4 border border-black rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="email"/>
 
-<div class="bg-cover bg-center inset-0 opacity-90 bg-[url('/public/Alangilan-entrance-facade.jpg')]">
-    <div class="login relative flex flex-column">
-        <h1 class="streams fixed left-10 mt-10 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl text-blue-400">STREAMS</h1>
-        <div class="prj-name absolute flex">
-            <img src="Batangas_State_Logo 2.png" class="fixed left-44 pl-10 pt-8">
-            <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
-            <img src="aquatech_v1.png" class="fixed left-72 pl-12 pt-8">
-        </div>
-        <dark_blur/>
-        <div class="cont relative w-full bg-white sm:w-5/6 md:w-4/6 lg:w-2/6 xl:w-2/6 mx-auto mt-44 sm:mt-40 mb-16 rounded-md">
-            <div class="container relative bottom-0 top-0 mx-auto w-full sm:w-3/4 text-black rounded-lg items-center justify-center p-5">
-                <h1 class="signup relative top-4 font-black text-stroke text-4xl sm:text-5xl text-blue-5-0 mb-10 sm:mb-20 font-sans text-center">LOG-IN</h1>
-                <div class="forms">
-                    <label for="user_id" class="form_label font-bold flex flex-col mb-1 text-left"><b>Email</b></label>
-                    <input autofocus id="input_userid" type="text" name="user_id" required placeholder="Email" class="px-4 py-2 mb-4 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="email"/>
-                    <label for="password"  class="form_label font-bold flex flex-col mb-1 text-left"><b>Password</b></label>
-                    <input type="password" id="input_password" name="password" required placeholder="Password" class="px-4 py-2 mb-4 border border-black-500 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="password"/>
-                    
-                    <p v-if="errorMsg">{{ errorMsg }}</p>
-                
-                    <!--<button v-on:click="login" class="submit bg-blue-700 text-blue-200 py-2 px-10 rounded-full mt-4 sm:mt-5 w-full sm:w-auto" id="sign-up" value="Sign Up">Log In</button>-->
-                    <div v-on:click="login" class="body mt-4">
-                            <a href="#">
+                        <label for="password" class="relative form_label font-bold flex flex-col mb-1 text-left"><b>Password</b></label>
+                        <div class="relative">
+                            <input :type="passwordVisibility ? 'text' : 'password'" id="input_password" :class="{ 'border-red-600 border-2': errorMsg && !passwordIsValid() }" name="password" required placeholder="Password" class="relative pl-4 pr-10 py-2 mb-6 border border-black rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" v-model="password"/>
+                            <button @click="togglePasswordVisibility" class="absolute top-6 transform -translate-y-1/2 right-2 focus:outline-none">
+                                <img v-if="!passwordVisibility" src="hide.png" alt="Hide password" class="h-6 w-6">
+                                <img v-else src="view.png" alt="Show password" class="h-6 w-6">
+                            </button>
+                        </div>
+                        <div v-if="errorMsg" class="flex items-center bg-red-200 border-2 border-red-600 p-2 rounded-xl">
+                            <img src="exclamation.png" alt="Error icon" class="w-6 h-6 mr-2">
+                            <p class="font-bold text-red-600 text-sm">{{ errorMsg }}</p>
+                        </div>
+                        <div v-on:click="login" class="body mt-4">
+                            <a href="#" class="bg-bsu-base bg-opacity-50">
                                 <span>Log In</span>
                                 <div class="wave"></div>
                             </a>
+                        </div>
+                        <br/>
+                        <label for="or-text" class="font-bold relative flex flex-col mb-1 text-mid my-5">-OR-</label>
+                        <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-2 sm:my-5"><b>Guest</b></router-link>
+                        <br/>
+                        <router-link to="/signup" class="relative text-center">Sign Up</router-link>
                     </div>
-                    <br/>
-                    <label for="or-text" class="font-bold relative flex flex-col mb-1 text-mid my-5">-OR-</label>
-                    <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-2 sm:my-5"><b>Guest</b></router-link>
-                    <br/>
-                    <router-link to="/signup" class="relative text-center">Sign Up</router-link>
                 </div>
-                
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <style>
@@ -145,46 +150,56 @@
 </style>
 
 <script setup>
+    import { ref } from 'vue';
+    import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+    import { useRouter } from 'vue-router';
+    import dark_blur from '@/components/darkblur_component.vue';
 
-import { ref } from 'vue';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { useRouter } from 'vue-router';
-import dark_blur from '@/components/darkblur_component.vue';
+    const email = ref("");
+    const password = ref("");
+    const errorMsg = ref("");
+    const passwordVisibility = ref(false);
 
-const email = ref("");
-const password = ref("");
-const errorMsg = ref()
+    const router = useRouter();
 
-const router = useRouter();
-const login = () => {
+    const togglePasswordVisibility = () => {
+        passwordVisibility.value = !passwordVisibility.value;
+    };
+
+    const emailIsValid = () => {
+        const emailRegex = /\S+@\S+\.\S+/;
+        return emailRegex.test(email.value);
+    };
+
+    const passwordIsValid = () => {
+        return password.value.length >= 8; 
+    };
     
-    const auth = getAuth(); 
-    console.log("bitch")
-    signInWithEmailAndPassword(auth, email.value, password.value)
-        // eslint-disable-next-line
-        .then((data) => { 
-            console.log("You have logged in");
-            console.log(auth.currentUser);
-            router.push('/home');
-        })
-        .catch((error) => {
-            console.log(error.code);
-            switch(error.code){
-                case "auth/invalid-email":
-                    errorMsg.value = "Invalid email";
-                    break;
-                case "auth/user-not-found":
-                    errorMsg.value = "Email not found";
-                    break;
-                case "auth/wrong-password":
-                    errorMsg.value = "Invalid Password";
-                    break;
-                default:
-                    errorMsg.value = "Email or password was incorrect";
-                    break;
-            }
-        });
 
-}
-
+    const login = () => {
+        const auth = getAuth(); 
+        signInWithEmailAndPassword(auth, email.value, password.value)
+            .then(() => {
+                console.log("You have logged in");
+                console.log(auth.currentUser);
+                router.push('/home');
+            })
+            .catch((error) => {
+                console.log(error.code);
+                switch(error.code){
+                    case "auth/invalid-email":
+                        errorMsg.value = "Invalid email";
+                        break;
+                    case "auth/user-not-found":
+                        errorMsg.value = "Email not found";
+                        break;
+                    case "auth/wrong-password":
+                        errorMsg.value = "Invalid Password";
+                        break;
+                    default:
+                        errorMsg.value = "Email or password was incorrect";
+                        break;
+                }
+            });
+    }
 </script>
