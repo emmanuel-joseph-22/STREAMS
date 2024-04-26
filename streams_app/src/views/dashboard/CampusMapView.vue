@@ -19,7 +19,8 @@
   import dashboard_content from '../../components/dashboard_content.vue'
   import { Map, Marker } from 'maplibre-gl';
   import { shallowRef, onUnmounted, markRaw, watch, ref } from 'vue';
-  import { Geolocation, Capacitor } from '@capacitor/core';
+  import { Capacitor } from '@capacitor/core';
+  import { Geolocation } from '@capacitor/geolocation';
   
   
   export default {
