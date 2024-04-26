@@ -9,10 +9,37 @@
             <button @click="hidePopup">Close</button>
           </div>
         </div>
+<<<<<<< HEAD
       </div>
     </main-content>
   </home-page>
 </template>
+=======
+      </main-content>
+    </home-page>
+  </template>
+  
+  <script>
+  import HomePageView from './HomePageView.vue';
+  import dashboard_content from '../../components/dashboard_content.vue'
+  import { Map, Marker } from 'maplibre-gl';
+  import { shallowRef, onUnmounted, markRaw, watch, ref } from 'vue';
+  import { Capacitor } from '@capacitor/core';
+  import { Geolocation } from '@capacitor/geolocation';
+  
+  
+  export default {
+    components: {
+      'home-page': HomePageView,
+      'main-content': dashboard_content
+    },
+    name: "MapComponent",
+    setup() {
+      const mapContainer = shallowRef(null);
+      const map = shallowRef(null);
+      const showPopup = ref(false);
+      const popupContent = ref('');
+>>>>>>> 0b1e08567a7c1c43e0519f296fae781f252346a0
 
 <script>
 import HomePageView from './HomePageView.vue';
