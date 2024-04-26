@@ -98,10 +98,21 @@
         </div>
 
         <!-- top bar for mobile -->
-        <div class="more_settings_button" v-if="isMobile">
-            <img src="account.png" alt="more settings"/>
+        <div class="flex">
+            <div id="sidebar" class="bg-gray-800 text-white w-16 flex-shrink-0">
+                <div class="p-4">
+                    <img src="account.png" alt="more_setting" class="w-8 h-8">
+                </div>
+            </div>
+                  
+            <div class="flex-1">
+                <div class="more_settings" v-if="isMobile" @click="toggleSidebar">
+                    <img src="account.png" alt="more_setting">
+                </div>
+            </div>
         </div>
     </div>
+    
 </template>
 
 <script>
@@ -114,7 +125,8 @@ export default {
             dark_mode: false,
             isMobile: false,
             admin: true,
-            navbarCollapsed: true
+            navbarCollapsed: true,
+            showSidebar: false
         }
     },
     mounted(){
@@ -151,6 +163,13 @@ export default {
             if (this.navbarCollapsed) {
                 this.more_settings = false;
             }
+        },
+        toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            var mainContent = document.querySelector(".flex-1");
+
+            sidebar.classList.toggle("active");
+            mainContent.classList.toggle("active");
         }
     }
 }
@@ -309,7 +328,7 @@ export default {
     height: 30px;
     width: 30px;
 }
-.more_settings_button{
+.more_settings{
     position: fixed;
     z-index: 10;
     display: flex;
@@ -318,7 +337,32 @@ export default {
     margin-left: calc(5px + 5vw);
     margin-top: 15px;
 }
-.more_settings_button:hover{
-    cursor: pointer;
+.more_settings.collapsed {
+    width: 90px;
+    transition: ease-in-out 0.4s;
+}
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100vh;
+    background-color:var(--navy);
+    transition: transform 0.3s;
+    transform: translateX(-200px);
+    z-index: 999;
+}
+  
+#sidebar.active {
+    transform: translateX(0);
+}
+  
+.flex-1 {
+    margin-left: 200px;
+    transition: margin-left 0.3s;
+}
+  
+.flex-1.active {
+    margin-left: 200px;
 }
 </style>
