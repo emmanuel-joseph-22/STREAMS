@@ -225,6 +225,7 @@ onMounted(async () => {
       xAxisDate.value = daily_water_consumption_container['date'] 
       // eslint-disable-next-line
       yAxisConsumption.value = daily_water_consumption_container['total_consumption']
+
     } catch (error) {
       console.error('Error getting document:', error);
     }
