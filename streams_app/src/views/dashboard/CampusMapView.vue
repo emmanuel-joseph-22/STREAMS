@@ -19,8 +19,8 @@ import HomePageView from './HomePageView.vue';
 import dashboard_content from '../../components/dashboard_content.vue'
 import { Map, Marker } from 'maplibre-gl';
 import { shallowRef, onUnmounted, markRaw, watch, ref } from 'vue';
-//import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
 
 
 export default {
@@ -35,26 +35,32 @@ export default {
     const showPopup = ref(false);
     const popupContent = ref('');
 
-  async function checkPermissions() {
-    const permStatus = await Geolocation.checkPermissions();
-      if (permStatus.location === 'denied') {
-        await Geolocation.requestPermissions();
+  async function requestPermissions() {
+    const permissions = await Geolocation.requestPermissions();
+    return permissions;
     }
-  }
+
   async function getCurrentLocation() {
     // Check if the app is running on a mobile device
-      
-      try {
-        await checkPermissions();
-        const coordinates = await Geolocation.getCurrentPosition();
-        if (isWithinBounds(coordinates.coords)) {
-          centerMapOnLocation(coordinates.coords);
+    if (Capacitor.getPlatform() === 'android' || Capacitor.getPlatform() === 'ios') {
+      const permStatus = await requestPermissions();
+      if (permStatus.location === 'granted') {
+          try {
+            const coordinates = await Geolocation.getCurrentPosition();
+            console.log('Coordinates:', coordinates.coords);
+            if (isWithinBounds(coordinates.coords)) {
+              centerMapOnLocation(coordinates.coords);
+            } else {
+              console.log("User's location is outside the defined map bounds.");
+            }
+          } catch (error) {
+            console.error('Error getting location:', error);
+          }
         } else {
-          console.log("User's location is outside the defined map bounds.");
+          console.log("Location permission was denied.");
         }
-        return coordinates.coords;
-      } catch (error) {
-        console.error('Error getting location:', error);
+  } else {
+        console.log("Geolocation skipped: not on a mobile device.");
       }
   }
 
