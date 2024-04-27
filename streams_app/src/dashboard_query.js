@@ -103,17 +103,17 @@ export async function lipat_data_hohoho(){
 }*/
 
 export async function monthly_consumption(object){
-    var totalConsumption = 0;
+    
     try{
         for(let i = 0; i < main_meter.length; i++){
             for(let j = 0; j < month_path.length; j++){
                 const sourceRef = collection(mainMeterRef, main_meter[i]);
                 const meterSnapshot = await getDocs(sourceRef);
-                
+                var totalConsumption = 0;
                 meterSnapshot.forEach((doc) => {
                     const dateField = doc.data().date;
                     const waterConsumption = doc.data().consumption;
-                    if(dateField.substring(5, 7) === `${month_path[j]}` && dateValue.length >= 7){
+                    if(dateField.substring(5, 7) === `${month_path[j]}` && dateField.length >= 7){
                         totalConsumption += waterConsumption;
                     }
                 });
@@ -130,10 +130,70 @@ export async function monthly_consumption(object){
     }
     return object
 }
-/*
-export async function quarterly_consumption(object){
 
-}*/
+export async function quarterly_consumption(object, resulting_object){
+    const currentMonth = new Date().getMonth() + 1;
+    for(let i = 0; i < main_meter.length; i++ ){
+        if(currentMonth > 3 && currentMonth < 7){
+            //q1
+            q1_calculator(object, resulting_object, i)
+        } else if (currentMonth > 6 && currentMonth < 10){
+            //q1
+            q1_calculator(object, resulting_object, i)
+            q2_calculator(object, resulting_object, i)
+        } else if (currentMonth > 9 && currentMonth <= 12){
+            //q3
+            q1_calculator(object, resulting_object, i)
+            q2_calculator(object, resulting_object, i)
+            q3_calculator(object, resulting_object, i)
+        } else if (currentMonth < 4) {
+            //q4
+            q1_calculator(object, resulting_object, i)
+            q2_calculator(object, resulting_object, i)
+            q3_calculator(object, resulting_object, i)
+            q4_calculator(object, resulting_object, i)
+        }
+    }
+    return resulting_object
+}
+
+function q1_calculator(object, resulting_object, i){
+    const q_total = object.value[main_meter[i]][0] +  object.value[main_meter[i]][1] +  object.value[main_meter[i]][2] 
+    resulting_object.value[main_meter[i]][0] = q_total;
+    if(!resulting_object.value['total_consumption'][0]){
+        resulting_object.value['total_consumption'][0] = q_total;
+    } else {
+        resulting_object.value['total_consumption'][0] += q_total;
+    }
+}
+function q2_calculator(object, resulting_object, i){
+    const q_total = object.value[main_meter[i]][3] +  object.value[main_meter[i]][4] +  object.value[main_meter[i]][5];
+    resulting_object.value[main_meter[i]][1] = q_total;
+    if(!resulting_object.value['total_consumption'][1]){
+        resulting_object.value['total_consumption'][1] = q_total;
+    } else {
+        resulting_object.value['total_consumption'][1] += q_total;
+    }
+}
+function q3_calculator(object, resulting_object, i){
+    const q_total = object.value[main_meter[i]][6] +  object.value[main_meter[i]][7] +  object.value[main_meter[i]][8] 
+    resulting_object.value[main_meter[i]][2] = q_total;
+    if(!resulting_object.value['total_consumption'][2]){
+        resulting_object.value['total_consumption'][2] = q_total;
+    } else {
+        resulting_object.value['total_consumption'][2] += q_total;
+    }
+}
+
+function q4_calculator(object, resulting_object, i){
+    const q_total = object.value[main_meter[i]][9] +  object.value[main_meter[i]][10] +  object.value[main_meter[i]][11] 
+    resulting_object.value[main_meter[i]][3] = q_total;
+    if(!resulting_object.value['total_consumption'][3]){
+        resulting_object.value['total_consumption'][3] = q_total;
+    } else {
+        resulting_object.value['total_consumption'][3] += q_total;
+    }
+}
 /* no use pero baka magamit pa ung algo
 export async function monthly_consumption(){
     try {

@@ -164,11 +164,13 @@
 <!-- quarterly box -->
 <div class="col-span-10 md:col-span-4 box border shadow-md" style="height: 400px;">
   <div class="filter-button flex justify-end md:mr-4">
-    <select class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
-      <option value="" disabled selected>Filter</option>
-      <option class="dept_option">Latest</option>
-      <option class="dept_option">Last ...</option>
-      <option class="dept_option">Last ...</option>
+    <select v-model="quarterly_filter_output" @change="quarterly_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
+      <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
+      <option value="prime_water" class="dept_option text-[#042334]">Prime Water</option>
+      <option value="deep_well_1" class="dept_option text-[#042334]">Deep Well 1</option>
+      <option value="deep_well_2" class="dept_option text-[#042334]">Deep Well 2</option>
+      <option value="deep_well_3" class="dept_option text-[#042334]">Deep Well 3</option>
+      <option value="deep_well_4" class="dept_option text-[#042334]">Deep Well 4</option>
     </select>
   </div>
   <!-- Add your quarterly chart here -->
@@ -201,7 +203,7 @@ import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
 
 // dito ko lilipat ung mga pag fetch ng data and pagstore ng computed data 
-//import { daily_consumption, monthly_consumption } from './../../dashboard_query.js'
+import { quarterly_consumption, monthly_consumption /*daily_consumption, */ } from './../../dashboard_query.js'
 
 // daily water consumption
 const Daily_yAxisConsumption = ref([])
@@ -217,12 +219,23 @@ const monthly_water_consumption_container = ref({
   'deep_well_3': [],
   'deep_well_4': [],
   'prime_water': [],
-  'total_consumption': [],
+  'total_consumption': []
 })
+
+const quarterly_filter_output = ref("")
+const quarter_container = ref({
+  'deep_well_1': [], 
+  'deep_well_2': [],
+  'deep_well_3': [],
+  'deep_well_4': [],
+  'prime_water': [],
+  'total_consumption': []
+})
+
+const quarter_yAxis = ref([])
 
 onMounted(async () => {
     try{
-      console.log('bitch auq na')
       /*
       bale dito ung call ng daily consumption function
 
@@ -235,7 +248,7 @@ onMounted(async () => {
       */
 
       /*
-      tapos dito ung call ng monthly consumption function
+      tapos dito ung call ng monthly consumption function*/
 
       await monthly_consumption(monthly_water_consumption_container);
       console.log(monthly_water_consumption_container);
@@ -243,7 +256,10 @@ onMounted(async () => {
       monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
       // eslint-disable-next-line
       //console.log(monthly_water_consumption_container.value.total)
-      */
+      
+      await quarterly_consumption(monthly_water_consumption_container, quarter_container);
+      // eslint-disable-next-line
+      quarter_yAxis.value = quarter_container.value.total_consumption;
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -514,11 +530,8 @@ const quarter_chart = ref({
   series: [
     {
       name: 'Data',
-      data: [36700, 52523, 33542],
+      data: quarter_yAxis,
       type: 'bar',
-      itemStyle: {
-          color: 'blue'
-        }
     }
   ]
   
@@ -580,7 +593,9 @@ const daily_filter = () => {
 const monthly_filter = () => {
   monthly_yAxis.value = monthly_water_consumption_container.value[monthly_filter_output.value];
 }
-
+const quarterly_filter = () => {
+  quarter_yAxis.value = quarter_container.value[quarterly_filter_output.value];
+}
 
 </script>
 <script>
