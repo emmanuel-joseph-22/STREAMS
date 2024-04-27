@@ -54,9 +54,9 @@
                     <!--<div class="submit">
                         <button @click="stage_reading=true">SUBMIT</button>
                     </div>-->
-                    <div class="body mt-4">
+                    <div class="body mt-4" @click="stage_reading=true">
                         <a href="#">
-                            <span @click="stage_reading=true">SUBMIT</span>
+                            <span >SUBMIT</span>
                             <div class="wave"></div>
                         </a>
                     </div>

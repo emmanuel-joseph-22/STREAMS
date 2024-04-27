@@ -103,17 +103,18 @@ export async function lipat_data_hohoho(){
 }*/
 
 export async function monthly_consumption(object){
+    var totalConsumption = 0;
     try{
         for(let i = 0; i < main_meter.length; i++){
             for(let j = 0; j < month_path.length; j++){
                 const sourceRef = collection(mainMeterRef, main_meter[i]);
-                const querySnapshot = await getDocs(sourceRef);
-                var totalConsumption = 0;
-                querySnapshot.forEach((doc) => {
-                    const dateValue = doc.data().date;
-                    const waterValue = doc.data().consumption;
-                    if(dateValue.length >= 7 && dateValue.substring(5, 7) === `${month_path[j]}`){
-                        totalConsumption += waterValue;
+                const meterSnapshot = await getDocs(sourceRef);
+                
+                meterSnapshot.forEach((doc) => {
+                    const dateField = doc.data().date;
+                    const waterConsumption = doc.data().consumption;
+                    if(dateField.substring(5, 7) === `${month_path[j]}` && dateValue.length >= 7){
+                        totalConsumption += waterConsumption;
                     }
                 });
                 object.value[main_meter[i]][j] = totalConsumption;
