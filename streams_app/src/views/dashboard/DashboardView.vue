@@ -203,7 +203,7 @@ import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
 
 // dito ko lilipat ung mga pag fetch ng data and pagstore ng computed data 
-import { quarterly_consumption, monthly_consumption /*daily_consumption, */ } from './../../dashboard_query.js'
+import { /* quarterly_consumption, monthly_consumption, daily_consumption, */ } from './../../dashboard_query.js'
 
 // daily water consumption
 const Daily_yAxisConsumption = ref([])
@@ -236,6 +236,7 @@ const quarter_yAxis = ref([])
 
 onMounted(async () => {
     try{
+      console.log('bitch')
       /*
       bale dito ung call ng daily consumption function
 
@@ -248,7 +249,7 @@ onMounted(async () => {
       */
 
       /*
-      tapos dito ung call ng monthly consumption function*/
+      tapos dito ung call ng monthly consumption function
 
       await monthly_consumption(monthly_water_consumption_container);
       console.log(monthly_water_consumption_container);
@@ -257,9 +258,12 @@ onMounted(async () => {
       // eslint-disable-next-line
       //console.log(monthly_water_consumption_container.value.total)
       
+
+      /* tapos dito ung call ng quarter consumption function
+
       await quarterly_consumption(monthly_water_consumption_container, quarter_container);
       // eslint-disable-next-line
-      quarter_yAxis.value = quarter_container.value.total_consumption;
+      quarter_yAxis.value = quarter_container.value.total_consumption; */
     } catch (error) {
       console.error('Error getting document:', error);
     }
