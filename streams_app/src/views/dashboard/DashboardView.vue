@@ -128,13 +128,13 @@
 <!-- daily consumption chart -->
 <div class="col-span-10 md:col-span-6 box border shadow-md">
   <div class="filter-button flex justify-end md:mr-4">
-    <select v-model="filter_output" @change="daily_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
-      <option value="total_consumption" class="dept_option text-[#042334]">Total Consumption</option>
-      <option value="prime-water" class="dept_option text-[#042334]">Prime Water</option>
-      <option value="deep-well-1" class="dept_option text-[#042334]">Deep Well 1</option>
-      <option value="deep-well-2" class="dept_option text-[#042334]">Deep Well 2</option>
-      <option value="deep-well-3" class="dept_option text-[#042334]">Deep Well 3</option>
-      <option value="deep-well-4" class="dept_option text-[#042334]">Deep Well 4</option>
+    <select v-model="daily_filter_output" @change="daily_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
+      <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
+      <option value="prime_water" class="dept_option text-[#042334]">Prime Water</option>
+      <option value="deep_well_1" class="dept_option text-[#042334]">Deep Well 1</option>
+      <option value="deep_well_2" class="dept_option text-[#042334]">Deep Well 2</option>
+      <option value="deep_well_3" class="dept_option text-[#042334]">Deep Well 3</option>
+      <option value="deep_well_4" class="dept_option text-[#042334]">Deep Well 4</option>
     </select>
   </div>
   <v-chart class="box border shadow-md" style="height: 400px;" :option="consumption_chart"/>
@@ -143,11 +143,13 @@
 <!-- monthly box -->
 <div class="col-span-10 md:col-span-6 box border shadow-md mb-10" style="height: 400px;">
   <div class="filter-button flex justify-end md:mr-4">
-    <select class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
-      <option value="" disabled selected>Filter</option>
-      <option class="dept_option">Latest</option>
-      <option class="dept_option">Last ...</option>
-      <option class="dept_option">Last ...</option>
+    <select v-model="monthly_filter_output" @change="monthly_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
+      <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
+      <option value="prime_water" class="dept_option text-[#042334]">Prime Water</option>
+      <option value="deep_well_1" class="dept_option text-[#042334]">Deep Well 1</option>
+      <option value="deep_well_2" class="dept_option text-[#042334]">Deep Well 2</option>
+      <option value="deep_well_3" class="dept_option text-[#042334]">Deep Well 3</option>
+      <option value="deep_well_4" class="dept_option text-[#042334]">Deep Well 4</option>
     </select>
   </div>
   <v-chart :option="twelve_month_chart" @click="togglePopup2"/>
@@ -199,38 +201,49 @@ import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
 
 // dito ko lilipat ung mga pag fetch ng data and pagstore ng computed data 
-import { daily_consumption } from './../../dashboard_query.js'
+//import { daily_consumption, monthly_consumption } from './../../dashboard_query.js'
 
 // daily water consumption
-const yAxisConsumption = ref([])
-const xAxisDate = ref([])
+const Daily_yAxisConsumption = ref([])
+const Daily_xAxisDate = ref([])
 const daily_water_consumption_container = ref({})
-const filter_output = ref("")
+const daily_filter_output = ref("")
 
-// monthly water consumption data
-
-
-//ewan ko if need pa toh
-//const sub_meters = ['CICS-DF', 'FIC-1', 'FIC-2', 'RGR', 'SSC', 'canteen-DF', 'ceafa-faculty', 'executive-lounge']
-
-/* Event listener for window resize
-const handleResize = () => {
-  twelve_month_chart.value.responsive = true;
-};
-
-onMounted(() => {
-  window.addEventListener('resize', handleResize);
-});*/
+const monthly_filter_output = ref("")
+const monthly_yAxis = ref([])
+const monthly_water_consumption_container = ref({
+  'deep_well_1': [], 
+  'deep_well_2': [],
+  'deep_well_3': [],
+  'deep_well_4': [],
+  'prime_water': [],
+  'total_consumption': [],
+})
 
 onMounted(async () => {
     try{
+      console.log('bitch auq na')
+      /*
+      bale dito ung call ng daily consumption function
+
       await daily_consumption(daily_water_consumption_container);
       console.log(daily_water_consumption_container)
       // eslint-disable-next-line
-      xAxisDate.value = daily_water_consumption_container['date'] 
+      Daily_xAxisDate.value = daily_water_consumption_container['date'] 
       // eslint-disable-next-line
-      yAxisConsumption.value = daily_water_consumption_container['total_consumption']
+      Daily_yAxisConsumption.value = daily_water_consumption_container['total_consumption']
+      */
 
+      /*
+      tapos dito ung call ng monthly consumption function
+
+      await monthly_consumption(monthly_water_consumption_container);
+      console.log(monthly_water_consumption_container);
+      // eslint-disable-next-line
+      monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
+      // eslint-disable-next-line
+      //console.log(monthly_water_consumption_container.value.total)
+      */
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -377,7 +390,7 @@ const consumption_chart = ref({
   },
   xAxis: [{
     type: 'category',
-    data: xAxisDate,
+    data: Daily_xAxisDate,
     name: 'Date',
     nameLocation: 'center', 
     nameTextStyle: {
@@ -397,7 +410,7 @@ const consumption_chart = ref({
   series: [{
     name: 'Data',
     type: 'bar',
-    data: yAxisConsumption
+    data: Daily_yAxisConsumption
     }]
 });
 
@@ -460,11 +473,8 @@ const twelve_month_chart = ref({
   series: [
     {
       name: 'Data',
-      data: [36700, 52523, 33542, 44444, 55984, 12345, 54652, 77897, 23455, 23323, 20989, 63464],
+      data: monthly_yAxis,
       type: 'bar',
-      itemStyle: {
-        color: 'blue'
-      }
     }
   ]
   
@@ -565,7 +575,10 @@ const togglePopup2 = () => {
 }
 
 const daily_filter = () => {
-  yAxisConsumption.value = daily_water_consumption_container[filter_output.value];
+  Daily_yAxisConsumption.value = daily_water_consumption_container[daily_filter_output.value];
+}
+const monthly_filter = () => {
+  monthly_yAxis.value = monthly_water_consumption_container.value[monthly_filter_output.value];
 }
 
 
