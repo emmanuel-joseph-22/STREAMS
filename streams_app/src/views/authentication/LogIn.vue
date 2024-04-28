@@ -154,6 +154,9 @@
     import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
     import { useRouter } from 'vue-router';
     import dark_blur from '@/components/darkblur_component.vue';
+    import { firestore as db } from './../../main.js';
+    import store from './../../store'; // Import the Vuex store
+    import { doc, getDoc } from 'firebase/firestore';
 
     const email = ref("");
     const password = ref("");
@@ -174,32 +177,71 @@
     const passwordIsValid = () => {
         return password.value.length >= 8; 
     };
+
+    const fetchUserRole = async (userId) => {
+    try {
+        // Reference the user document in the users collection
+        const userDocRef = doc(db, 'users', userId);
+
+        // Fetch the user document using getDoc
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            // Access the role field from the document data
+            const userData = userDoc.data();
+            const userRole = userData.role;
+
+            // Return the user's role
+            console.log(`User Role for user ID ${userId}: ${userRole}`);
+            return userRole;
+        } else {
+            console.log(`User document for user ID ${userId} does not exist.`);
+            return null;
+        }
+    } catch (error) {
+        console.error(`Error fetching user role for user ID ${userId}:`, error);
+        return null;
+    }
+};
     
 
-    const login = () => {
-        const auth = getAuth(); 
-        signInWithEmailAndPassword(auth, email.value, password.value)
-            .then(() => {
-                console.log("You have logged in");
-                console.log(auth.currentUser);
-                router.push('/home');
-            })
-            .catch((error) => {
-                console.log(error.code);
-                switch(error.code){
-                    case "auth/invalid-email":
-                        errorMsg.value = "Invalid email";
-                        break;
-                    case "auth/user-not-found":
-                        errorMsg.value = "Email not found";
-                        break;
-                    case "auth/wrong-password":
-                        errorMsg.value = "Invalid Password";
-                        break;
-                    default:
-                        errorMsg.value = "Email or password was incorrect";
-                        break;
-                }
-            });
+    const login = async () => {
+    const auth = getAuth();
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
+        
+        // Successful login
+        const user = userCredential.user; // Retrieve the user object
+        const userId = user.uid; // Retrieve the user ID (UID)
+        const userRole = await fetchUserRole(userId);
+
+        console.log("User ID (UID):", userId);
+        console.log("User role:", userRole);
+
+        // Dispatching the action to update the role in the store
+        store.dispatch('updateRole', userRole);
+
+        // Check if the role is updated in the store
+        console.log("Vuex store role:", store.state.role);
+        
+        router.push('/home');
+    } catch (error) {
+        console.log(error.code);
+        switch (error.code) {
+            case "auth/invalid-email":
+                errorMsg.value = "Invalid email";
+                break;
+            case "auth/user-not-found":
+                errorMsg.value = "Email not found";
+                break;
+            case "auth/wrong-password":
+                errorMsg.value = "Invalid Password";
+                break;
+            default:
+                errorMsg.value = "Email or password was incorrect";
+                break;
+        }
     }
+};
+
 </script>
