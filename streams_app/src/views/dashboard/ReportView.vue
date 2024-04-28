@@ -72,8 +72,7 @@ import {
   TooltipComponent,
   GridComponent
 } from "echarts/components";
-import { doc,  collection, getDocs } from "firebase/firestore";
-import { firestore as db } from './../../main.js';
+import { fetchWaterSourceData } from './../../dashboard_query';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -102,23 +101,6 @@ export default {
     onMounted(async () => {
       // Removed provide(THEME_KEY, "white");
     });
-
-    const fetchWaterSourceData = async (waterSource) => {
-      const waterSourceRef = collection(doc(collection(db, 'meter_records'), 'main_meter'), waterSource);
-      const querySnapshot = await getDocs(waterSourceRef);
-      
-      const date_temp = [];
-      const value_temp = [];
-
-      querySnapshot.forEach((doc) => {
-        const date = new Date(doc.id);
-        const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
-        date_temp.push(formattedDate);
-        value_temp.push(doc.data().consumption);
-      });
-
-      return { dates: date_temp, values: value_temp };
-    };
 
     const handleButtonClick = async (index) => {
       activeButtonIndex.value = index;

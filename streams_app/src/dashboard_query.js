@@ -1,4 +1,4 @@
-import { doc, /*addDoc,*/ getDocs, /*query, orderBy,*/ collection, /*limit*/ /*getDocFromCache*/ } from "firebase/firestore";
+import { doc, addDoc, getDocs, /*query, orderBy,*/ collection, /*limit*/ /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
 
 const meterRecordsRef = collection(db, 'meter_records');
@@ -78,7 +78,7 @@ export async function daily_consumption(object){
     return object
 }*/
 
-/* pagpasok ng data ng emu sa firestore 
+/* pagpasok ng data ng emu sa firestore*/
 export async function lipat_data_hohoho(){
     const startDate = new Date(2023, 0, 1);
     startDate.setFullYear(2023, 0, 1);
@@ -100,37 +100,79 @@ export async function lipat_data_hohoho(){
             console.error("Error storing water consumption: ", error);
           }
     }
-}*/
+}
 
-export async function monthly_consumption(object){
-    
+export async function monthly_consumption(month_obj, daily_obj){
+
     try{
         for(let i = 0; i < main_meter.length; i++){
+
+            const daily_value_temp = []
+            const date_temp = []
+
             for(let j = 0; j < month_path.length; j++){
+            
                 const sourceRef = collection(mainMeterRef, main_meter[i]);
                 const meterSnapshot = await getDocs(sourceRef);
-                var totalConsumption = 0;
+                let totalConsumption = 0;
                 meterSnapshot.forEach((doc) => {
                     const dateField = doc.data().date;
                     const waterConsumption = doc.data().consumption;
+                    const dateString = new Date(dateField)
                     if(dateField.substring(5, 7) === `${month_path[j]}` && dateField.length >= 7){
                         totalConsumption += waterConsumption;
-                    }
+                        if(month_path[j] == 12){
+                            const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(dateString);
+                            date_temp.push(formattedDate);
+                            daily_value_temp.push(waterConsumption);
+                        }
+                    }     
                 });
-                object.value[main_meter[i]][j] = totalConsumption;
-                if(!object.value['total_consumption'][j]){
-                    object.value['total_consumption'][j] = totalConsumption;
+
+                month_obj.value[main_meter[i]][j] = totalConsumption;
+                if(!month_obj.value['total_consumption'][j]){
+                    month_obj.value['total_consumption'][j] = totalConsumption;
                 } else {
-                    object.value['total_consumption'][j] += totalConsumption;
+                    month_obj.value['total_consumption'][j] += totalConsumption;
                 }
             }
+            //medyo weird
+            daily_obj.value['date'] = date_temp;
+
+            daily_obj.value[main_meter[i]] = daily_value_temp;
+
         }
     } catch (error) {
         console.log(error)
     }
-    return object
+    return month_obj, daily_obj
 }
 
+export async function fetchWaterSourceData(waterSource){
+    
+    // this will fetch december 2023 data ftm
+    const date_temp = [];
+    const value_temp = [];
+
+    try{
+        const waterSourceRef = collection(mainMeterRef, waterSource);
+        const querySnapshot = await getDocs(waterSourceRef);
+        querySnapshot.forEach((doc) => {
+            const dateField = doc.data().date;
+            const waterConsumption = doc.data().consumption;
+            if(dateField.substring(5, 7) === `${12}`){
+                value_temp.push(waterConsumption);
+                //const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(dateField);
+                date_temp.push(dateField);
+            }
+        });
+        console.log(date_temp, ': ', value_temp);        
+    } catch (error) {
+        console.log(error)
+    }
+
+    return { dates: date_temp, values: value_temp };
+}
 export async function quarterly_consumption(object, resulting_object){
     const currentMonth = new Date().getMonth() + 1;
     for(let i = 0; i < main_meter.length; i++ ){
@@ -242,9 +284,10 @@ export async function monthly_consumption(){
     //}
 }}
 
+*/
 
+//lipat data bla bla bla ignore nyo nalang
 /*
-lipat data bla bla bla ignore nyo nalang
 const prime_water = [
     0,
     0,
@@ -978,7 +1021,7 @@ const DW1 = [
     15.020,
     21.776,
     21.776
-]
+]*/
 const DW2 = [
     0,
     0,
@@ -1345,4 +1388,4 @@ const DW2 = [
 22.830,
 22.830,
 22.830
-]*/
+]

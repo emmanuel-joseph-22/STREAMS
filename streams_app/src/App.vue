@@ -41,8 +41,11 @@ export default {
       }
     };
     onMounted(() => {
+      setTimeout(function() {
        // Add listener for back button
         App.addListener('backButton', handleBackButton);
+      }, 500);
+
     });
     // Remove listener when component is unmounted or when leaving allowed routes
     onUnmounted(() => {

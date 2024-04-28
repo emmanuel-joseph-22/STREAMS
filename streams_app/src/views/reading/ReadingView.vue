@@ -144,7 +144,6 @@ export default {
             } catch(error) {
                 console.error("Error storing meter record: ", error);
             }
-                
         }
     }
 };
