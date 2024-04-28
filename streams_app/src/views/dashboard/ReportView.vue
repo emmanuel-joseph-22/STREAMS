@@ -190,19 +190,67 @@ export default {
   generatePDF(chartImage, textareaContent);
 };
 
-const generatePDF = (chartImage, textContent) => {
-  const docDefinition = {
-    content: [
-      // Add chart image as an image element
-      { image: chartImage, width: 500 }, // Adjust width as needed
-      // Add text content as a paragraph
-      { text: textContent, margin: [0, 20, 0, 0] } // Add margin to separate from the chart
-    ]
-  };
+const generatePDF = async (chartImage, textContent) => {
+    // Specify the path to the header image file
+    const headerImageUrl = 'header.png'; // Update this path as necessary
+    
+    // Load the image as a data URL
+    const loadHeaderImage = async (imagePath) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                const dataURL = canvas.toDataURL('image/png');
+                resolve(dataURL);
+            };
+            img.onerror = reject;
+            img.src = imagePath;
+        });
+    };
 
-  // Use a PDF generation library like pdfMake
-  pdfMake.createPdf(docDefinition).download('report.pdf');
+    try {
+        // Convert the header image to a data URL
+        const headerImageDataUrl = await loadHeaderImage(headerImageUrl);
+
+        // Create the document definition
+        const docDefinition = {
+            content: [
+                // Add the header image using data URL
+                {
+                    image: headerImageDataUrl,
+                    width: 500, // Adjust width as needed
+                    alignment: 'center', // Optional: center the image
+                    margin: [0, 0, 0, 20], // Adjust margins for spacing around the header image
+                },
+                // Add the chart image if available
+                ...(chartImage
+                    ? [
+                        {
+                            image: chartImage,
+                            width: 500, // Adjust width as needed
+                            margin: [0, 0, 0, 20], // Add margin for spacing between chart and text
+                        },
+                      ]
+                    : []),
+                // Add the text content
+                {
+                    text: textContent,
+                    margin: [0, 20, 0, 0], // Add margin to separate text content
+                },
+            ],
+        };
+
+        // Use pdfMake to create the PDF and download it
+        pdfMake.createPdf(docDefinition).download('report.pdf');
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+    }
 };
+
 
 
 

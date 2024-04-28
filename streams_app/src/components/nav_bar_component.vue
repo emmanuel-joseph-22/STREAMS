@@ -29,13 +29,22 @@
                     </div>
                 </router-link>
                 <!-- report div -->
-                <router-link class="navbar_link" to="/report" title="Reports">
+                <router-link class="navbar_link" to="/report" title="Reports" v-if="role == 'admin'">
                     <div class="navbar_icon">
                         <!-- nav icon -->
                         <img ref="navIcon" class="icon" src="report_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
                         <div class="navlink_label" v-if="!navbarCollapsed">Report</div>
                     </div>
                 </router-link>
+                
+                <router-link class="navbar_link" to="/reading" title="Readings" v-if="role == 'employee'">
+                    <div class="navbar_icon">
+                        <!-- nav icon -->
+                        <img ref="navIcon" class="icon" src="reading_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Report</div>
+                    </div>
+                </router-link>
+
                 <!-- map div -->
                 <router-link class="navbar_link" to="/map" title="Maps">
                     <div class="navbar_icon">
@@ -85,9 +94,12 @@
                     </router-link>
                 </div>
                 <div class="mobile_link">
-                    <router-link to="/reading">
+                    <router-link to="/reading" v-if="role == 'employee'">
                         <img class="mobile_icon" src="reading_icon.png" />
-                    </router-link>            
+                    </router-link>   
+                    <router-link to="/report" v-if="role == 'admin'">
+                        <img class="mobile_icon" src="report_icon.png" />
+                    </router-link>              
                 </div>
                 <div class="mobile_link">
                     <router-link to="/map"> 
@@ -137,6 +149,7 @@
 <script>
 
 import { getAuth, signOut } from 'firebase/auth';
+import store from './../store';
 export default {
     data(){
         return {
@@ -146,12 +159,19 @@ export default {
             admin: true,
             navbarCollapsed: true,
             showSidebar: false,
-            sidebarOpen: false
+            sidebarOpen: false,
+            role: store.state.role
         }
     },
     mounted(){
         this.checkScreenWidth();
         window.addEventListener('resize', this.checkScreenWidth);
+
+        console.log(this.role);
+        // Set a timeout to change the value of role after a certain amount of time
+    setTimeout(() => {
+        this.role = store.state.role; // Change 'new_role' to the desired value
+    }, 1000); // 5000 milliseconds = 5 seconds
         
     },
     unmounted(){
@@ -164,6 +184,8 @@ export default {
             this.dark_mode = !this.dark_mode
         },
         logout(){
+
+            store.dispatch('updateRole', null);
             const auth = getAuth()
             signOut(auth).then(() => {
                 console.log("Logged out!");
