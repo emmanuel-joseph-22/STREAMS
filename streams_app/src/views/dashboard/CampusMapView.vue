@@ -9,6 +9,7 @@
             <button @click="hidePopup">Close</button>
           </div>
         </div>
+        <button v-if="isUserLocationWithinBounds" class="recenter-btn" @click="recenterMap">Recenter Map</button>
       </div>
     </main-content>
   </home-page>
@@ -16,12 +17,10 @@
 
 <script>
 import HomePageView from './HomePageView.vue';
-import dashboard_content from '../../components/dashboard_content.vue'
+import dashboard_content from '../../components/dashboard_content.vue';
 import { Map, Marker } from 'maplibre-gl';
-import { shallowRef, onUnmounted, markRaw, watch, ref } from 'vue';
+import { toRefs, onUnmounted, onMounted, reactive } from 'vue';
 import { Geolocation } from '@capacitor/geolocation';
-import { Capacitor } from '@capacitor/core';
-
 
 export default {
   components: {
@@ -30,143 +29,130 @@ export default {
   },
   name: "MapComponent",
   setup() {
-    const mapContainer = shallowRef(null);
-    const map = shallowRef(null);
-    const showPopup = ref(false);
-    const popupContent = ref('');
-
-  async function requestPermissions() {
-    const permissions = await Geolocation.requestPermissions();
-    return permissions;
-    }
-
-  async function getCurrentLocation() {
-    // Check if the app is running on a mobile device
-    if (Capacitor.getPlatform() === 'android' || Capacitor.getPlatform() === 'ios') {
-      const permStatus = await requestPermissions();
-      if (permStatus.location === 'granted') {
-          try {
-            const coordinates = await Geolocation.getCurrentPosition();
-            console.log('Coordinates:', coordinates.coords);
-            if (isWithinBounds(coordinates.coords)) {
-              centerMapOnLocation(coordinates.coords);
-            } else {
-              console.log("User's location is outside the defined map bounds.");
-            }
-          } catch (error) {
-            console.error('Error getting location:', error);
-          }
-        } else {
-          console.log("Location permission was denied.");
-        }
-  } else {
-        console.log("Geolocation skipped: not on a mobile device.");
-      }
-  }
-
-  function isWithinBounds(coords) {
-    const bounds = map.value.getMaxBounds(); // use the map's set bounds
-    return (
-      coords.longitude >= bounds.getWest() &&
-      coords.longitude <= bounds.getEast() &&
-      coords.latitude >= bounds.getSouth() &&
-      coords.latitude <= bounds.getNorth()
-    );
-  }
-
-  function centerMapOnLocation(coords) {
-    if (map.value) {
-      map.value.flyTo({
-        center: [coords.longitude, coords.latitude],
-        essential: true
-      });
-    }
-  }
-
-    // Watch for changes to mapContainer.value
-    watch(
-      () => mapContainer.value,
-      async (newValue, oldValue) => {
-        if (newValue && !oldValue) {
-          const apiKey = '3Giyb8izMH7QvlPNRm0I';
-          const initialState = { lng: 121.074490, lat: 13.784249, zoom: 15};
-          const bounds = [
-            [121.073247, 13.783082], // Southwest coordinates
-            [121.075437, 13.785484]  // Northeast coordinates
-          ];
-
-          map.value = markRaw(
-            new Map({
-              container: newValue,
-              style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${apiKey}`,
-              center: [initialState.lng, initialState.lat],
-              zoom: initialState.zoom,
-              minZoom: initialState.zoom,
-              pitch: 45,
-              bearing: -45,
-              maxBounds: bounds
-            })
-          );
-
-          // Define marker coordinates and names
-          const markerData = [
-            { coordinate: [121.075121, 13.783806], name: "METRO FIC A" },
-            { coordinate: [121.075185, 13.783749], name: "METRO FIC B" },
-            { coordinate: [121.075218, 13.783957], name: "BEHIND CANTEEN - DRINKING FOUNTAIN" },
-            { coordinate: [121.075147, 13.784504], name: "CEAFA - DEEP WELL 1" },
-            { coordinate: [121.075121, 13.784442], name: "EXECUTIVE LOUNGE SUPPLY" },
-            { coordinate: [121.074717, 13.784218], name: "SUPPLY 2ND FLOOR FACULTY" },
-            { coordinate: [121.074304, 13.784650], name: "SSC SUPPLY" },
-            { coordinate: [121.074224, 13.785317], name: "MAIN PRIME WATER" },
-            { coordinate: [121.073612, 13.785098], name: "CIT METER" },
-            { coordinate: [121.074256, 13.784009], name: "CICS - DRINKING FOUNTAIN" },
-            { coordinate: [121.074191, 13.783405], name: "RGR" },
-            { coordinate: [121.074143, 13.783327], name: "CICS - DEEP WELL 2" },
-          ];
-            
-          // Create and add multiple markers
-          markerData.forEach(({ coordinate, name }) => {
-            const marker = new Marker() // Create the marker
-              .setLngLat(coordinate) // Set marker position
-              .addTo(map.value); // Add marker to the map
-
-            // Create a label element
-            const label = document.createElement('div');
-            label.className = 'marker-label';
-            label.textContent = name; // Set the custom label text
-
-            // Append the label to the marker element
-            marker.getElement().appendChild(label);
-
-            // Add click event listener to the marker
-            marker.getElement().addEventListener('click', () => {
-              popupContent.value = `${name} clicked at ${coordinate[0]}, ${coordinate[1]}!`;
-              showPopup.value = true;
-            });
-          });
-          await getCurrentLocation();
-        }
-      }
-    );
-
-    const hidePopup = () => {
-      showPopup.value = false;
-    };
-
-    onUnmounted(() => {
-      map.value?.remove();
+    const state = reactive({
+      mapContainer: null,
+      map: null,
+      userMarker: null,
+      currentUserPosition: [121.074490, 13.784249], // Default center
+      isUserLocationWithinBounds: false,
+      showPopup: false,
+      popupContent: '',
     });
 
+    const bounds = [
+      [121.073247, 13.783082], // Southwest coordinates
+      [121.075437, 13.785484]  // Northeast coordinates
+    ];
+
+    const markerData = [
+      { coordinate: [121.075121, 13.783806], name: "METRO FIC A" },
+      { coordinate: [121.075185, 13.783749], name: "METRO FIC B" },
+      { coordinate: [121.075218, 13.783957], name: "BEHIND CANTEEN - DRINKING FOUNTAIN" },
+      { coordinate: [121.075147, 13.784504], name: "CEAFA - DEEP WELL 1" },
+      { coordinate: [121.075121, 13.784442], name: "EXECUTIVE LOUNGE SUPPLY" },
+      { coordinate: [121.074717, 13.784218], name: "SUPPLY 2ND FLOOR FACULTY" },
+      { coordinate: [121.074304, 13.784650], name: "SSC SUPPLY" },
+      { coordinate: [121.074224, 13.785317], name: "MAIN PRIME WATER" },
+      { coordinate: [121.073612, 13.785098], name: "CIT METER" },
+      { coordinate: [121.074256, 13.784009], name: "CICS - DRINKING FOUNTAIN" },
+      { coordinate: [121.074191, 13.783405], name: "RGR" },
+      { coordinate: [121.074143, 13.783327], name: "CICS - DEEP WELL 2" },
+    ];
+
+    function isWithinBounds(coords) {
+      return coords.longitude >= bounds[0][0] && coords.longitude <= bounds[1][0] &&
+             coords.latitude >= bounds[0][1] && coords.latitude <= bounds[1][1];
+    }
+
+    onMounted(async () => {
+      if (!state.mapContainer) return;
+      const apiKey = '3Giyb8izMH7QvlPNRm0I';
+      state.map = new Map({
+        container: state.mapContainer,
+        style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${apiKey}`,
+        center: state.currentUserPosition,
+        zoom: 15,
+        pitch: 45,
+        bearing: -45,
+        maxBounds: bounds
+      });
+
+      state.map.on('load', () => {
+        watchUserPosition();
+        addMarkers();
+      });
+    });
+
+    function watchUserPosition() {
+      const watchId = Geolocation.watchPosition({
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000
+      }, (position, err) => {
+        if (err) {
+          console.error('Error watching position:', err);
+          return;
+        }
+        state.currentUserPosition = [position.coords.longitude, position.coords.latitude];
+        state.isUserLocationWithinBounds = isWithinBounds(position.coords);
+
+        if (state.isUserLocationWithinBounds) {
+          if (!state.userMarker) {
+            state.userMarker = new Marker({ color: "#FF6347" })
+              .setLngLat(state.currentUserPosition)
+              .addTo(state.map);
+          } else {
+            state.userMarker.setLngLat(state.currentUserPosition);
+          }
+        } else {
+          console.log("User's location is outside the defined bounds.");
+          if (state.userMarker) {
+            state.userMarker.remove();
+            state.userMarker = null;
+          }
+        }
+      });
+
+      onUnmounted(() => {
+        Geolocation.clearWatch({ id: watchId });
+      });
+    }
+
+    function addMarkers() {
+      markerData.forEach(({ coordinate, name }) => {
+        const marker = new Marker()
+          .setLngLat(coordinate)
+          .addTo(state.map);
+
+        const label = document.createElement('div');
+        label.className = 'marker-label';
+        label.textContent = name;
+        marker.getElement().appendChild(label);
+
+        marker.getElement().addEventListener('click', () => {
+          state.showPopup = true;
+          state.popupContent = name;
+        });
+      });
+    }
+
     return {
-      map,
-      mapContainer,
-      showPopup,
-      popupContent,
-      hidePopup
+      ...toRefs(state),
+      recenterMap() {
+        if (state.currentUserPosition && state.isUserLocationWithinBounds) {
+          state.map.flyTo({ center: state.currentUserPosition, zoom: 18, essential: true });
+        }
+      }
     };
   }
 };
 </script>
+
+
+
+
+
+
 
 <style scoped>
 @import '~maplibre-gl/dist/maplibre-gl.css';
@@ -229,5 +215,22 @@ export default {
   border-radius: 5px;
   font-size: 12px;
   font-weight: bold;
+}
+
+.recenter-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.recenter-btn:hover {
+  background-color: #3e8e41;
 }
 </style>
