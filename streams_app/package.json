@@ -24,7 +24,9 @@
     "pdfmake": "^0.2.10",
     "vue": "^3.2.13",
     "vue-echarts": "^6.6.9",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
