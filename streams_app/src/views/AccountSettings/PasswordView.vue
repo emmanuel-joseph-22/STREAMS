@@ -1,7 +1,7 @@
 <template>
     <home-page>
         <div class="default flex flex-col items-center justify-center mt-20">
-            <div class="cont bg-blue-900 rounded-lg lg:w-1/3 xl:w-1/4 h-60vh flex flex-col items-center justify-center" style="background-color: #042334;">
+            <div class="cont bg-blue-900 rounded-lg lg:w-1/3 xl:w-1/4 h-60vh flex flex-col items-center justify-center mt-16 md:w-1/3 w-5/6" style="background-color: #042334;">
                 <div class="p-4 w-full flex flex-col items-center">
                     <div class="change flex flex-col items-start lg:w-3/4 mt-10">
                         <label for="input-change" class="change-label font-bold text-white">Current Password</label>

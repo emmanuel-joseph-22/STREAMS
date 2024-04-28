@@ -7,7 +7,7 @@
             <div class="displayed-post">
             <div class="post-section">
                 <textarea class="discussion-box" ref="post-textarea" rows="1" placeholder="What are your thoughts?"></textarea>
-                <button class="post-button" type="submit">Post</button>
+                <button class="post-button md:w-5/6 w-full" type="submit">Post</button>
             </div>
             </div>
         </div>

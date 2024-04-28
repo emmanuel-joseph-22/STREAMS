@@ -99,16 +99,35 @@
 
         <!-- top bar for mobile -->
         <div class="flex">
-            <div id="sidebar" class="bg-gray-800 text-white w-16 flex-shrink-0">
-                <div class="p-4">
-                    <img src="account.png" alt="more_setting" class="w-8 h-8">
-                </div>
+            <div class="more_settings" v-if="isMobile" @click="toggleSidebar">
+                <img src="account.png" alt="more_setting">
             </div>
-                  
-            <div class="flex-1">
-                <div class="more_settings" v-if="isMobile" @click="toggleSidebar">
-                    <img src="account.png" alt="more_setting">
+        </div>
+
+        <div class="flex">
+            <div id="sidebar" class="bg-gray-800 text-white w-16 flex-shrink-0">
+                <div class="p-4 flex flex-row">
+                    <img src="fake_logo.png" alt="more_setting" class="w-8 h-8">
+                    <div class="name text font-bold text-xl transition ease-in-out 300 pt-1 pl-1">
+                        STREAMS
+                    </div>
                 </div>
+
+                <router-link class="navbar_label" to="/feedback" title="Feedback">
+                    <span class="feedback">Feedback</span>
+                </router-link>
+
+                <router-link class="navbar_label" to="/tips" title="Useful Techniques">
+                    <span class="tips">Useful Techniques</span>
+                </router-link>
+
+                <router-link class="navbar_label" to="/settings" title="Account Setting">
+                    <span class="settings">Account Settings</span>
+                </router-link>
+
+                <router-link class="navbar_label" to="/home" title="Logout">
+                    <span class="logout">Logout</span>
+                </router-link>
             </div>
         </div>
     </div>
@@ -126,7 +145,8 @@ export default {
             isMobile: false,
             admin: true,
             navbarCollapsed: true,
-            showSidebar: false
+            showSidebar: false,
+            sidebarOpen: false
         }
     },
     mounted(){
@@ -166,7 +186,7 @@ export default {
         },
         toggleSidebar() {
             var sidebar = document.getElementById("sidebar");
-            var mainContent = document.querySelector(".flex-1");
+            var mainContent = document.querySelector(".flex");
 
             sidebar.classList.toggle("active");
             mainContent.classList.toggle("active");
@@ -364,5 +384,18 @@ export default {
   
 .flex-1.active {
     margin-left: 200px;
+}
+
+.navbar_label{
+    width: 95%;
+    height: 70px;
+    text-align: center;
+    display: flex;
+    padding-left: 7px;
+    margin: 20px auto;
+}
+
+.logout{
+    margin-top: 470px;
 }
 </style>
