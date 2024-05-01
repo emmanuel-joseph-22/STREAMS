@@ -59,6 +59,10 @@ export default {
       { coordinate: [121.074143, 13.783327], name: "CICS - DEEP WELL 2" },
     ];
 
+    function hidePopup() {
+      state.showPopup = false;
+    }
+    
     function isWithinBounds(coords) {
       return coords.longitude >= bounds[0][0] && coords.longitude <= bounds[1][0] &&
              coords.latitude >= bounds[0][1] && coords.latitude <= bounds[1][1];
@@ -142,7 +146,8 @@ export default {
         if (state.currentUserPosition && state.isUserLocationWithinBounds) {
           state.map.flyTo({ center: state.currentUserPosition, zoom: 18, essential: true });
         }
-      }
+      },
+      hidePopup
     };
   }
 };
