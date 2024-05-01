@@ -23,7 +23,7 @@ import router from './router/index';
 import { onMounted, onUnmounted } from 'vue';
 export default {
   setup() {
-    const allowedRoutes = ['/home', '/reading', '/map'];
+    const allowedRoutes = ['/home', '/reading', '/report', '/map'];
 
     // Function to handle back button press
     const handleBackButton = () => {
@@ -43,7 +43,7 @@ export default {
     onMounted(() => {
       setTimeout(function() {
        // Add listener for back button
-        App.addListener('backButton', handleBackButton);
+        App.addListener('backButton', handleBackButton); 
       }, 500);
 
     });

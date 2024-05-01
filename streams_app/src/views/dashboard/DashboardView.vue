@@ -192,7 +192,6 @@
 <script setup>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { PieChart, LineChart, BarChart } from "echarts/charts";
 import {
   TitleComponent,
   TooltipComponent,
@@ -275,12 +274,9 @@ onBeforeUnmount(() => {
 */
 use([
   CanvasRenderer,
-  PieChart,
   TitleComponent,
   TooltipComponent,
   LegendComponent,
-  LineChart,
-  BarChart,
   GridComponent
 ]);
 
@@ -540,8 +536,6 @@ const quarter_chart = ref({
   
 });
 
-
-
 // nav : main and sub meters
 const selectedGraph = ref('mainMeter');
 
@@ -606,15 +600,14 @@ const quarterly_filter = () => {
 import HomePageView from './HomePageView.vue';
 import header from '../../components/header_component.vue';
 import dashboard_content from '../../components/dashboard_content.vue';
-import { Capacitor } from '@capacitor/core'; 
+
 
 export default {
     components: {
         'home-page': HomePageView,
         'header-bar': header,
         'dashboard-content': dashboard_content,
-        'v-chart': VChart,
-        'line-chart': LineChart
+        'v-chart': VChart
     },
     data(){
         return {
@@ -626,24 +619,7 @@ export default {
             classf: 'Main'
         };
     },
-    mounted() {
-      document.addEventListener('backbutton', this.handleBackButton);
-    },
-    unmounted() {
-      document.removeEventListener('backbutton', this.handleBackButton);
-    },
     methods: { 
-      handleBackButton() {
-        if (Capacitor.isNative) {
-          if (this.$router.currentRoute.path !== '/') {
-            this.$router.go(-1);
-          } else {
-            if (window.confirm('Do you want to exit the app?')) {
-              navigator.app.exitApp();
-            }
-          }
-        }
-      }
     }
 }
 </script>
