@@ -200,7 +200,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
-//import { monthly_consumption, quarterly_consumption } from "@/dashboard_query";
+import { monthly_and_daily_query, quarterly_consumption } from "@/dashboard_query"; 
 
 const daily_water_consumption_container = ref({
     'date': [],
@@ -211,23 +211,24 @@ const daily_water_consumption_container = ref({
     'prime_water': [],
     'total_consumption': []
   }) 
-const monthly_water_consumption_container = ref({
-    'deep_well_1': [], 
-    'deep_well_2': [],
-    'deep_well_3': [],
-    'deep_well_4': [],
-    'prime_water': [],
-    'total_consumption': []
-  })
-const quarter_container = ref({
-    'deep_well_1': [], 
-    'deep_well_2': [],
-    'deep_well_3': [],
-    'deep_well_4': [],
-    'prime_water': [],
-    'total_consumption': []
-  })
 
+const monthly_water_consumption_container = ref({
+  'deep_well_1': [], 
+  'deep_well_2': [],
+  'deep_well_3': [],
+  'deep_well_4': [],
+  'prime_water': [],
+  'total_consumption': []
+})
+
+const quarter_container = ref({
+  'deep_well_1': [], 
+  'deep_well_2': [],
+  'deep_well_3': [],
+  'deep_well_4': [],
+  'prime_water': [],
+  'total_consumption': []
+})
 // daily water consumption
 const Daily_yAxisConsumption = ref([])
 const Daily_xAxisDate = ref([])
@@ -235,28 +236,29 @@ const Daily_xAxisDate = ref([])
 const daily_filter_output = ref("")
 
 const monthly_filter_output = ref("")
-const monthly_yAxis = ref([])
+const monthly_yAxis = ref()
 
 
 const quarterly_filter_output = ref("")
 
 
-const quarter_yAxis = ref([])
+const quarter_yAxis = ref()
 
 onMounted(async () => {
     try{
       console.log('bitch')
+      
       //await lipat_data_hohoho();
-      /*await monthly_consumption(monthly_water_consumption_container, daily_water_consumption_container);
+      await monthly_and_daily_query(monthly_water_consumption_container, daily_water_consumption_container);
       // eslint-disable-next-line
       monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
       // eslint-disable-next-line
       Daily_xAxisDate.value = daily_water_consumption_container.value.date 
       // eslint-disable-next-line
       Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
-      //await quarterly_consumption(monthly_water_consumption_container, quarter_container)
+      await quarterly_consumption(monthly_water_consumption_container, quarter_container)
       // eslint-disable-next-line
-      quarter_yAxis.value = quarter_container.value.total_consumption;*/
+      quarter_yAxis.value = quarter_container.value.total_consumption;
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -478,8 +480,7 @@ const twelve_month_chart = ref({
   series: [
     {
       name: 'Data',
-      //data: monthly_yAxis,
-      data: [200, 3000, 400, 440, 600, 3423, 1444, 2349, 345, 125, 999, 434],
+      data: monthly_yAxis,
       type: 'bar',
     }
   ]
@@ -520,8 +521,7 @@ const quarter_chart = ref({
   series: [
     {
       name: 'Data',
-      //data: quarter_yAxis,
-      data: [9000, 6000, 4760, 6786],
+      data: quarter_yAxis,
       type: 'bar',
     }
   ]

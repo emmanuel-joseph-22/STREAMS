@@ -1,13 +1,10 @@
-import { doc, addDoc, getDocs, /*query, orderBy,*/ collection, /*limit*/ /*getDocFromCache*/ } from "firebase/firestore";
+import { doc, getDocs, /*query, orderBy,*/ collection, /*limit*/ /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
-//import { ref } from 'vue';
 
 const meterRecordsRef = collection(db, 'meter_records');
 const mainMeterRef = doc(meterRecordsRef, 'main_meter');
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-
-
 
 /* eto daily water consumption dipa ayos nabago ung approach
 export async function daily_consumption(object){
@@ -81,7 +78,7 @@ export async function daily_consumption(object){
     return object
 }*/
 
-/* pagpasok ng data ng emu sa firestore*/
+/* pagpasok ng data ng emu sa firestore
 export async function lipat_data_hohoho(){
     const startDate = new Date(2023, 0, 1);
     startDate.setFullYear(2023, 0, 1);
@@ -103,15 +100,20 @@ export async function lipat_data_hohoho(){
             console.error("Error storing water consumption: ", error);
           }
     }
+}*/
+
+function compareDates(a, b) {
+    const dateA = new Date(a[0]);
+    const dateB = new Date(b[0]);
+    return dateA - dateB; // Compare dates numerically
 }
 
-export async function monthly_consumption(month_obj, daily_obj){
+export async function monthly_and_daily_query(month_obj, daily_obj){
 
     try{
         for(let i = 0; i < main_meter.length; i++){
 
-            const daily_value_temp = []
-            const date_temp = []
+            const daily_value_temp = {}
 
             for(let j = 0; j < month_path.length; j++){
             
@@ -126,8 +128,7 @@ export async function monthly_consumption(month_obj, daily_obj){
                         totalConsumption += waterConsumption;
                         if(month_path[j] == 12){
                             const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(dateString);
-                            date_temp.push(formattedDate);
-                            daily_value_temp.push(waterConsumption);
+                            daily_value_temp[formattedDate] = waterConsumption;
                         }
                     }     
                 });
@@ -139,10 +140,34 @@ export async function monthly_consumption(month_obj, daily_obj){
                     month_obj.value['total_consumption'][j] += totalConsumption;
                 }
             }
-            //medyo weird
-            daily_obj.value['date'] = date_temp;
+            // sort daily dictionary
+            const dataArray = Object.entries(daily_value_temp);
 
-            daily_obj.value[main_meter[i]] = daily_value_temp;
+            // Sort the array based on dates
+            dataArray.sort((a, b) => compareDates(a, b));
+            // Convert sorted array back to the dictionary
+            const sortedConsumptionData = Object.fromEntries(dataArray);
+            
+            // this will extract the date-key and consumption-value into their respective array
+            const consumptionArray = []
+            const date_temp = []
+            for (const date in sortedConsumptionData) {
+                // Push the value corresponding to each date into the array
+                date_temp.push(date)
+                consumptionArray.push(sortedConsumptionData[date]);
+            }
+
+            daily_obj.value[main_meter[i]] = consumptionArray;
+            if(daily_obj.value['date']){
+                daily_obj.value['date'] = date_temp
+            }
+            for(let i = 0; i < consumptionArray.length; i++){
+                if(!daily_obj.value['total_consumption'][i]){
+                    daily_obj.value['total_consumption'][i] = consumptionArray[i]
+                } else {
+                    daily_obj.value['total_consumption'][i] += consumptionArray[i]
+                }
+            }
 
         }
     } catch (error) {
@@ -152,29 +177,47 @@ export async function monthly_consumption(month_obj, daily_obj){
 }
 
 export async function fetchWaterSourceData(waterSource){
-    
-    // this will fetch december 2023 data ftm
+    const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
+    console.log(prevMonth)
+    const report_temp = {};
     const date_temp = [];
-    const value_temp = [];
-
+    const consumptionArray = [];
+    
     try{
         const waterSourceRef = collection(mainMeterRef, waterSource);
-        const querySnapshot = await getDocs(waterSourceRef);
-        querySnapshot.forEach((doc) => {
+        const reportSnapshot = await getDocs(waterSourceRef);
+        //console.log(reportSnapshot.size)
+        reportSnapshot.forEach( (doc) => {
             const dateField = doc.data().date;
             const waterConsumption = doc.data().consumption;
-            if(dateField.substring(5, 7) === `${12}`){
-                value_temp.push(waterConsumption);
-                //const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(dateField);
-                date_temp.push(dateField);
+            if(dateField.substring(5, 7) === `${prevMonth}`  && dateField.length >= 7){
+                //
+                //console.log(formattedDate)
+                report_temp[dateField] = waterConsumption;
             }
         });
-        console.log(date_temp, ': ', value_temp);        
+        //console.log(report_temp)
+        // sort daily dictionary
+        const dataArray = Object.entries(report_temp);
+
+        // Sort the array based on dates
+        dataArray.sort((a, b) => compareDates(a, b));
+        // Convert sorted array back to the dictionary
+        const sortedConsumptionData = Object.fromEntries(dataArray);
+        
+        for (const date in sortedConsumptionData) {
+            // Push the value corresponding to each date into the array
+            const dateString = new Date(date)
+            const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(dateString);
+            date_temp.push(formattedDate)
+            consumptionArray.push(sortedConsumptionData[date]);
+        }
+        //console.log(date_temp, ': ', consumptionArray); 
+      
     } catch (error) {
         console.log(error)
-    }
-
-    return { dates: date_temp, values: value_temp };
+    }        
+    return { dates: date_temp, values: consumptionArray }; 
 }
 export async function quarterly_consumption(month_obj, q_obj){
     const currentMonth = new Date().getMonth() + 1;
@@ -1024,7 +1067,7 @@ const DW1 = [
     15.020,
     21.776,
     21.776
-]*/
+]
 const DW2 = [
     0,
     0,
@@ -1392,3 +1435,4 @@ const DW2 = [
 22.830,
 22.830
 ]
+*/

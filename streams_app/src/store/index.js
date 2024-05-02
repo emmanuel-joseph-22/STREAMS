@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+//import dataModule from './data';
 
 const store = createStore({
     state: {
@@ -16,8 +17,11 @@ const store = createStore({
         updateRole({ commit }, role) {
             commit('setRole', role);
         },
-    },
+    },/*
+    module: {
+        data: dataModule
+    },*/
+
     plugins: [createPersistedState()], // Add the vuex-persistedstate plugin
 });
-
 export default store;

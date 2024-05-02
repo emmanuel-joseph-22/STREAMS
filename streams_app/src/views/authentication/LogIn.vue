@@ -155,7 +155,7 @@
     import { useRouter } from 'vue-router';
     import dark_blur from '@/components/darkblur_component.vue';
     import { firestore as db } from './../../main.js';
-    import store from './../../store'; // Import the Vuex store
+    import store from './../../store/index.js'; // Import the Vuex store
     import { doc, getDoc } from 'firebase/firestore';
 
     const email = ref("");

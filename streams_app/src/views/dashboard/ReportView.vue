@@ -106,10 +106,10 @@ export default {
       activeButtonIndex.value = index;
       if (index === 0) {
         try {
-          const deepWell1Data = await fetchWaterSourceData('deep-well-1');
-          const deepWell2Data = await fetchWaterSourceData('deep-well-2');
-          const deepWell3Data = await fetchWaterSourceData('deep-well-3');
-          const primeWaterData = await fetchWaterSourceData('prime-water');
+          const deepWell1Data = await fetchWaterSourceData('deep_well_1');
+          const deepWell2Data = await fetchWaterSourceData('deep_well_2');
+          const deepWell3Data = await fetchWaterSourceData('deep_well_3');
+          const primeWaterData = await fetchWaterSourceData('prime_water');
           
           // Combine data from all sources
           const combinedData = [];
@@ -239,7 +239,6 @@ const generatePDF = async (chartImage, textContent) => {
 
 
 
-
 // Function to convert ECharts chart to image
 const getChartImage = async (chartContainer) => {
   const chart = echarts.getInstanceByDom(chartContainer);
@@ -256,7 +255,7 @@ const getChartImage = async (chartContainer) => {
 
 const PW_BarChart = async () => {
   try {
-    const primeWaterData = await fetchWaterSourceData('prime-water');
+    const primeWaterData = await fetchWaterSourceData('prime_water');
     
     const dates = primeWaterData.dates;
     const consumptions = primeWaterData.values;
@@ -319,7 +318,7 @@ const PW_BarChart = async () => {
 
 const DW1_BarChart = async () => {
   try {
-    const dw1Data = await fetchWaterSourceData('deep-well-1');
+    const dw1Data = await fetchWaterSourceData('deep_well_1');
     
     const dates = dw1Data.dates;
     const consumptions = dw1Data.values;
@@ -382,7 +381,7 @@ const DW1_BarChart = async () => {
 
 const DW2_BarChart = async () => {
   try {
-    const dw2Data = await fetchWaterSourceData('deep-well-2');
+    const dw2Data = await fetchWaterSourceData('deep_well_2');
     
     const dates = dw2Data.dates;
     const consumptions = dw2Data.values;

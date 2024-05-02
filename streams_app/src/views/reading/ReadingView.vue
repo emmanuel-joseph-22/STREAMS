@@ -17,18 +17,18 @@
                     <div class="main" v-if="mainmeter">
                         <label for="main" class="main-label font-bold block mt-12 my-2.5 text-justify whitespace-nowrap"><b class="text-bsu-borders font-bold text-lg">Water Source</b></label>
                         <select id="main" class="main-dropdown p-2.5 h-14 text-base rounded-xl border-solid border-4 border-bsu-borders text-bsu-borders box-border rounded w-full" v-model="WaterSource">
-                            <option value="deep-well-1">Deep Well 1</option>
-                            <option value="deep-well-2">Deep Well 2</option>
-                            <option value="deep-well-3">Deep Well 3</option>
-                            <option value="deep-well-4">Deep Well 4</option>
-                            <option value="prime-water">Prime Water</option>
-                            <option value="fic-1">FIC 1</option>
-                            <option value="fic-2"> FIC 2</option>
-                            <option value="canteen-drinking-fountain">CANTEEN DRINKING FOUNTAIN</option>
-                            <option value="exec-lounge">EXECUTIVE LOUNGE</option>
-                            <option value="ceafa-faculty">CEAFA FACULTY ROOM</option>
+                            <option value="deep_well_1">Deep Well 1</option>
+                            <option value="deep_well_2">Deep Well 2</option>
+                            <option value="deep_well_3">Deep Well 3</option>
+                            <option value="deep_well_4">Deep Well 4</option>
+                            <option value="prime_water">Prime Water</option>
+                            <option value="fic_1">FIC 1</option>
+                            <option value="fic_2"> FIC 2</option>
+                            <option value="canteen_drinking_fountain">CANTEEN DRINKING FOUNTAIN</option>
+                            <option value="exec_lounge">EXECUTIVE LOUNGE</option>
+                            <option value="ceafa_faculty">CEAFA FACULTY ROOM</option>
                             <option value="rgr">RGR</option>
-                            <option value="cics-drinking-fountain">CICS DRINKING FOUNTAIN</option>
+                            <option value="cics_drinking_fountain">CICS DRINKING FOUNTAIN</option>
                             <option value="ssc">SSC</option>
                         </select>
                     </div>
@@ -123,11 +123,11 @@ export default {
             
             try {
                 
-                if(waterSource === 'prime-water' || 
-                waterSource === 'deep-well-1' || 
-                waterSource === 'deep-well-2' || 
-                waterSource === 'deep-well-3' || 
-                waterSource === 'deep-well-4')
+                if(waterSource === 'prime_water' || 
+                waterSource === 'deep_well_1' || 
+                waterSource === 'deep_well_2' || 
+                waterSource === 'deep_well_3' || 
+                waterSource === 'deep_well_4')
                 {
                     path = `meter_records/main_meter/${waterSource}`
                 } else {

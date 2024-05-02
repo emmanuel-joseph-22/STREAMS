@@ -149,7 +149,7 @@
 <script>
 
 import { getAuth, signOut } from 'firebase/auth';
-import store from './../store';
+import store from './../store/index.js';
 export default {
     data(){
         return {
@@ -169,10 +169,10 @@ export default {
 
         console.log(this.role);
         // Set a timeout to change the value of role after a certain amount of time
-    setTimeout(() => {
-        this.role = store.state.role; // Change 'new_role' to the desired value
-    }, 1000); // 5000 milliseconds = 5 seconds
-        
+        setTimeout(() => {
+            this.role = store.state.role; // Change 'new_role' to the desired value
+        }, 500); // 5000 milliseconds = 5 seconds
+            
     },
     unmounted(){
         window.removeEventListener('resize', this.checkScreenWidth);
@@ -184,7 +184,6 @@ export default {
             this.dark_mode = !this.dark_mode
         },
         logout(){
-
             store.dispatch('updateRole', null);
             const auth = getAuth()
             signOut(auth).then(() => {

@@ -1,12 +1,11 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import store from './store';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import './assets/tailwind.css';
-
-/* firebase */
 import { initializeApp } from "firebase/app";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
+import './assets/tailwind.css';
 
 /*web app's Firebase configuration*/
 const firebaseConfig = {
@@ -18,19 +17,18 @@ const firebaseConfig = {
   appId: "1:415149398034:web:daeb25890b4f7e5ac8a0cb"
 };
 
-// Initialize Firebase inside createApp
-export const app = createApp(App);
 export const db_app = initializeApp(firebaseConfig);
-
 // for offline/caching
-// Defaults to single-tab persistence if no tab manager is specified.
 initializeFirestore(db_app, { 
   localCache: persistentLocalCache(/*settings*/{}) 
 });
 export const firestore = getFirestore(db_app);
 
-// Provide Firestore instance to all components via provide/inject
-app.provide('firestore', firestore);
+// vue app
+export const app = createApp(App);
+app.use(router).use(store)
+app.provide('firestore', firestore)
+app.mount('#app');
 
 // Get the authentication instance
 const auth = getAuth(db_app);
@@ -44,5 +42,4 @@ onAuthStateChanged(auth, user => {
     router.push('/login');
   }
 });
-// Mount the app with router
-app.use(router).mount('#app');
+
