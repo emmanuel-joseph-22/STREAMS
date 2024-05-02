@@ -178,7 +178,7 @@ export async function monthly_and_daily_query(month_obj, daily_obj){
     }
     return month_obj, daily_obj
 }
-
+// for reports
 export async function fetchWaterSourceData(waterSource){
     const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
     console.log(prevMonth)
@@ -221,6 +221,25 @@ export async function fetchWaterSourceData(waterSource){
         console.log(error)
     }        
     return { dates: date_temp, values: consumptionArray }; 
+}
+// for search   
+export async function search_record(date_input, waterSource){
+    let value = 0;
+    try {
+        const waterSourceRef = collection(mainMeterRef, waterSource);
+        const recordSnapshot = await getDocs(waterSourceRef);
+        recordSnapshot.forEach((doc) => {
+            const dateField = doc.data().date;
+            const waterConsumption = doc.data().consumption;
+            if(dateField === date_input){
+                console.log(waterConsumption)
+                value = waterConsumption
+            }
+        });
+    } catch(error) {
+        console.log("Error searching a record:", error)
+    }
+    return value
 }
 export async function quarterly_consumption(month_obj, q_obj){
     const currentMonth = new Date().getMonth() + 1;

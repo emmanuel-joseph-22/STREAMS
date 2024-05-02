@@ -13,15 +13,15 @@
           <h2 class="text-xl font-bold mt-4">Search Record</h2>
           <div class="box">
             <div class="flex flex-col items-center mt-[20%]">
-              <select class="field rounded-md p-2 mt-4 w-[300px] text-[#042334]">
+              <select v-model="search_water_source" class="field rounded-md p-2 mt-4 w-[300px] text-[#042334]">
                 <option value="" disabled selected>Select a source</option>
-                <option value="PW" class="dept_option">Prime Water</option>
-                <option value="DW1" class="dept_option">Deep well 1</option>
-                <option value="DW2" class="dept_option">Deep well 2</option>
-                <option value="DW3" class="dept_option">Deep well 3</option>
-                <option value="DW4" class="dept_option">Deep well 4</option>
+                <option value="prime_water" class="dept_option">Prime Water</option>
+                <option value="deep_well_1" class="dept_option">Deep well 1</option>
+                <option value="deep_well_2" class="dept_option">Deep well 2</option>
+                <option value="deep_well_3" class="dept_option">Deep well 3</option>
+                <option value="deep_well_4" class="dept_option">Deep well 4</option>
               </select>
-              <input class="field rounded-md p-2 mt-4 w-[300px] text-[#042334]" type="date"/>
+              <input class="field rounded-md p-2 mt-4 w-[300px] text-[#042334]" type="date" v-model="search_date"/>
               <button @click="toggleRecord" class="button-search absolute m-2 bottom-12 w-24 h-14 m-5 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">Search</button>
             </div>
             <br/>
@@ -32,12 +32,12 @@
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
         <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
           <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
-          <h2 class="text-3xl font-bold mt-14">{{ water_source }}</h2>
+          <h2 class="text-3xl font-bold mt-14">{{ search_water_source }}</h2>
           <h2 class="text-xl font-bold text-white mb-4">{{ location }}</h2>
           <div class="record_details_container flex border-2 border-[#36B4E7] rounded-lg">
             <div class="record_details text-lg mt-4" style="flex-grow: 1;">
                 <div class="rec_field text-white p-2">Class: {{ classf }}</div>
-                <div class="rec_field text-white p-2 mt-2">Date: {{ date }}</div>
+                <div class="rec_field text-white p-2 mt-2">Date: {{ search_date }}</div>
                 <div class="rec_field text-white p-2 mb-2">Time: {{ time }}</div>
             </div>
             <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#36B4E7] rounded-lg flex flex-col items-center justify-center">
@@ -200,7 +200,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
-import { monthly_and_daily_query, quarterly_consumption } from "@/dashboard_query"; 
+import { search_record/*, monthly_and_daily_query, quarterly_consumption */} from "@/dashboard_query"; 
 
 const daily_water_consumption_container = ref({
     'date': [],
@@ -232,24 +232,20 @@ const quarter_container = ref({
 // daily water consumption
 const Daily_yAxisConsumption = ref([])
 const Daily_xAxisDate = ref([])
-
 const daily_filter_output = ref("")
 
 const monthly_filter_output = ref("")
-const monthly_yAxis = ref()
-
+const monthly_yAxis = ref([])
 
 const quarterly_filter_output = ref("")
-
-
-const quarter_yAxis = ref()
+const quarter_yAxis = ref([])
 
 onMounted(async () => {
     try{
       console.log('bitch')
       
       //await lipat_data_hohoho();
-      await monthly_and_daily_query(monthly_water_consumption_container, daily_water_consumption_container);
+      /*await monthly_and_daily_query(monthly_water_consumption_container, daily_water_consumption_container);
       // eslint-disable-next-line
       monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
       // eslint-disable-next-line
@@ -259,6 +255,9 @@ onMounted(async () => {
       await quarterly_consumption(monthly_water_consumption_container, quarter_container)
       // eslint-disable-next-line
       quarter_yAxis.value = quarter_container.value.total_consumption;
+      console.log(daily_water_consumption_container)
+      console.log(monthly_water_consumption_container);
+      console.log(quarter_container)*/
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -551,6 +550,15 @@ avgMonthly.value = 22;
 const avgDaily = ref(0);
 avgDaily.value = 22;
 
+
+// data for search record
+const search_date = ref("")
+const time = ref("")
+const meter = ref("")
+const search_water_source = ref("")
+const location = ref("")
+const classf = ref("Main")
+
 //popup
 const showPopup = ref(false);
 
@@ -559,8 +567,18 @@ const togglePopup = () => {
 };
 
 const showRecord = ref(false);
+const toggleRecord = async () => {
+  const record = await search_record(search_date.value, search_water_source.value)
+  if(record == 0){
+    meter.value = "no reading"
+  } else {
+    meter.value = record;
+  }
+  // format date into formal structure
+  const dateString = new Date(search_date.value)
+  const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(dateString);
+  search_date.value = formattedDate
 
-const toggleRecord = () => {
   showRecord.value = !showRecord.value;
 };
 
@@ -600,18 +618,6 @@ export default {
         'header-bar': header,
         'dashboard-content': dashboard_content,
         'v-chart': VChart
-    },
-    data(){
-        return {
-            date: 'April 1, 2024',
-            time: '11:30 p.m.',
-            meter: '10',
-            water_source: 'Deep Well 1',
-            location: 'Ceafa Building',
-            classf: 'Main'
-        };
-    },
-    methods: { 
     }
 }
 </script>
