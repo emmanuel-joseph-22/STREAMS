@@ -112,7 +112,7 @@
         <!-- top bar for mobile -->
         <div class="flex">
             <div class="more_settings" v-if="isMobile" @click="toggleSidebar">
-                <img src="account.png" alt="more_setting">
+                <img src="hamburger.png" alt="more_setting">
             </div>
         </div>
 
@@ -373,10 +373,10 @@ export default {
     position: fixed;
     z-index: 10;
     display: flex;
-    width: 35px;
-    height: 35px;
+    width: 29px;
+    height: 25px;
     margin-left: calc(5px + 5vw);
-    margin-top: 15px;
+    margin-top: 17px;
 }
 .more_settings.collapsed {
     width: 90px;
