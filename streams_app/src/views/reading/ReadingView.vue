@@ -66,11 +66,12 @@
 </template>
 
 <script>
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { firestore as db } from './../../main.js';
 import header_component from "../../components/header_component.vue";
 import HomePageView from "./../dashboard/HomePageView.vue";
 import confirmation_view from "./../../components/confirmation_view.vue";
+
 export default {
     components: {
         'header_bar': header_component,
@@ -79,7 +80,6 @@ export default {
     },  
     data() {
         return {
-            //temp_date: '',
             WaterSource: '',
             BuildingDepartment: '',
             Consumption: '',
@@ -97,7 +97,6 @@ export default {
                 this.submitForm();
             } else {
                 console.log("Submit cancelled")
-                //this.temp_date = ''
             }
             this.WaterSource = '';
             this.BuildingDepartment = '';
@@ -107,46 +106,41 @@ export default {
             this.stage_reading = false;
         },
         async submitForm() {
-            //const set_date = this.temp_date
             const waterSource = this.WaterSource;
             const buildingDepartment = this.BuildingDepartment;
             const consumption = this.Consumption;
             const currentDate = new Date().toISOString();
-
+            let path;
+            
             // Construct the data object
             const data = {
+                date: currentDate,
                 consumption: consumption,
                 buildingDepartment: buildingDepartment,
                 input_x: this.input_x,
                 input_x0: this.input_x0
             };
-            // temp wait
-            const path = `meter_records/main_meter/${waterSource}`
             
-            // curr date as doc id
             try {
-                await setDoc(doc(collection(db, path), currentDate), data);
-                console.log("Meter record stored successfully!");
-            /*try {
-                const mainMeterSnapshot = await getDoc(mainMeterRef);
-                console.log('bitch eto 1')
-                if (mainMeterSnapshot.exists()) {
-                    console.log("Main meter document exists:", mainMeterSnapshot.exists());
-                    // The main_meter document exists
-                    // Access the subcollection
-                    const collectionRef = collection(mainMeterRef, waterSource);
-                    console.log('bitch eto 3')
-                    await setDoc(doc(collectionRef, currentDate), data);
-                    console.log("Meter record stored successfully!");
-                    // Now you can perform operations on the collectionRef
+                
+                if(waterSource === 'prime-water' || 
+                waterSource === 'deep-well-1' || 
+                waterSource === 'deep-well-2' || 
+                waterSource === 'deep-well-3' || 
+                waterSource === 'deep-well-4')
+                {
+                    path = `meter_records/main_meter/${waterSource}`
+                } else {
+                    path = `meter_records/submeter/${waterSource}`
                 }
-                */
+                await addDoc(collection(db, path), data);
+                console.log('submitted successfully')
             } catch(error) {
                 console.error("Error storing meter record: ", error);
             }
         }
     }
-};
+}
 </script>
 
 <style scoped>
