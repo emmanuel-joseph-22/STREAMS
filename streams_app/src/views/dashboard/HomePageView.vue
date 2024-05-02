@@ -7,11 +7,11 @@
 
 <script>
 import nav_bar from '../../components/nav_bar_component.vue';
-
 export default {
     components: {
         "nav-bar": nav_bar
-    }
+    },
+
 }
 </script>
 

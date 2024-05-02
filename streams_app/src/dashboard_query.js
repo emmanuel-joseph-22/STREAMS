@@ -1,10 +1,13 @@
 import { doc, addDoc, getDocs, /*query, orderBy,*/ collection, /*limit*/ /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
+//import { ref } from 'vue';
 
 const meterRecordsRef = collection(db, 'meter_records');
 const mainMeterRef = doc(meterRecordsRef, 'main_meter');
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+
+
 
 /* eto daily water consumption dipa ayos nabago ung approach
 export async function daily_consumption(object){
@@ -95,7 +98,7 @@ export async function lipat_data_hohoho(){
               date: formattedDate,
               consumption: DW2[i]
             });
-            console.log(`Stored water consumption for ${formattedDate}: ${DW2[i]}`);
+            //console.log(`Stored water consumption for ${formattedDate}: ${DW2[i]}`);
           } catch (error) {
             console.error("Error storing water consumption: ", error);
           }
@@ -173,67 +176,67 @@ export async function fetchWaterSourceData(waterSource){
 
     return { dates: date_temp, values: value_temp };
 }
-export async function quarterly_consumption(object, resulting_object){
+export async function quarterly_consumption(month_obj, q_obj){
     const currentMonth = new Date().getMonth() + 1;
     for(let i = 0; i < main_meter.length; i++ ){
         if(currentMonth > 3 && currentMonth < 7){
             //q1
-            q1_calculator(object, resulting_object, i)
+            q1_calculator(month_obj, q_obj, i)
         } else if (currentMonth > 6 && currentMonth < 10){
             //q1
-            q1_calculator(object, resulting_object, i)
-            q2_calculator(object, resulting_object, i)
+            q1_calculator(month_obj, q_obj, i)
+            q2_calculator(month_obj, q_obj, i)
         } else if (currentMonth > 9 && currentMonth <= 12){
             //q3
-            q1_calculator(object, resulting_object, i)
-            q2_calculator(object, resulting_object, i)
-            q3_calculator(object, resulting_object, i)
+            q1_calculator(month_obj, q_obj, i)
+            q2_calculator(month_obj, q_obj, i)
+            q3_calculator(month_obj, q_obj, i)
         } else if (currentMonth < 4) {
             //q4
-            q1_calculator(object, resulting_object, i)
-            q2_calculator(object, resulting_object, i)
-            q3_calculator(object, resulting_object, i)
-            q4_calculator(object, resulting_object, i)
+            q1_calculator(month_obj, q_obj, i)
+            q2_calculator(month_obj, q_obj, i)
+            q3_calculator(month_obj, q_obj, i)
+            q4_calculator(month_obj, q_obj, i)
         }
     }
-    return resulting_object
+    return q_obj
 }
 
-function q1_calculator(object, resulting_object, i){
-    const q_total = object.value[main_meter[i]][0] +  object.value[main_meter[i]][1] +  object.value[main_meter[i]][2] 
-    resulting_object.value[main_meter[i]][0] = q_total;
-    if(!resulting_object.value['total_consumption'][0]){
-        resulting_object.value['total_consumption'][0] = q_total;
+function q1_calculator(month_obj, q_obj, i){
+    const q_total = month_obj.value[main_meter[i]][0] +  month_obj.value[main_meter[i]][1] +  month_obj.value[main_meter[i]][2] 
+    q_obj.value[main_meter[i]][0] = q_total;
+    if(!q_obj.value['total_consumption'][0]){
+        q_obj.value['total_consumption'][0] = q_total;
     } else {
-        resulting_object.value['total_consumption'][0] += q_total;
+        q_obj.value['total_consumption'][0] += q_total;
     }
 }
-function q2_calculator(object, resulting_object, i){
-    const q_total = object.value[main_meter[i]][3] +  object.value[main_meter[i]][4] +  object.value[main_meter[i]][5];
-    resulting_object.value[main_meter[i]][1] = q_total;
-    if(!resulting_object.value['total_consumption'][1]){
-        resulting_object.value['total_consumption'][1] = q_total;
+function q2_calculator(month_obj, q_obj, i){
+    const q_total = month_obj.value[main_meter[i]][3] +  month_obj.value[main_meter[i]][4] +  month_obj.value[main_meter[i]][5];
+    q_obj.value[main_meter[i]][1] = q_total;
+    if(!q_obj.value['total_consumption'][1]){
+        q_obj.value['total_consumption'][1] = q_total;
     } else {
-        resulting_object.value['total_consumption'][1] += q_total;
+        q_obj.value['total_consumption'][1] += q_total;
     }
 }
-function q3_calculator(object, resulting_object, i){
-    const q_total = object.value[main_meter[i]][6] +  object.value[main_meter[i]][7] +  object.value[main_meter[i]][8] 
-    resulting_object.value[main_meter[i]][2] = q_total;
-    if(!resulting_object.value['total_consumption'][2]){
-        resulting_object.value['total_consumption'][2] = q_total;
+function q3_calculator(month_obj, q_obj, i){
+    const q_total = month_obj.value[main_meter[i]][6] +  month_obj.value[main_meter[i]][7] +  month_obj.value[main_meter[i]][8] 
+    q_obj.value[main_meter[i]][2] = q_total;
+    if(!q_obj.value['total_consumption'][2]){
+        q_obj.value['total_consumption'][2] = q_total;
     } else {
-        resulting_object.value['total_consumption'][2] += q_total;
+        q_obj.value['total_consumption'][2] += q_total;
     }
 }
 
-function q4_calculator(object, resulting_object, i){
-    const q_total = object.value[main_meter[i]][9] +  object.value[main_meter[i]][10] +  object.value[main_meter[i]][11] 
-    resulting_object.value[main_meter[i]][3] = q_total;
-    if(!resulting_object.value['total_consumption'][3]){
-        resulting_object.value['total_consumption'][3] = q_total;
+function q4_calculator(month_obj, q_obj, i){
+    const q_total = month_obj.value[main_meter[i]][9] +  month_obj.value[main_meter[i]][10] +  month_obj.value[main_meter[i]][11] 
+    q_obj.value[main_meter[i]][3] = q_total;
+    if(!q_obj.value['total_consumption'][3]){
+        q_obj.value['total_consumption'][3] = q_total;
     } else {
-        resulting_object.value['total_consumption'][3] += q_total;
+        q_obj.value['total_consumption'][3] += q_total;
     }
 }
 /* no use pero baka magamit pa ung algo

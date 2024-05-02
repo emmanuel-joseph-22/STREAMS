@@ -8,7 +8,6 @@ import './assets/tailwind.css';
 import { initializeApp } from "firebase/app";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 
-
 /*web app's Firebase configuration*/
 const firebaseConfig = {
   apiKey: "AIzaSyBR5Tyx6-Oj996DaGOP2WKY80ijL4zWN_0",

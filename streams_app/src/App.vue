@@ -21,6 +21,8 @@
 import { App } from '@capacitor/app';
 import router from './router/index';
 import { onMounted, onUnmounted } from 'vue';
+
+
 export default {
   setup() {
     const allowedRoutes = ['/home', '/reading', '/report', '/map'];
@@ -41,11 +43,10 @@ export default {
       }
     };
     onMounted(() => {
-      setTimeout(function() {
-       // Add listener for back button
-        App.addListener('backButton', handleBackButton); 
-      }, 500);
-
+        setTimeout(function() {
+          // Add listener for back button
+          App.addListener('backButton', handleBackButton); 
+        }, 500);
     });
     // Remove listener when component is unmounted or when leaving allowed routes
     onUnmounted(() => {

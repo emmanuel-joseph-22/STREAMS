@@ -200,44 +200,46 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
+import { monthly_consumption, quarterly_consumption } from "@/dashboard_query";
 
-// dito ko lilipat ung mga pag fetch ng data and pagstore ng computed data 
-import { /*lipat_data_hohoho, quarterly_consumption, monthly_consumption*/ } from './../../dashboard_query.js'
+const daily_water_consumption_container = ref({
+    'date': [],
+    'deep_well_1': [], 
+    'deep_well_2': [],
+    'deep_well_3': [],
+    'deep_well_4': [],
+    'prime_water': [],
+    'total_consumption': []
+  }) 
+const monthly_water_consumption_container = ref({
+    'deep_well_1': [], 
+    'deep_well_2': [],
+    'deep_well_3': [],
+    'deep_well_4': [],
+    'prime_water': [],
+    'total_consumption': []
+  })
+const quarter_container = ref({
+    'deep_well_1': [], 
+    'deep_well_2': [],
+    'deep_well_3': [],
+    'deep_well_4': [],
+    'prime_water': [],
+    'total_consumption': []
+  })
 
 // daily water consumption
 const Daily_yAxisConsumption = ref([])
 const Daily_xAxisDate = ref([])
-const daily_water_consumption_container = ref({
-  'date': [],
-  'deep_well_1': [], 
-  'deep_well_2': [],
-  'deep_well_3': [],
-  'deep_well_4': [],
-  'prime_water': [],
-  'total_consumption': []
-})
+
 const daily_filter_output = ref("")
 
 const monthly_filter_output = ref("")
 const monthly_yAxis = ref([])
-const monthly_water_consumption_container = ref({
-  'deep_well_1': [], 
-  'deep_well_2': [],
-  'deep_well_3': [],
-  'deep_well_4': [],
-  'prime_water': [],
-  'total_consumption': []
-})
+
 
 const quarterly_filter_output = ref("")
-const quarter_container = ref({
-  'deep_well_1': [], 
-  'deep_well_2': [],
-  'deep_well_3': [],
-  'deep_well_4': [],
-  'prime_water': [],
-  'total_consumption': []
-})
+
 
 const quarter_yAxis = ref([])
 
@@ -245,33 +247,21 @@ onMounted(async () => {
     try{
       console.log('bitch')
       //await lipat_data_hohoho();
-      
-      /* eto ung call ng monthly and daily consumption 
       await monthly_consumption(monthly_water_consumption_container, daily_water_consumption_container);
-      console.log(monthly_water_consumption_container);
-      console.log(daily_water_consumption_container);
       // eslint-disable-next-line
       monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
       // eslint-disable-next-line
       Daily_xAxisDate.value = daily_water_consumption_container.value.date 
       // eslint-disable-next-line
       Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
-
-       tapos dito ung call ng quarter consumption function
-
-      await quarterly_consumption(monthly_water_consumption_container, quarter_container);
+      await quarterly_consumption(monthly_water_consumption_container, quarter_container)
       // eslint-disable-next-line
-      quarter_yAxis.value = quarter_container.value.total_consumption;*/
+      quarter_yAxis.value = quarter_container.value.total_consumption;
     } catch (error) {
       console.error('Error getting document:', error);
     }
 });
 
-/*
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize);
-});
-*/
 use([
   CanvasRenderer,
   TitleComponent,
@@ -391,7 +381,7 @@ const submeter_graph = ref({
     }
   ]
 });
-//line chart ni consumption
+// daily water consumption
 const consumption_chart = ref({
   title: {
     text: 'Daily Water Consumption',
