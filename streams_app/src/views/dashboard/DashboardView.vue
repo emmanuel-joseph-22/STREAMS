@@ -417,6 +417,15 @@ const consumption_chart = ref({
     data: Daily_yAxisConsumption
     }]
 });
+/*
+consumption_chart.value.on('click', 'series', function (params) {
+  // Access the data related to the clicked bar
+  const dataIndex = params.dataIndex;
+  const seriesIndex = params.seriesIndex;
+  const value = params.value;
+  const name = params.name;
+  console.log('Bar clicked:', name, 'with value:', value)
+})*/
 
 //consumption_chart.on('click', 'series', handleBarClick);
 
