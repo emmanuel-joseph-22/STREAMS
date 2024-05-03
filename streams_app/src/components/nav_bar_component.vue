@@ -6,17 +6,17 @@
                 <!-- tinanggal ko class=icon ang cute nagzzooom -->
                 <div v-show="!navbarCollapsed">
                     <div class="flex">
-                        <span @click="toggleNavbar" title="Close Bar" style="margin-left: 45px; transition: ease-in-out 1s; cursor: pointer;">
-                            <img class="icon" src="fake_logo.png" alt="Toggle Icon"  >
+                        <span @click="toggleNavbar" title="Close Bar" style="margin-left: 25px; transition: ease-in-out 1s; cursor: pointer;">
+                            <img class="icon" src="streams_logo.png" alt="Toggle Icon"  >
                         </span>
-                        <div class="name text font-bold text-xl transition ease-in-out 300 pt-4 pl-1">
+                        <div class="name text-[#FFFFFF] font-bold text-xl transition ease-in-out 300 pt-5 pl-3">
                             STREAMS
                         </div>
                     </div>
                 </div>
                 <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar" style="margin-left: 10px; transition: ease-in-out 1s; cursor: pointer;">
                     <span>
-                        <img class="icon" src="fake_logo.png" alt="Toggle Icon" >
+                        <img class="icon" src="streams_logo.png" alt="Toggle Icon" >
                     </span>
                 </div>
 
@@ -79,7 +79,7 @@
                     </router-link>
                     <!-- convservation tips ewan san lalagay -->
                     <router-link class="navbar_link" to="/tips">
-                        <div class="other_link_label"><span>Useful Techniques</span></div>
+                        <div class="other_link_label"><span>Let's Learn</span></div>
                     </router-link>
                     <!-- profile view -->
                     <router-link class="navbar_link" to="/settings">
@@ -130,9 +130,9 @@
         <div class="flex">
             <div class="fixed inset-0 bg-white-100 bg-opacity-60" @click="toggleSidebar"></div>
             <div id="sidebar" class="bg-gray-800 text-white w-16 flex-shrink-0" @click="toggleSidebar">
-                <div class="p-4 flex flex-row">
-                    <img src="fake_logo.png" alt="more_setting" class="w-8 h-8">
-                    <div class="name text font-bold text-xl transition ease-in-out 300 pt-1 pl-1">
+                <div class="pl-6 pt-4 flex flex-row">
+                    <img src="streams_logo.png" alt="more_setting" class="w-8 h-8">
+                    <div class="name text font-bold text-xl transition ease-in-out 300 pt-1 pl-3">
                         STREAMS
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                 </router-link>-->
 
                 <router-link class="navbar_label" to="/tips" title="Useful Techniques">
-                    <span class="tips">Useful Techniques</span>
+                    <span class="tips">Let's Learn</span>
                 </router-link>
 
                 <router-link class="navbar_label" to="/settings" title="Account Setting">
@@ -433,7 +433,7 @@ export default {
     text-align: center;
     display: flex;
     padding-left: 7px;
-    margin: 20px auto;
+    margin: 30px auto;
 }
 
 .logout{

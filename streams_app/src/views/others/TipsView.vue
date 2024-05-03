@@ -2,8 +2,8 @@
     <home-page>
         <div class="tips">
             <div class="tips_header">
-                <h1 class="relative mt-4 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl">USEFUL TECHNIQUES</h1>
-                <p class="px-4 py-2 text-center">This page is intended to disseminate information about different ways to conserve water.</p>
+                <h1 class="relative mt-4 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl">LET'S LEARN</h1>
+                <p class="px-4 py-2 text-center">This page is intended to disseminate information about the importance of conserving water.</p>
             </div>
             <div class="tips_section relative">
                 <div class="tips-buttons top-2 flex relative border border-4 border-blue-300 bg-blue-200 text-black items-center justify-center rounded-2xl mx-auto w-12/12 md:w-3/4 lg:w-2/3 xl:w-1/2">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                         <div class="tip-content overflow-y-hidden">
-                            <div v-if="selectedContent == 'students'" class="relative w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
+                            <div v-if="selectedContent == 'students'" class="relative w-full h-[690px] sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto">
                                 <p class="text-2xl font-bold"><br/>What is Water Conservation?<br/><br/></p>
                                 <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption. <strong>Water conservation</strong> entails both individual actions, such as fixing leaks and using water-efficient appliances, and collective efforts, such as implementing water-saving policies and investing in water infrastructure.</p>
                                 
@@ -83,6 +83,8 @@
                                     <br/><br/>Furthermore, water conservation serves as a vital tool for adapting to the realities of water scarcity and building resilience in vulnerable communities. As climate change exacerbates water stress in many regions, proactive measures to conserve and manage water resources become indispensable for ensuring equitable access to clean water for all. By investing in water-saving technologies, implementing water reuse systems, and raising public awareness about water conservation, societies can empower individuals and communities to adapt to water scarcity and build a more resilient future.</p>
                             </div>
                             <div v-if="selectedContent == 'staffs'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
+                                <p class="text-2xl font-bold"><br/>What is Water Conservation?<br/><br/></p>
+                                <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption. <strong>Water conservation</strong> entails both individual actions, such as fixing leaks and using water-efficient appliances, and collective efforts, such as implementing water-saving policies and investing in water infrastructure.</p>
                                 <p class="text-2xl font-bold"><br/>10 Ways To Conserve Water as School Staff<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
                                     <ol>
@@ -128,8 +130,13 @@
                                         </li><br/><br/>
                                         By implementing these tips, staff members can play a crucial role in promoting water conservation and sustainability within the school environment.
                                     </ol>
-                                    
                                 </p>
+                                <p class="text-2xl font-bold"><br/>Why is Water Treatment important?<br/><br/></p>
+                                <p class="text-left px-4 py-2">For humans, clean water is a basic need. The need for water is increasing along with the number of people on the planet. Water is a limited resource, hence it needs to be treated after usage in order to continue serving purposes. This is when water purification systems become crucial.<br/><br/>
+
+                                    Water treatment makes the water safe to drink and suitable for other uses by eliminating impurities and dangerous materials. Regretfully, about 2 billion people worldwide either consume untreated water or obtain their water from tainted or dangerous sources. The implementation of water quality improvement systems facilitates timely intervention and the avoidance of hazardous water-related events, including illness and mortality outbreaks.<br/><br/>
+                                    However, water treatment also helps to guarantee that water is returned to the natural cycle. The safe return of water to natural sources such as rivers, lakes, and oceans is one of the processes' final applications. Naturally, in order to prevent contamination and other seriously detrimental environmental issues like water pollution, water treatment facilities must make sure that the water is clear of harmful elements before proceeding.
+                                    </p>
                             </div>
                             <div v-if="selectedContent == 'sdg6'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is SDG 6 all about?<br/><br/></p>
@@ -152,8 +159,9 @@
                                     <br/><br/>
                                     7. <strong>International Cooperation and Capacity Building</strong>: Support and strengthen the participation of local communities in improving water and sanitation management, and enhance international cooperation to facilitate access to clean water and sanitation.
                                     <br/><br/>
-                                    <strong>SDG 6</strong> aims to ensure that everyone has access to clean water and sanitation by 2030, addressing a fundamental aspect of human well-being and sustainable development. It acknowledges the importance of water as a vital resource for health, economic development, and environmental sustainability.
                                 </p>
+                                <p class="text-2xl font-bold"><br/>SDG 12 aims to..?<br/><br/></p>
+                                <p class="text-left px-4 py-2"><strong>SDG 6</strong> aims to ensure that everyone has access to clean water and sanitation by 2030, addressing a fundamental aspect of human well-being and sustainable development. It acknowledges the importance of water as a vital resource for health, economic development, and environmental sustainability.</p>
                             </div>
                             <div v-if="selectedContent == 'sdg12'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is SDG 12 all about?<br/><br/></p>
@@ -182,8 +190,9 @@
                                     <br/><br/>
                                     <strong>Capacity Building for Sustainable Development</strong>: Develop and implement tools to monitor sustainable development impacts for sustainable tourism that creates jobs and promotes local culture and products.
                                     <br/><br/>
-                                    <strong>SDG 12</strong> aims to promote sustainable consumption and production patterns to ensure that economic growth and development are environmentally sustainable and socially inclusive. It encourages responsible consumption and production practices that minimize waste generation, reduce resource depletion, and promote the efficient use of natural resources.
                                 </p>
+                                <p class="text-2xl font-bold"><br/>SDG 12 aims to..?<br/><br/></p>
+                                <p class="text-left px-4 py-2"><strong>SDG 12</strong> aims to promote sustainable consumption and production patterns to ensure that economic growth and development are environmentally sustainable and socially inclusive. It encourages responsible consumption and production practices that minimize waste generation, reduce resource depletion, and promote the efficient use of natural resources.</p>
                             </div>
                         </div>
             </div>

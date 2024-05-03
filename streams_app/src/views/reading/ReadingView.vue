@@ -1,7 +1,7 @@
 <template>
     <main-content>
        <header_bar>
-            <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-3 mt-1">Reading</h1>
+            <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-8 mt-0">Reading</h1>
         </header_bar>
         <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
             This will record water reading in the database!
@@ -9,7 +9,7 @@
 
         <div class="reading bg-bsu-blue flex justify-center items-center h-screen">
             <div class="bg-center h-full w-full inset-0 opacity-80 bg-[url('/public/image-30.jpg')]">
-                <div class="content flex-1 p-2 mb-auto mt-12 mx-7 overflow-y-auto w-full">
+                <div class="content flex-1 p-2 mb-auto mt-36 mx-5 overflow-y-auto w-11/12">
                     <!--INI COMMENT KO MUNA TO HA PARA MAKITA KO-->
                     <!--<div class="main">
                         <label for="date" >Date</label>
