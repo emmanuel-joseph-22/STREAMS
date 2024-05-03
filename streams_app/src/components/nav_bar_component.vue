@@ -45,6 +45,14 @@
                     </div>
                 </router-link>
 
+                <router-link class="navbar_link" to="/events" title="Readings" v-if="role == 'event admin'">
+                    <div class="navbar_icon">
+                        <!-- nav icon -->
+                        <img ref="navIcon" class="icon" src="event_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Report</div>
+                    </div>
+                </router-link>
+
                 <!-- map div -->
                 <router-link class="navbar_link" to="/map" title="Maps">
                     <div class="navbar_icon">
@@ -99,7 +107,10 @@
                     </router-link>   
                     <router-link to="/report" v-if="role == 'admin'">
                         <img class="mobile_icon" src="report_icon.png" />
-                    </router-link>              
+                    </router-link>
+                    <router-link to="/events" v-if="role == 'event admin'">
+                        <img class="mobile_icon" src="event_icon.png" />
+                    </router-link>                  
                 </div>
                 <div class="mobile_link">
                     <router-link to="/map"> 

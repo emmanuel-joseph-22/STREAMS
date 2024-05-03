@@ -32,6 +32,7 @@
                 <option value="" disabled>Select role</option>
                 <option value="admin">Admin</option>
                 <option value="employee">Employee</option>
+                <option value="event admin">Event Admin</option>
               </select>
   
               <div v-if="errorMsg" class="flex items-center bg-red-200 border-2 border-red-600 p-2 rounded-xl">
