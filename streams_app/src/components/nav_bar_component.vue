@@ -171,7 +171,7 @@ export default {
         // Set a timeout to change the value of role after a certain amount of time
         setTimeout(() => {
             this.role = store.state.role; // Change 'new_role' to the desired value
-        }, 500); // 5000 milliseconds = 5 seconds
+        }, 1000); // 5000 milliseconds = 5 seconds
             
     },
     unmounted(){
