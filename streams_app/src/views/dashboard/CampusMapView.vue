@@ -46,8 +46,8 @@ export default {
     });
 
     const bounds = [
-      [121.068569, 13.786130], // Southwest coordinates
-      [121.069820, 13.786765]  // Northeast coordinates
+        [121.073247, 13.783082], // Southwest coordinates
+        [121.075437, 13.785484]  // Northeast coordinates
     ];
 
     const markerData = [
