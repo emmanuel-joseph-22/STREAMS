@@ -31,7 +31,7 @@
         </div>
 <!-- display record -->
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
-        <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
+        <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
           <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
           <h2 class="text-3xl font-bold mt-14">{{ search_water_source }}</h2>
           <h2 class="text-xl font-bold text-white mb-4">{{ location }}</h2>
@@ -121,8 +121,8 @@
   <v-chart class="mainmeter" :option="pie_main_meter" v-if="selectedGraph === 'mainMeter'" style="height: 350px;"/>
   <v-chart class="submeter" :option="submeter_graph" v-else-if="selectedGraph === 'subMeter'" style="height: 350px;"/>
   <div class="navigation-buttons">
-    <button class="arrow-button" @click="navigate('left')">◄</button>
-    <button class="arrow-button" @click="navigate('right')">►</button>
+    <button class="arrow-button px-12" @click="navigate('left')">◄</button>
+    <button class="arrow-button px-12" @click="navigate('right')">►</button>
   </div>
 </div>
 
@@ -153,7 +153,7 @@
       <option value="deep_well_4" class="dept_option text-[#042334]">Deep Well 4</option>
     </select>
   </div>
-  <v-chart :option="twelve_month_chart" @click="togglePopup2"/>
+  <v-chart style="height: 370px;" :option="twelve_month_chart" @click="togglePopup2"/>
 
   <div v-if="monthlyPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup2"></div>
   <div v-if="monthlyPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
@@ -176,7 +176,7 @@
   </div>
   <!-- Add your quarterly chart here -->
 
-            <v-chart :option="quarter_chart" @click="togglePopup1"/>
+            <v-chart style="height: 370px;" :option="quarter_chart" @click="togglePopup1"/>
             <!-- pop up-->
             <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup1"></div>
             <div v-if="quarPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
@@ -407,7 +407,7 @@ const consumption_chart = ref({
     name: 'Cubic Meter (m3)',
     nameLocation: 'center', 
     nameTextStyle: {
-      fontWeight: 'bold' 
+      fontWeight: 'bold',
     },
       nameGap: 35, 
   },

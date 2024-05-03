@@ -5,21 +5,21 @@
     </header-bar>
     <div class="content-container">
       <!-- Left content -->
-      <div class="left-content">
+      <div class="left-content bg-white p-4">
         <!-- Creative rows -->
-        <div class="row-container" v-for="(row, index) in rows" :key="row.id" @click="handleButtonClick(index)">
-          <div class="row-content">
-            <span class="row-text">{{ row.title }}</span>
-          </div>
-          <div class="button-container">
-            <button :class="{ 'button': true, 'active-button': activeButtonIndex === index }">Click Me</button>
-          </div>
+        <div class="flex items-center mb-4" v-for="(row, index) in rows" :key="row.id" @click="handleButtonClick(index)">
+            <div class="w-full">
+                <span class="block text-lg text-left font-semibold mb-1">{{ row.title }}</span>
+            </div>
+            <div class="ml-auto">
+                <button :class="{ 'button': true, 'active-button': activeButtonIndex === index }">📄</button>
+            </div>
         </div>
         <!-- Print button -->
         <div id="print_row">
-          <button id="print_button" class="button" @click="handlePrint">Print</button>
+            <button id="print_button" class="button w-full" @click="handlePrint">Print</button>
         </div>
-      </div>
+    </div>
       <!-- Right content -->
       <div class="right-content">
         <div class="box1">
@@ -521,14 +521,7 @@ const DW2_BarChart = async () => {
 }
 
 .left-content {
-  position: fixed;
-  top: 150px;
-  left: 120px;
-  bottom: 0;
-  width: 300px; /* Adjust width as needed */
-  background-color: #fff; /* White background color for left content */
-
-  z-index: 1; /* Ensure left content is above other content */
+  @apply fixed md:top-28 top-14 md:left-52 left-0 bottom-0 w-full md:w-96 bg-white p-4 overflow-y-auto;
 }
 
 .right-content {
