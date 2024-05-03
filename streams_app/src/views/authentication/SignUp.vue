@@ -127,15 +127,21 @@ const signup = async () => {
     // Reset error message
     errorMsg.value = "";
 
-    // Check if a role is selected
-    if (!role.value) {
-        errorMsg.value = "Please select a role";
+
+    if (!emailIsValid()) {
+        errorMsg.value = "Please enter a valid email.";
         return;
     }
 
-    // Validate email, name, and password
-    if (!emailIsValid() || !nameIsValid() || !passwordIsValid()) {
-        errorMsg.value = "Please fill in all required fields correctly";
+    // Validate password second
+    if (!passwordIsValid()) {
+        errorMsg.value = "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and have no spaces.";
+        return;
+    }
+
+    // Validate role last
+    if (!role.value) {
+        errorMsg.value = "Please select a role.";
         return;
     }
 
