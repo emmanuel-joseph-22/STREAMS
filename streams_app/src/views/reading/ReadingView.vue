@@ -8,6 +8,7 @@
         </confirm_pop_up>  
 
         <div class="reading bg-bsu-blue flex justify-center items-center h-screen">
+            <div class="bg-center h-full w-full inset-0 opacity-80 bg-[url('/public/image-30.jpg')]">
                 <div class="content flex-1 p-2 mb-auto mt-12 mx-7 overflow-y-auto w-full">
                     <!--INI COMMENT KO MUNA TO HA PARA MAKITA KO-->
                     <!--<div class="main">
@@ -17,21 +18,19 @@
                     <div class="main" v-if="mainmeter">
                         <label for="main" class="main-label font-bold block mt-12 my-2.5 text-justify whitespace-nowrap"><b class="text-bsu-borders font-bold text-lg">Water Source</b></label>
                         <select id="main" class="main-dropdown p-2.5 h-14 text-base rounded-xl border-solid border-4 border-bsu-borders text-bsu-borders box-border rounded w-full" v-model="WaterSource">
-                            <option value="deep_well_1">Deep Well 1</option>
-                            <div class=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                                <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg></div>
-                            <option value="deep_well_2">Deep Well 2</option>
-                            <option value="deep_well_3">Deep Well 3</option>
-                            <option value="deep_well_4">Deep Well 4</option>
-                            <option value="prime_water">Prime Water</option>
-                            <option value="fic_1">FIC 1</option>
-                            <option value="fic_2"> FIC 2</option>
-                            <option value="canteen_drinking_fountain">CANTEEN DRINKING FOUNTAIN</option>
-                            <option value="exec_lounge">EXECUTIVE LOUNGE</option>
-                            <option value="ceafa_faculty">CEAFA FACULTY ROOM</option>
-                            <option value="rgr">RGR</option>
-                            <option value="cics_drinking_fountain">CICS DRINKING FOUNTAIN</option>
-                            <option value="ssc">SSC</option>
+                            <option value="deep-well-1">🕛Deep Well 1</option>
+                            <option value="deep-well-2">🕛Deep Well 2</option>
+                            <option value="deep-well-3">🕛Deep Well 3</option>
+                            <option value="deep-well-4">🕛Deep Well 4</option>
+                            <option value="prime-water">🕛Prime Water</option>
+                            <option value="fic-1">🔵FIC 1</option>
+                            <option value="fic-2">🔵FIC 2</option>
+                            <option value="canteen-drinking-fountain">🔵Canteen Drinking Fountain</option>
+                            <option value="exec-lounge">🔵Executive Lounge</option>
+                            <option value="ceafa-faculty">🔵CEAFA Faculty Room</option>
+                            <option value="rgr">🔵RGR</option>
+                            <option value="cics-drinking-fountain">🔵CICS Drinking Fountain</option>
+                            <option value="ssc">🔵SSC</option>
                         </select>
                     </div>
                     <!--
@@ -39,17 +38,17 @@
                         <label for="date" >Date</label>
                         <input id="date"  type="date" class="date_field" v-model="temp_date"/>
                     </div>-->
-                    <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
+                    <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7">
                         <label for="input_cubic" class="m3-label mr-2.5 font-bold"></label>
                         <input autofocus id="input_cubic" type="tel" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
                     </div>
 
-                    <div class="m3-cont-x  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
+                    <div class="m3-cont-x  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7">
                         <label for="input_x" class="x-label mr-2.5 font-bold"></label>
                         <input autofocus id="input_x" type="tel" name="x" required placeholder="x0.001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x"/>
                     </div>
 
-                    <div class="m3-cont-x0  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7 mr-3">
+                    <div class="m3-cont-x0  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7">
                         <label for="input_x0" class="x0-label mr-2.5 font-bold"></label>
                         <input autofocus id="input_x0" type="tel" name="x0" required placeholder="x0.0001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x0"/>
                     </div>
@@ -63,6 +62,7 @@
                         </a>
                     </div>
                 </div>
+            </div>
         </div>
     </main-content>
 </template>

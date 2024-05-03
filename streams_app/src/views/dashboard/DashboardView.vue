@@ -3,7 +3,8 @@
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
       </header-bar>
-      <dashboard-content>
+      <loaderSpinner v-if="isLoading" />
+      <dashboard-content v-else>
 <!-- search record -->
         <button @click="togglePopup" class="circle-button absolute top-1 right-0 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">
             <img src="search-button.png" alt="Search icon" class="w-6 h-6">
@@ -200,7 +201,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
-import { search_record/*, monthly_and_daily_query, quarterly_consumption */} from "@/dashboard_query"; 
+import { search_record, monthly_and_daily_query, quarterly_consumption } from "@/dashboard_query"; 
 
 const daily_water_consumption_container = ref({
     'date': [],
@@ -242,10 +243,7 @@ const quarter_yAxis = ref([])
 
 onMounted(async () => {
     try{
-      console.log('bitch')
-      
-      //await lipat_data_hohoho();
-      /*await monthly_and_daily_query(monthly_water_consumption_container, daily_water_consumption_container);
+      await monthly_and_daily_query(monthly_water_consumption_container, daily_water_consumption_container);
       // eslint-disable-next-line
       monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
       // eslint-disable-next-line
@@ -257,7 +255,7 @@ onMounted(async () => {
       quarter_yAxis.value = quarter_container.value.total_consumption;
       console.log(daily_water_consumption_container)
       console.log(monthly_water_consumption_container);
-      console.log(quarter_container)*/
+      console.log(quarter_container)
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -419,6 +417,15 @@ const consumption_chart = ref({
     data: Daily_yAxisConsumption
     }]
 });
+/*
+consumption_chart.value.on('click', 'series', function (params) {
+  // Access the data related to the clicked bar
+  const dataIndex = params.dataIndex;
+  const seriesIndex = params.seriesIndex;
+  const value = params.value;
+  const name = params.name;
+  console.log('Bar clicked:', name, 'with value:', value)
+})*/
 
 //consumption_chart.on('click', 'series', handleBarClick);
 
@@ -610,7 +617,7 @@ const quarterly_filter = () => {
 import HomePageView from './HomePageView.vue';
 import header from '../../components/header_component.vue';
 import dashboard_content from '../../components/dashboard_content.vue';
-
+import loaderSpinner from './../../components/loaderSpinner.vue';
 
 export default {
     components: {
@@ -618,6 +625,17 @@ export default {
         'header-bar': header,
         'dashboard-content': dashboard_content,
         'v-chart': VChart
+    },
+    data(){
+      return {
+        isLoading: true
+      }
+    },
+    created(){
+      setTimeout(() => {
+      // Set isLoading to false when data fetching is complete
+      this.isLoading = false;
+    }, 9000); // Simulating a 2-second delay, replace with your actual data fetching logic
     }
 }
 </script>

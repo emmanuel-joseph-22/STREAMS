@@ -32,6 +32,7 @@
                 <option value="" disabled>Select role</option>
                 <option value="admin">Admin</option>
                 <option value="employee">Employee</option>
+                <option value="event admin">Event Admin</option>
               </select>
   
               <div v-if="errorMsg" class="flex items-center bg-red-200 border-2 border-red-600 p-2 rounded-xl">
@@ -127,15 +128,21 @@ const signup = async () => {
     // Reset error message
     errorMsg.value = "";
 
-    // Check if a role is selected
-    if (!role.value) {
-        errorMsg.value = "Please select a role";
+
+    if (!emailIsValid()) {
+        errorMsg.value = "Please enter a valid email.";
         return;
     }
 
-    // Validate email, name, and password
-    if (!emailIsValid() || !nameIsValid() || !passwordIsValid()) {
-        errorMsg.value = "Please fill in all required fields correctly";
+    // Validate password second
+    if (!passwordIsValid()) {
+        errorMsg.value = "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and have no spaces.";
+        return;
+    }
+
+    // Validate role last
+    if (!role.value) {
+        errorMsg.value = "Please select a role.";
         return;
     }
 

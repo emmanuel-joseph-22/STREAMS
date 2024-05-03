@@ -45,6 +45,14 @@
                     </div>
                 </router-link>
 
+                <router-link class="navbar_link" to="/events" title="Readings" v-if="role == 'event admin'">
+                    <div class="navbar_icon">
+                        <!-- nav icon -->
+                        <img ref="navIcon" class="icon" src="event_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Report</div>
+                    </div>
+                </router-link>
+
                 <!-- map div -->
                 <router-link class="navbar_link" to="/map" title="Maps">
                     <div class="navbar_icon">
@@ -99,7 +107,10 @@
                     </router-link>   
                     <router-link to="/report" v-if="role == 'admin'">
                         <img class="mobile_icon" src="report_icon.png" />
-                    </router-link>              
+                    </router-link>
+                    <router-link to="/events" v-if="role == 'event admin'">
+                        <img class="mobile_icon" src="event_icon.png" />
+                    </router-link>                  
                 </div>
                 <div class="mobile_link">
                     <router-link to="/map"> 
@@ -168,33 +179,35 @@ export default {
     this.checkScreenWidth();
     window.addEventListener('resize', this.checkScreenWidth);
 
-    console.log(this.role);
-    // Set a timeout to change the value of role after a certain amount of time
-    setTimeout(() => {
-      this.role = store.state.role; // Change 'new_role' to the desired value
-    }, 500); // 5000 milliseconds = 5 seconds
-  },
-  unmounted() {
-    window.removeEventListener('resize', this.checkScreenWidth);
-  },
-  methods: {
-    // for dark mode
-    switch_mode() {
-      this.dark_mode = !this.dark_mode;
+        console.log(this.role);
+        // Set a timeout to change the value of role after a certain amount of time
+        setTimeout(() => {
+            this.role = store.state.role; // Change 'new_role' to the desired value
+        }, 1000); // 5000 milliseconds = 5 seconds
+            
     },
-    logout() {
-      store.dispatch('updateRole', null);
-      const auth = getAuth();
-      signOut(auth).then(() => {
-        console.log("Logged out!");
-      });
+    unmounted(){
+        window.removeEventListener('resize', this.checkScreenWidth);
+    
     },
-    showMoreOptions() {
-      this.more_settings = !this.more_settings;
-    },
-    checkScreenWidth() {
-      const screenWidth = window.innerWidth;
-      const mobileThreshold = 766;
+    methods: {
+        // for dark mode
+        switch_mode(){
+            this.dark_mode = !this.dark_mode
+        },
+        logout(){
+            store.dispatch('updateRole', null);
+            const auth = getAuth()
+            signOut(auth).then(() => {
+                console.log("Logged out!");
+            })
+        },
+        showMoreOptions(){
+            this.more_settings = !this.more_settings
+        },
+        checkScreenWidth(){
+            const screenWidth = window.innerWidth;
+            const mobileThreshold = 766;
 
       this.isMobile = screenWidth <= mobileThreshold;
     },
