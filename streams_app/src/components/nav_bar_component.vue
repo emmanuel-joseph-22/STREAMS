@@ -111,13 +111,14 @@
 
         <!-- top bar for mobile -->
         <div class="flex">
-            <div class="more_settings" v-if="isMobile" @click="toggleSidebar">
+            <div class="more_settings z-10" v-if="isMobile" @click="toggleSidebar">
                 <img src="hamburger.png" alt="more_setting">
             </div>
         </div>
 
         <div class="flex">
-            <div id="sidebar" class="bg-gray-800 text-white w-16 flex-shrink-0">
+            <div class="fixed inset-0 bg-white-100 bg-opacity-60" @click="toggleSidebar"></div>
+            <div id="sidebar" class="bg-gray-800 text-white w-16 flex-shrink-0" @click="toggleSidebar">
                 <div class="p-4 flex flex-row">
                     <img src="fake_logo.png" alt="more_setting" class="w-8 h-8">
                     <div class="name text font-bold text-xl transition ease-in-out 300 pt-1 pl-1">
@@ -125,9 +126,9 @@
                     </div>
                 </div>
 
-                <router-link class="navbar_label" to="/feedback" title="Feedback">
+                <!--<router-link class="navbar_label" to="/feedback" title="Feedback">
                     <span class="feedback">Feedback</span>
-                </router-link>
+                </router-link>-->
 
                 <router-link class="navbar_label" to="/tips" title="Useful Techniques">
                     <span class="tips">Useful Techniques</span>
@@ -147,73 +148,79 @@
 </template>
 
 <script>
-
 import { getAuth, signOut } from 'firebase/auth';
 import store from './../store/index.js';
+
 export default {
-    data(){
-        return {
-            more_settings: false,
-            dark_mode: false,
-            isMobile: false,
-            admin: true,
-            navbarCollapsed: true,
-            showSidebar: false,
-            sidebarOpen: false,
-            role: store.state.role
-        }
-    },
-    mounted(){
-        this.checkScreenWidth();
-        window.addEventListener('resize', this.checkScreenWidth);
+  data() {
+    return {
+      more_settings: false,
+      dark_mode: false,
+      isMobile: false,
+      admin: true,
+      navbarCollapsed: true,
+      showSidebar: false,
+      sidebarOpen: false,
+      role: store.state.role,
+    };
+  },
+  mounted() {
+    this.checkScreenWidth();
+    window.addEventListener('resize', this.checkScreenWidth);
 
-        console.log(this.role);
-        // Set a timeout to change the value of role after a certain amount of time
-        setTimeout(() => {
-            this.role = store.state.role; // Change 'new_role' to the desired value
-        }, 500); // 5000 milliseconds = 5 seconds
-            
+    console.log(this.role);
+    // Set a timeout to change the value of role after a certain amount of time
+    setTimeout(() => {
+      this.role = store.state.role; // Change 'new_role' to the desired value
+    }, 500); // 5000 milliseconds = 5 seconds
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.checkScreenWidth);
+  },
+  methods: {
+    // for dark mode
+    switch_mode() {
+      this.dark_mode = !this.dark_mode;
     },
-    unmounted(){
-        window.removeEventListener('resize', this.checkScreenWidth);
-    
+    logout() {
+      store.dispatch('updateRole', null);
+      const auth = getAuth();
+      signOut(auth).then(() => {
+        console.log("Logged out!");
+      });
     },
-    methods: {
-        // for dark mode
-        switch_mode(){
-            this.dark_mode = !this.dark_mode
-        },
-        logout(){
-            store.dispatch('updateRole', null);
-            const auth = getAuth()
-            signOut(auth).then(() => {
-                console.log("Logged out!");
-            })
-        },
-        showMoreOptions(){
-            this.more_settings = !this.more_settings
-        },
-        checkScreenWidth(){
-            const screenWidth = window.innerWidth;
-            const mobileThreshold = 766;
+    showMoreOptions() {
+      this.more_settings = !this.more_settings;
+    },
+    checkScreenWidth() {
+      const screenWidth = window.innerWidth;
+      const mobileThreshold = 766;
 
-            this.isMobile = screenWidth <= mobileThreshold;
-        },
-        toggleNavbar() {
-            this.navbarCollapsed = !this.navbarCollapsed;
-            if (this.navbarCollapsed) {
-                this.more_settings = false;
+      this.isMobile = screenWidth <= mobileThreshold;
+    },
+    toggleNavbar() {
+      this.navbarCollapsed = !this.navbarCollapsed;
+      if (this.navbarCollapsed) {
+        this.more_settings = false;
+      }
+    },
+    // Add the updated toggleSidebar function
+    toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        var mainContent = document.querySelector(".flex");
+
+        sidebar.classList.toggle("active");
+        mainContent.classList.toggle("active");
+
+        // Add event listener to close sidebar on click outside
+        document.addEventListener("click", event => {
+            if (!sidebar.contains(event.target) && !mainContent.contains(event.target)) {
+            this.toggleSidebar();
             }
-        },
-        toggleSidebar() {
-            var sidebar = document.getElementById("sidebar");
-            var mainContent = document.querySelector(".flex");
-
-            sidebar.classList.toggle("active");
-            mainContent.classList.toggle("active");
-        }
-    }
-}
+        });
+    },
+  },
+};
 </script>
 
 <style src="../themes/main.css"/>
@@ -417,6 +424,9 @@ export default {
 }
 
 .logout{
-    margin-top: 470px;
+    margin-top: 10px;
+    display: inline-block;
+    text-align: center;
+    transition: ease-in-out 0.6s;
 }
 </style>

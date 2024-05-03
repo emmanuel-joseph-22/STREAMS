@@ -135,7 +135,7 @@
                                 <p class="text-2xl font-bold"><br/>What is SDG 6 all about?<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
                                     <strong>SDG 6</strong> stands for Sustainable Development Goal 6, which is one of the seventeen global goals established by the United Nations in 2015 as part of the 2030 Agenda for Sustainable Development.<br/> <strong>SDG 6</strong> focuses specifically on ensuring availability and sustainable management of water and sanitation for all.
-                                    <br/>
+                                    <br/><br/>
                                     The targets associated with <strong>SDG 6</strong> include:
                                     <br/><br/>
                                     1. <strong>Universal Access to Safe and Affordable Drinking Water</strong>: Ensure universal access to safe and affordable drinking water for all, including marginalized and vulnerable groups.
