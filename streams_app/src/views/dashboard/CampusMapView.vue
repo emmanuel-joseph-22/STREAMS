@@ -1,5 +1,8 @@
 <template>
   <home-page>
+    <header-bar style="background-color: #0E5E7B;">
+      <h1 class="dashboard font-arial font-bold text-4xl ml-3">Map</h1>
+    </header-bar>
     <main-content>
       <div class="map-wrap">
         <div class="map" ref="mapContainer"></div>
@@ -21,11 +24,14 @@ import dashboard_content from '../../components/dashboard_content.vue';
 import { Map, Marker } from 'maplibre-gl';
 import { toRefs, onUnmounted, onMounted, reactive } from 'vue';
 import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
+import header from '../../components/header_component.vue';
 
 export default {
   components: {
     'home-page': HomePageView,
-    'main-content': dashboard_content
+    'main-content': dashboard_content,
+    'header-bar': header
   },
   name: "MapComponent",
   setup() {
@@ -40,8 +46,8 @@ export default {
     });
 
     const bounds = [
-      [121.073247, 13.783082], // Southwest coordinates
-      [121.075437, 13.785484]  // Northeast coordinates
+      [121.068569, 13.786130], // Southwest coordinates
+      [121.069820, 13.786765]  // Northeast coordinates
     ];
 
     const markerData = [
@@ -62,7 +68,7 @@ export default {
     function hidePopup() {
       state.showPopup = false;
     }
-    
+
     function isWithinBounds(coords) {
       return coords.longitude >= bounds[0][0] && coords.longitude <= bounds[1][0] &&
              coords.latitude >= bounds[0][1] && coords.latitude <= bounds[1][1];
@@ -81,46 +87,59 @@ export default {
         maxBounds: bounds
       });
 
-      state.map.on('load', () => {
-        watchUserPosition();
+      state.map.on('load', async () => {
+        if (Capacitor.isNativePlatform()) {
+          const hasPermissions = await checkAndRequestPermissions();
+          if (hasPermissions) {
+            console.log("Permissions granted, watching position...");
+            watchUserPosition();
+          } else {
+            console.log("Permissions denied, not watching position.");
+          }
+        } else {
+          console.log("Web platform detected, not requesting mobile permissions.");
+        }
         addMarkers();
       });
     });
 
+    async function checkAndRequestPermissions() {
+      const status = await Geolocation.checkPermissions();
+      if (status.location !== 'granted') {
+        const requestStatus = await Geolocation.requestPermissions();
+        return requestStatus.location === 'granted';
+      }
+    return status.location === 'granted';
+    }
+    
     function watchUserPosition() {
-      const watchId = Geolocation.watchPosition({
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 10000
-      }, (position, err) => {
+      const watchId = Geolocation.watchPosition({ enableHighAccuracy: true }, (position, err) => {
         if (err) {
           console.error('Error watching position:', err);
           return;
         }
-        state.currentUserPosition = [position.coords.longitude, position.coords.latitude];
+        const { latitude, longitude } = position.coords;
+        state.currentUserPosition = [longitude, latitude];
         state.isUserLocationWithinBounds = isWithinBounds(position.coords);
 
         if (state.isUserLocationWithinBounds) {
           if (!state.userMarker) {
             state.userMarker = new Marker({ color: "#FF6347" })
-              .setLngLat(state.currentUserPosition)
+              .setLngLat([longitude, latitude])
               .addTo(state.map);
           } else {
-            state.userMarker.setLngLat(state.currentUserPosition);
+            state.userMarker.setLngLat([longitude, latitude]);
           }
-        } else {
-          console.log("User's location is outside the defined bounds.");
-          if (state.userMarker) {
-            state.userMarker.remove();
-            state.userMarker = null;
-          }
+        } else if (state.userMarker) {
+          state.userMarker.remove();
+          state.userMarker = null;
         }
       });
 
-      onUnmounted(() => {
-        Geolocation.clearWatch({ id: watchId });
-      });
-    }
+  onUnmounted(() => {
+    Geolocation.clearWatch({ id: watchId });
+  });
+}
 
     function addMarkers() {
       markerData.forEach(({ coordinate, name }) => {
@@ -152,12 +171,6 @@ export default {
   }
 };
 </script>
-
-
-
-
-
-
 
 <style scoped>
 @import '~maplibre-gl/dist/maplibre-gl.css';
