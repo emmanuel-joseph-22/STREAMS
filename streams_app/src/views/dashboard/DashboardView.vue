@@ -6,7 +6,7 @@
       <loaderSpinner v-if="isLoading" />
       <dashboard-content v-else>
 <!-- search record -->
-        <button @click="togglePopup" class="circle-button absolute top-1 right-0 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">
+        <button @click="togglePopup" class="circle-button fixed bottom-10 right-5 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
             <img src="search-button.png" alt="Search icon" class="w-6 h-6">
         </button>
         <div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>
@@ -49,7 +49,7 @@
           <button @click="toggleRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>
         </div>
 <!-- highlighted data -->
-        <div class="grid grid-cols-10 w-full gap-8 mt-20">
+        <div class="grid grid-cols-10 w-full gap-8 mt-5">
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
@@ -201,7 +201,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
-import { search_record, monthly_and_daily_query, quarterly_consumption } from "@/dashboard_query"; 
+import { search_record, monthly_query, daily_query, quarterly_consumption } from "@/dashboard_query"; 
 
 const daily_water_consumption_container = ref({
     'date': [],
@@ -243,19 +243,35 @@ const quarter_yAxis = ref([])
 
 onMounted(async () => {
     try{
-      await monthly_and_daily_query(monthly_water_consumption_container, daily_water_consumption_container);
-      // eslint-disable-next-line
-      monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
-      // eslint-disable-next-line
-      Daily_xAxisDate.value = daily_water_consumption_container.value.date 
-      // eslint-disable-next-line
-      Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
-      await quarterly_consumption(monthly_water_consumption_container, quarter_container)
-      // eslint-disable-next-line
-      quarter_yAxis.value = quarter_container.value.total_consumption;
-      console.log(daily_water_consumption_container)
-      console.log(monthly_water_consumption_container);
-      console.log(quarter_container)
+      console.log('garapata ni bubbles')
+      //await fetchWaterSourceData(daily_water_consumption_container)
+      //await lipat_data_hohoho()
+      //await lipat_data_hohoho()
+      
+      const startTime = performance.now();
+      await daily_query(daily_water_consumption_container);
+      await monthly_query(monthly_water_consumption_container);
+      await quarterly_consumption(monthly_water_consumption_container, quarter_container);
+        // eslint-disable-next-line
+        monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
+        // eslint-disable-next-line
+        Daily_xAxisDate.value = daily_water_consumption_container.value.date 
+        // eslint-disable-next-line
+        Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
+        
+        // eslint-disable-next-line
+        quarter_yAxis.value = quarter_container.value.total_consumption;
+        console.log(daily_water_consumption_container)
+        console.log(monthly_water_consumption_container);
+        console.log(quarter_container)
+      
+      const endTime = performance.now();
+
+      // Calculate the time difference
+      const executionTime = endTime - startTime;
+
+      console.log("Execution time:", executionTime, "milliseconds");
+      
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -544,6 +560,7 @@ const navigate = (direction) => {
     selectedGraph.value = 'subMeter';
   }
 };
+
  // initialize with a default value (Highlights)
 const totalAccumulated = ref(0);
 totalAccumulated.value = 24;
@@ -581,11 +598,10 @@ const toggleRecord = async () => {
   } else {
     meter.value = record;
   }
-  // format date into formal structure
+  //format date into formal structure
   const dateString = new Date(search_date.value)
   const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(dateString);
-  search_date.value = formattedDate
-
+  
   showRecord.value = !showRecord.value;
 };
 
@@ -628,15 +644,9 @@ export default {
     },
     data(){
       return {
-        isLoading: true
+        isLoading: false
       }
     },
-    created(){
-      setTimeout(() => {
-      // Set isLoading to false when data fetching is complete
-      this.isLoading = false;
-    }, 9000); // Simulating a 2-second delay, replace with your actual data fetching logic
-    }
 }
 </script>
 
