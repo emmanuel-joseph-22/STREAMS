@@ -1,20 +1,22 @@
 <template>
   <div id="app">
     <header>
-      <div class="logo">
+    <div class="logo">
         <img src="aquatech_v1.png" alt="Aquatech Logo">
         <img src="Batangas_State_Logo_2.png" alt="Batangas State Logo">
         <img src="sdo.png" alt="SDO Logo">
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="#faq">FAQ</a></li>
-        </ul>
-      </nav>
-    </header>
+    </div>
+    <nav>
+              
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </nav>
+</header>
+
     <main>
       <section id="home" class="full-screen dark-color-1">
         <div class="image-container">
@@ -100,6 +102,7 @@
 export default {
   data() {
     return {
+        menuVisible: false, // Tracks whether the menu is visible or not
       currentSlide: 0, // Keeps track of the current slide index
       slides: [
         {
@@ -139,6 +142,31 @@ export default {
       }
     },
     handleScroll() {
+      const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('nav ul li a');
+
+        // Calculate the current section in view
+        let currentSection;
+        sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            const sectionBottom = section.getBoundingClientRect().bottom;
+
+            // If the section is in view, set it as the current section
+            if (sectionTop <= 100 && sectionBottom >= 100) {
+                currentSection = section.id;
+            }
+        });
+
+        // Highlight the corresponding navigation item
+        navItems.forEach(navItem => {
+            const href = navItem.getAttribute('href').substring(1);
+
+            if (href === currentSection) {
+                navItem.classList.add('active'); // Add an 'active' class
+            } else {
+                navItem.classList.remove('active'); // Remove the 'active' class
+            }
+        });
       const scrollPosition = window.scrollY || window.pageYOffset;
 
       // Scroll handling logic for various images and text overlays
@@ -259,9 +287,21 @@ header {
   z-index: 1000; /* Ensure the header stays on top */
 }
 nav ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem; /* Space between menu items */
+}
+
+/* Menu button style */
+.menu-button {
+    display: none; /* Initially hide the menu button */
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem; /* Larger font size for button */
+    cursor: pointer;
 }
 nav ul li {
   display: inline;
@@ -276,11 +316,15 @@ nav ul li a {
   transition: all 0.3s; /* Add smooth transition for all properties */
 }
 nav ul li a:hover {
-  color: #000000; /* Change text color on hover */
-  background-color: #8dc8ff; /* Change background color on hover */
-  border-color: #0059ff; /* Change border color on hover */
-}
-
+        color: #000; /* Change text color on hover */
+        background-color: #ebebeb; /* Change background color on hover */
+        border-radius: 5px; /* Add border radius */
+        border-color: #fff;
+        box-shadow: 0 0 15px rgba(136, 186, 240, 0.7), /* Colored glow effect */
+              0 0 25px rgba(167, 183, 200, 0.5), /* Outer glow effect */
+              0 0 40px rgba(236, 242, 249, 0.3); /* Outer glow effect */
+        
+    }
 section.full-screen {
   width: 100vw; /* Set width to 100% of viewport width */
   height: 100vh; /* Set height to 100% of viewport height */
@@ -553,4 +597,251 @@ section.full-screen {
   color: #fff; /* Text color */
   text-decoration: none; /* Remove underline */
 }
+/* Media query for tablets and smaller screens */
+@media (max-width: 768px) {
+    /* Navigation Bar */
+    nav ul {
+        display: none; /* Initially hide the links */
+        flex-direction: column; /* Arrange links in a column */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+    }
+
+    .menu-button {
+        display: block; /* Show menu button on smaller screens */
+    }
+
+    nav ul.show {
+        display: flex; /* Show links when the menu is visible */
+    }
+
+    /* Adjust sections */
+    section.full-screen {
+        height: 100vh; /* Set the height to 100% of the viewport height */
+        padding: 0; /* Remove padding for full screen effect */
+        width: 100vw; /* Ensure width takes up the full viewport width */
+    }
+
+
+    /* Adjust text and button sizes */
+    .text-overlay h2 {
+        font-size: 3rem; /* Reduce font size */
+    }
+
+    .text-overlay p {
+        font-size: 1rem; /* Reduce font size */
+    }
+
+    .get-started-button {
+        padding: 10px 20px; /* Adjust padding */
+        font-size: 14px; /* Adjust font size */
+    }
+
+    /* Adjust images */
+    .water-image, .moon-image, .mountain-image, .paint-image {
+        width: 100%; /* Make images full-width */
+        height: auto; /* Allow images to auto-scale */
+    }
+
+    /* Adjust contact form */
+    .contact-info {
+        width: 100%; /* Set width to full screen width */
+        margin-left: 0; /* Reset margin */
+    }
+}
+
+/* Media query for mobile screens */
+@media (max-width: 480px) {
+
+  header {
+        flex-direction: column; /* Stack header elements vertically */
+        align-items: center; /* Center the header elements */
+        padding: 10px; /* Adjust padding as needed */
+    }
+
+    /* Adjust the logo styles */
+    .logo {
+        display: flex;
+        flex-direction: row; /* Arrange logos in a row */
+        justify-content: left; /* Center the logos */
+        width: 100%; /* Set the width to full width of the screen */
+        margin-bottom: 10px; /* Add margin below the logos */
+    }
+
+    /* Adjust the navigation list */
+    nav ul {
+        display: flex; /* Use flex layout for navigation list */
+        flex-direction: row; /* Arrange navigation links horizontally */
+        justify-content: center; /* Center the links */
+        width: 80%; /* Set width to full width of the screen */
+        list-style-type: none; /* Remove list styling */
+        padding: 0; /* Remove default padding */
+        margin-left: 12%; /* Remove default margin */
+        gap: 10px; /* Adjust gap between menu items */
+    }
+
+    /* Adjust navigation links */
+    nav ul li {
+        display: inline; /* Display the links inline */
+    }
+
+    /* Adjust navigation link styles */
+    nav ul li a {
+        padding: 10px 15px; /* Add padding for touch-friendly size */
+        text-align: center; /* Center the text */
+    }
+
+    nav ul li a:hover {
+        /* Optionally, you can leave this section empty or remove it completely */
+        background-color: initial; /* Remove hover background color */
+        color: initial; /* Remove hover text color */
+        box-shadow: none; /* Remove any hover box shadow */
+        border-color: initial; /* Remove any hover border color */
+    }
+    nav ul li a.active {
+    background-color: #ebebeb; /* Change background color */
+    color: #000; /* Change text color */
+    border-radius: 5px; /* Add border radius */
+    border-color: #fff; /* Optional: Change border color */
+    box-shadow: 0 0 15px rgba(136, 186, 240, 0.7), /* Colored glow effect */
+        0 0 25px rgba(167, 183, 200, 0.5), /* Outer glow effect */
+        0 0 40px rgba(236, 242, 249, 0.3); /* Outer glow effect */
+}
+
+
+    section.full-screen {
+        height: 100vh; /* Set the height to 100% of the viewport height */
+        padding: 0; /* Remove padding for full screen effect */
+        width: 100vw; /* Ensure width takes up the full viewport width */
+    }
+
+
+    /* Adjust buttons */
+    .get-started-button, .nav-button {
+        width: 100%; /* Make buttons full width */
+        padding: 10px; /* Adjust padding */
+    }
+
+    /* Adjust font sizes */
+    .text-overlay h2 {
+        font-size: 2rem; /* Reduce font size */
+    }
+
+    .text-overlay p {
+        font-size: 0.8rem; /* Reduce font size */
+    }
+    .water-image {
+        position: fixed;
+        bottom: -6%;
+        right: -2%;
+  width: 230%; /* Ensure the image fills its container */
+  height: 70%; /* Allow the image to scale proportionally */
+    }
+
+    .mountain-image {
+  position: absolute;
+  width: 100%; /* Adjust the width as needed */
+  height: 50%; /* Allow the image to maintain its aspect ratio */
+  margin-bottom: -140%;
+  margin-right: 1%;
+}
+.moon-image {
+  position: absolute;
+  width: 100%; /* Adjust the width as needed */
+  height: auto; /* Allow the image to maintain its aspect ratio */
+  margin-top: 20%;
+  margin-right: 80%
+}
+.paint-image {
+  position: absolute;
+  width: 100%; /* Adjust the width as needed */
+  height: 70%; /* Allow the image to maintain its aspect ratio */
+  margin-bottom: 0%;
+  margin-right: 0%;
+}
+.text-overlay {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  color: #fff;
+}
+.box-header {
+        padding: 8px; /* Reduce padding for smaller screens */
+        font-size: 1rem; /* Adjust font size for better readability */
+        border-radius: 0; /* Remove border radius for better fitting */
+    }
+
+    /* Adjust .container for mobile */
+    .container {
+        margin-left: 0; /* Remove left margin to align container to the center */
+        width: 100%; /* Set width to full width for the screen */
+        display: flex; /* Use flex layout for responsive design */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center-align items within the container */
+        padding: 0; /* Remove padding for better fitting */
+    }
+
+    /* Adjust .slider-container for mobile */
+    .slider-container {
+        width: 100%; /* Adjust width to fit the full width of the screen */
+        height: auto; /* Allow height to auto-adjust based on content */
+        padding: 0; /* Remove padding for better fitting */
+        margin-left: 0; /* Remove left margin */
+    }
+
+    /* Adjust .navigation for mobile */
+    .navigation {
+        margin: 10px 0; /* Add top and bottom margin */
+        justify-content: center; /* Center-align buttons */
+    }
+
+    /* Adjust .slide for mobile */
+    .slide {
+        width: 90%; /* Make slides almost full width of the screen */
+        margin-left: 5%; /* Center slides within the container */
+        height: auto; /* Allow slides to auto-adjust height */
+        padding: 10px; /* Reduce padding */
+    }
+    .contact-info {
+        position: absolute; /* Allow it to move with the page */
+        margin-bottom: -90%; /* Remove left margin */
+        width: 100%; /* Set width to full screen width */
+        padding: 10px; /* Add padding for better spacing */
+        align-items: center; /* Center-align contact items */
+        text-align: center; /* Center-align text */
+    }
+
+    /* Adjust .contact-item for mobile */
+    .contact-item {
+        width: 100%; /* Make each item full-width */
+        margin-bottom: 10px; /* Increase space between items */
+        justify-content: center; /* Center-align icon and text */
+    }
+
+    /* Adjust .contact-icon for mobile */
+    .contact-icon {
+        margin-right: 0; /* Remove right margin */
+        margin-bottom: 5px; /* Add bottom margin */
+        width: 5%; /* Increase width for visibility */
+        height: 5%; /* Increase height for visibility */
+    }
+
+    /* Adjust .contact-item span and .contact-item a for mobile */
+    .contact-item span,
+    .contact-item a {
+        font-size: 0.8rem; /* Increase font size for readability */
+    }
+    .dark-color-3 h2{
+  position: absolute;
+  font-size: 2em;
+  font-weight: 600;
+  margin-left: 640%;
+  margin-top: 0%;
+  color: #ffffff;
+  z-index: 2;
+  -webkit-text-stroke: 2px #030303; /* Neon blue stroke */
+}
+}
+
+
 </style>
