@@ -12,7 +12,7 @@
                 <span class="block text-lg text-left font-semibold mb-1">{{ row.title }}</span>
             </div>
             <div class="ml-auto">
-                <button :class="{ 'button': true, 'active-button': activeButtonIndex === index }">📄</button>
+                <button :class="{ 'button': true, 'active-button': activeButtonIndex === index }" @click="togglePopup">📄</button>
             </div>
         </div>
         <!-- Print button -->
@@ -121,6 +121,42 @@
         </div>
         <router-link to="/events" class="elative px-4 py-2 bg-blue-900 text-white">Events</router-link>
       </div>
+
+<!--Mobile PopUp-->
+      
+      <!--<div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>-->
+      <div class="popup-container fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-11/12" v-if="showPopup && isMobile">
+        <div class="popup-content h-full flex flex-col">
+              <div class="box-header">{{ rows[activeButtonIndex]?.title }}</div>
+              <div class="box-body overflow-y-auto">
+                <table v-if="activeButtonIndex === 0" class="elegant-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Deep Well 1</th>
+                      <th>Deep Well 2</th>
+                      <th>Deep Well 3</th>
+                      <th>Prime Water</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, index) in tableData" :key="index">
+                      <td>{{ item.date }}</td>
+                      <td>{{ item.deepWell1 }}</td>
+                      <td>{{ item.deepWell2 }}</td>
+                      <td>{{ item.deepWell3 }}</td>
+                      <td>{{ item.primeWater }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div v-if="activeButtonIndex === 2" class="chart-container" id="pwChartContainer"></div>
+              <div v-else-if="activeButtonIndex === 3" class="chart-container" id="dw1ChartContainer"></div>
+              <div v-else-if="activeButtonIndex === 4" class="chart-container" id="dw2ChartContainer"></div>
+              <textarea v-model="userReport" v-if="activeButtonIndex !== null" placeholder="Type your report here..." rows="4"></textarea>
+          </div>
+          <button class="close-button absolute bottom-4 right-4 text-red-500 hover:text-red-700 cursor-pointer" @click="togglePopup">Close</button>
+        </div>
     </div>
   </home-page>
 </template>
@@ -128,7 +164,7 @@
 <script>
 import HomePageView from './HomePageView.vue';
 import header from './../../components/header_component.vue';
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed, onUnmounted } from "vue";
 import * as echarts from 'echarts';
 import { CanvasRenderer } from "echarts/renderers";
 import { BarChart } from "echarts/charts";
@@ -172,6 +208,11 @@ export default {
 
     onMounted(async () => {
         // You can initialize anything you need here
+        window.addEventListener("resize", updateScreenWidth);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener("resize", updateScreenWidth); 
     });
 
     // Function to format CEAFA events for PDF
@@ -787,6 +828,25 @@ const formatFDCTable = () => {
         }
     };
 
+//popup//
+    const showPopup = ref(false);
+
+    const togglePopup = (index) => {
+    if (index !== undefined){
+        activeButtonIndex.value = index;
+    }
+    showPopup.value = !showPopup.value;
+    };
+
+//Mobile
+    const screenWidth = ref(window.innerWidth);
+    const isMobile = computed(() => screenWidth.value < 768);
+
+//Update when window resized
+    const updateScreenWidth = () => {
+    screenWidth.value = window.innerWidth;
+    }
+
     return {
         activeButtonIndex,
         tableData,
@@ -795,7 +855,10 @@ const formatFDCTable = () => {
         fdcEvents,
         rows,
         handleButtonClick,
-        handlePrint
+        handlePrint,
+        showPopup,
+        togglePopup,
+        isMobile
     };
   }
 };
