@@ -200,8 +200,8 @@ import {
   GridComponent 
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
-import { ref, provide, onMounted } from "vue";
-import { search_record, monthly_query, daily_query, quarterly_consumption } from "@/dashboard_query"; 
+import { ref, provide, /*onMounted*/ } from "vue";
+import { search_record, /*monthly_query, daily_query, quarterly_consumption*/ } from "@/dashboard_query"; 
 
 const daily_water_consumption_container = ref({
     'date': [],
