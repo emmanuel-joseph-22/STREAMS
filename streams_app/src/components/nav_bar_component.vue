@@ -150,7 +150,7 @@
                     </router-link>
 
                     <router-link class="navbar_label" to="/home" title="Logout">
-                        <span class="logout">Logout</span>
+                        <span class="logout" @click="logout">Logout</span>
                     </router-link>
                 </div>
             </div>

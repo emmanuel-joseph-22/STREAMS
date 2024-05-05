@@ -66,7 +66,7 @@
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ avgQuarterly }} m3</p>
+                    <p class="text-3xl font-bold">{{ avgQuarterly }} m<sup>3</sup></p>
                 </span>
                 <p class="text-white">AVG Quarterly</p>
                 <div class="flex flex-row px-8">
@@ -80,7 +80,7 @@
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }} m3</p>
+                    <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }} m<sup>3</sup></p>
                 </span>
                 <p class="text-white">AVG Monthly</p>
                 <div class="flex flex-row px-8">
@@ -94,7 +94,7 @@
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }} m3</p>
+                    <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }} m<sup>3</sup></p>
                 </span>
                 <p class="text-white">AVG Daily</p>
                 <div class="flex flex-row px-8">
@@ -202,7 +202,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
-import { search_record,/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
+import { quarterly_consumption, search_record,/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
 use([
     CanvasRenderer,
     TitleComponent,
@@ -211,31 +211,30 @@ use([
     GridComponent
 ]);
 
+// daily water consumption
+const Daily_yAxisConsumption = ref([])
+const Daily_xAxisConsumption = ref([])
+const daily_filter_output = ref("")
+
+const monthly_filter_output = ref("")
+const monthly_yAxis = ref([])
+
+const quarterly_filter_output = ref("")
+const quarter_yAxis = ref([])
+const daily_water_consumption_container = ref({})
+const monthly_water_consumption_container = ref({})
+const quarter_container = ref({
+  'deep_well_1': [], 
+  'deep_well_2': [],
+  'deep_well_3': [],
+  'deep_well_4': [],
+  'prime_water': [],
+  'total_consumption': []
+})
+
 provide(THEME_KEY, "white");
 //main meter graph
-const pie_main_meter = ref(null);
-//submeter graph
-const submeter_graph = ref(null);
-// daily water consumption
-const consumption_chart = ref(null);
-//monthly chart
-const twelve_month_chart = ref(null);
-//quarter chart
-const quarter_chart = ref(null);
-
-onMounted(() => {
-    try{
-   
-      // eslint-disable-next-line
-      monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
-      // eslint-disable-next-line
-      Daily_xAxisDate.value = daily_water_consumption_container.value.date 
-      // eslint-disable-next-line
-      Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
-      // eslint-disable-next-line
-      //quarter_yAxis.value = quarter_container.value.total_consumption;
-
-      pie_main_meter.value = {
+const pie_main_meter = ref( {
         title: {
           text: "Main Meters",
           left: "center"
@@ -286,8 +285,9 @@ onMounted(() => {
             },
           }
         ]
-      }
-      submeter_graph.value = {
+});
+//submeter graph
+const submeter_graph = ref({
         title: {
           text: "Submeters",
           left: "center"
@@ -342,8 +342,9 @@ onMounted(() => {
             },
           }
         ]
-      }
-      consumption_chart.value = {
+});
+// daily water consumption
+const consumption_chart = ref( {
         title: {
           text: 'Daily Water Consumption',
           left: 'center'
@@ -356,7 +357,7 @@ onMounted(() => {
         },
         xAxis: [{
           type: 'category',
-          data: Daily_xAxisDate,
+          data: Daily_xAxisConsumption,
           name: 'Date',
           nameLocation: 'center', 
           nameTextStyle: {
@@ -378,8 +379,9 @@ onMounted(() => {
           type: 'bar',
           data: Daily_yAxisConsumption
           }]
-      }
-      twelve_month_chart.value = {
+});
+//monthly chart
+const twelve_month_chart = ref({
         title: {
           text: 'Monthly Water Consumption',
           left: 'center'
@@ -416,9 +418,9 @@ onMounted(() => {
             type: 'bar',
           }
         ]
-        
-      }
-      quarter_chart.value = {
+});
+//quarter chart
+const quarter_chart = ref({
         title: {
           text: 'Quarterly Water Consumption',
           left: 'center'
@@ -455,35 +457,29 @@ onMounted(() => {
             type: 'bar',
           }
         ]
-        
-      }
-      
+});
+onMounted(async () => {
+    try{
+      console.log('asa dashboard')
+
+      daily_water_consumption_container.value = store.state.daily_values
+      monthly_water_consumption_container.value = store.state.monthly_values
+      //eslint-disable-next-line  
+      monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
+        // eslint-disable-next-line
+      Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
+        // eslint-disable-next-line
+        Daily_xAxisConsumption.value = daily_water_consumption_container.value.date
+      await quarterly_consumption(monthly_water_consumption_container, quarter_container)  
+      quarter_yAxis.value = quarter_container.value.total_consumption;
+        console.log(daily_water_consumption_container)
+        console.log(monthly_water_consumption_container);
     } catch (error) {
       console.error('Error getting document:', error);
     }
 });
 
-// daily water consumption
-const Daily_yAxisConsumption = ref([])
-const Daily_xAxisDate = ref([])
-const daily_filter_output = ref("")
 
-const monthly_filter_output = ref("")
-const monthly_yAxis = ref([])
-
-const quarterly_filter_output = ref("")
-const quarter_yAxis = ref([])
-
-const daily_water_consumption_container = store.state.daily_values
-const monthly_water_consumption_container = store.state.monthly_values
-const quarter_container = ref({
-  'deep_well_1': [], 
-  'deep_well_2': [],
-  'deep_well_3': [],
-  'deep_well_4': [],
-  'prime_water': [],
-  'total_consumption': []
-})
 /*
 consumption_chart.value.on('click', 'series', function (params) {
   // Access the data related to the clicked bar
@@ -537,10 +533,6 @@ const navigate = (direction) => {
 
 const avgQuarterly = ref(0);
 avgQuarterly.value = 23;
-
-
-
-
 // data for search record
 const search_date = ref("")
 const time = ref("")
@@ -567,7 +559,7 @@ const toggleRecord = async () => {
   //format date into formal structure
   const dateString = new Date(search_date.value)
   const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(dateString);
-  
+  search_date.value = formattedDate
   showRecord.value = !showRecord.value;
 };
 

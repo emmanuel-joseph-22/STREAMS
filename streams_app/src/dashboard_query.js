@@ -1,7 +1,6 @@
 import { doc, getDocs, collection, orderBy, query, limit, where /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
 
-
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 
@@ -38,7 +37,8 @@ export async function lipat_data_hohoho(){
     console.log("done")
 }*/
 //
-export async function daily_query(daily_obj){  
+export async function daily_query(){  
+    const daily_obj = {}
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     try{
@@ -50,7 +50,7 @@ export async function daily_query(daily_obj){
                 );
             const meterSnapshot = await getDocs(dailyQuery);
             if(meterSnapshot.empty){
-                console.log('empty')
+                console.log(main_meter[i], 'is empty')
                 const array = []
                 for (let i = 0; i < 30; i++) {
                 array.push(0);
@@ -96,26 +96,29 @@ export async function monthly_query(month_obj){
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     try{
         for(let i = 0; i < main_meter.length; i++){
+
             for(let j = 0; j < month_path.length; j++){  
-                const monthlyQuery = query(collection(mainMeterRef, main_meter[i]), where('month', '==', month_path[j]));
-                const meterSnapshot = await getDocs(monthlyQuery);
                 let totalConsumption = 0;
+                const monthlyQuery = query(collection(mainMeterRef, main_meter[i]), 
+                                            orderBy('date', 'asc'),
+                                            where('month', '==', month_path[j]));
+                const meterSnapshot = await getDocs(monthlyQuery);
                 meterSnapshot.forEach((doc) => {
                     const waterConsumption = parseFloat(doc.data().consumption);
                     totalConsumption += waterConsumption;
-                });
-                month_obj.value[main_meter[i]][j] = Math.round(totalConsumption * 1000) / 1000;
-                if(!month_obj.value['total_consumption'][j]){
-                    month_obj.value['total_consumption'][j] = Math.round(totalConsumption * 1000) / 1000;
+                });                
+                month_obj[main_meter[i]][j] = Math.round(totalConsumption * 1000) / 1000;
+                if(!month_obj['total_consumption'][j]){
+                    month_obj['total_consumption'][j] = Math.round(totalConsumption * 1000) / 1000;
                 } else {
-                    month_obj.value['total_consumption'][j] += Math.round(totalConsumption * 1000) / 1000;
+                    month_obj['total_consumption'][j] += Math.round(totalConsumption * 1000) / 1000;
                 }
             }
+
         }
     } catch (error) {
         console.log(error)
     }
-    console.log(month_obj)
     return month_obj
 }
 export async function quarterly_consumption(month_obj, q_obj){

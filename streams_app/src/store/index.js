@@ -5,9 +5,7 @@ import { avg_daily, avg_monthly, daily_query, getTotalAccumulated, monthly_query
 const store = createStore({
     state: {
         role: null, // User's role state
-
         // try ko lang tong sa dashboard na data
-
         //daily
         daily_values: null,
         //monthly
@@ -49,20 +47,26 @@ const store = createStore({
         updateRole({ commit }, role) {
             commit('setRole', role);
         },
-        async setDailyConsumption( {commit}, object ){
+        async setDailyConsumption( {commit} ){
             try{
-                await daily_query(object)
-                console.log(object)
-                commit('setDailyDate', object)
+                const fetchedData = await daily_query()
+                commit('setDailyConsumption', fetchedData)
             } catch (error) {
                 console.log(error)
             }
         },
-        async setMonthlyConsumption({commit}, object){
+        async setMonthlyConsumption({commit}){
             try{
-                await monthly_query(object)
-                console.log(object)
-                commit('setMonthlyConsumption', object)
+                const object = {  
+                    'deep_well_1': [], 
+                    'deep_well_2': [],
+                    'deep_well_3': [],
+                    'deep_well_4': [],
+                    'prime_water': [],
+                    'total_consumption': []
+                }
+                const fetchedData = await monthly_query(object)
+                commit('setMonthlyConsumption', fetchedData)
             } catch (error) {
                 console.log(error)
             }
@@ -79,7 +83,6 @@ const store = createStore({
         async setTotalAccumulated({commit}){
             try{
                 const total = await getTotalAccumulated()
-                console.log('eto', total)
                 commit('setTotalAccumulated', total)
             } catch(error){
                 console.log(error)
@@ -105,7 +108,6 @@ const store = createStore({
     module: {
         data: dataModule
     },*/
-
     plugins: [createPersistedState()], // Add the vuex-persistedstate plugin
 });
 export default store;
