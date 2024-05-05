@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 import './assets/tailwind.css';
 
@@ -14,7 +15,8 @@ const firebaseConfig = {
   projectId: "streams-database-c8590",
   storageBucket: "streams-database-c8590.appspot.com",
   messagingSenderId: "415149398034",
-  appId: "1:415149398034:web:daeb25890b4f7e5ac8a0cb"
+  appId: "1:415149398034:web:daeb25890b4f7e5ac8a0cb",
+  databaseURL: "https://streams-database-c8590-default-rtdb.asia-southeast1.firebasedatabase.app/" // Updated URL
 };
 
 export const db_app = initializeApp(firebaseConfig);
@@ -23,6 +25,8 @@ initializeFirestore(db_app, {
   localCache: persistentLocalCache(/*settings*/{}) 
 });
 export const firestore = getFirestore(db_app);
+export const database = getDatabase(db_app);
+
 
 // vue app
 export const app = createApp(App);
