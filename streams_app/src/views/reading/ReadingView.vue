@@ -1,178 +1,277 @@
 <template>
     <main-content>
-       <header_bar>
-            <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-8 mt-0">Reading</h1>
-        </header_bar>
-        <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
-            This will record water reading in the database!
-        </confirm_pop_up>  
-
-        <div class="reading bg-bsu-blue flex justify-center items-center h-screen">
-            <div class="bg-center h-full w-full inset-0 opacity-80 bg-[url('/public/image-30.jpg')]">
-                <div class="content flex-1 p-2 mb-auto mt-36 mx-5 overflow-y-auto w-11/12">
-                    <!--INI COMMENT KO MUNA TO HA PARA MAKITA KO-->
-                    <!--<div class="main">
-                        <label for="date" >Date</label>
-                        <input id="date"  type="date" class="date_field" v-model="temp_date"/>
-                    </div>-->
-                    <div class="main" v-if="mainmeter">
-                        <label for="main" class="main-label font-bold block mt-12 my-2.5 text-justify whitespace-nowrap"><b class="text-bsu-borders font-bold text-lg">Water Source</b></label>
-                        <select id="main" class="main-dropdown p-2.5 h-14 text-base rounded-xl border-solid border-4 border-bsu-borders text-bsu-borders box-border rounded w-full" v-model="WaterSource">
-                            <option value="deep-well-1">🕛Deep Well 1</option>
-                            <option value="deep-well-2">🕛Deep Well 2</option>
-                            <option value="deep-well-3">🕛Deep Well 3</option>
-                            <option value="deep-well-4">🕛Deep Well 4</option>
-                            <option value="prime-water">🕛Prime Water</option>
-                            <option value="fic-1">🔵FIC 1</option>
-                            <option value="fic-2">🔵FIC 2</option>
-                            <option value="canteen-drinking-fountain">🔵Canteen Drinking Fountain</option>
-                            <option value="exec-lounge">🔵Executive Lounge</option>
-                            <option value="ceafa-faculty">🔵CEAFA Faculty Room</option>
-                            <option value="rgr">🔵RGR</option>
-                            <option value="cics-drinking-fountain">🔵CICS Drinking Fountain</option>
-                            <option value="ssc">🔵SSC</option>
-                        </select>
-                    </div>
-                    <!--
-                    <div class="main">
-                        <label for="date" >Date</label>
-                        <input id="date"  type="date" class="date_field" v-model="temp_date"/>
-                    </div>-->
-                    <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7">
-                        <label for="input_cubic" class="m3-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_cubic" type="tel" required placeholder="m3: " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="Consumption"/>
-                    </div>
-
-                    <div class="m3-cont-x  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7">
-                        <label for="input_x" class="x-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_x" type="tel" name="x" required placeholder="x0.001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x"/>
-                    </div>
-
-                    <div class="m3-cont-x0  m3-cont flex flex-col flex-start w-auto h-14 mb-4 mt-4 t-7">
-                        <label for="input_x0" class="x0-label mr-2.5 font-bold"></label>
-                        <input autofocus id="input_x0" type="tel" name="x0" required placeholder="x0.0001 " class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input_x0"/>
-                    </div>
-                    <!--<div class="submit">
-                        <button @click="stage_reading=true">SUBMIT</button>
-                    </div>-->
-                    <div class="body mt-4" @click="stage_reading=true">
-                        <a href="#">
-                            <span >SUBMIT</span>
-                            <div class="wave"></div>
-                        </a>
-                    </div>
-                </div>
+      <header_bar>
+        <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-3 mt-1">Reading</h1>
+      </header_bar>
+      <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
+        This will record water reading in the database!
+      </confirm_pop_up>
+  
+      <div v-if="selectedWaterSource" class="fixed top-0 left-0 w-full h-full pl-8 pr-8 pt-16 pb-16 flex justify-center items-center bg-black bg-opacity-50 z-50">
+<!--POPUP-->
+        <div class="bg-white w-full h-full rounded-lg shadow-lg">
+          <span class="absolute top-16 right-10 cursor-pointer text-gray-600 text-2xl" @click="closePopup">&times;</span>
+          <h2 class="mt-8">{{ selectedWaterSource }}</h2>
+<!--CONTENTS NG POPUP-->
+          <template v-if="popupData[selectedWaterSource]">
+            <div v-for="(input, key) in popupData[selectedWaterSource]" :key="key" class="m3-cont flex flex-col flex-start w-auto h-14 mb-8 mt-4 t-7 p-4">
+              <label :for="'input_' + key" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ input.label }}</label>
+              <input :id="'input_' + key" :type="input.type" :placeholder="input.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input.value" :class="{ 'border-red-500': input.error }" @input="handleInput($event, key)"/>
             </div>
+          </template>
         </div>
+      </div>
+  
+      <div class="reading bg-bsu-blue flex justify-center items-center h-screen">
+        <div class="bg-center h-full w-full inset-0 opacity-80 bg-[url('/public/image-30.jpg')]">
+<!--MENU FOR MAIN-->
+          <div class="pt-10 pl-4 pr-4">
+            <button @click="mainmeter = !mainmeter" class="text-black bg-bsu-base font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
+            <div v-if="mainmeter" class="mb-2">
+              <ul class="bg-bsu-blue bg-opacity-60 w-full p-4">
+                <li v-for="(source, index) in mainMeterSources" :key="index" :class="{'bg-green-500': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" class="hover:bg-bsu-hover border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white">
+                  <a @click="openPopup(source)">{{ source }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+<!--MENU FOR SUB-->
+          <div class="pl-4 pr-4">
+            <button @click="submeter = !submeter" class="text-black bg-bsu-base font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
+            <div v-if="submeter" class="mb-2">
+              <ul class="bg-bsu-blue bg-opacity-60 w-full p-4">
+                <li v-for="(source, index) in subMeterSources" :key="index" :class="{'bg-green-500': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" class="hover:bg-bsu-hover border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white">
+                  <a @click="openPopup(source)">{{ source }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+  
+          <div v-on:click="submit" class="body">
+            <a href="#" class="bg-bsu-base bg-opacity-50">
+              <span>Submit</span>
+              <div class="wave"></div>
+            </a>
+          </div>
+        </div>
+      </div>
     </main-content>
-</template>
-
-<script>
-import { collection, addDoc } from "firebase/firestore";
-import { firestore as db } from './../../main.js';
-import header_component from "../../components/header_component.vue";
-import HomePageView from "./../dashboard/HomePageView.vue";
-import confirmation_view from "./../../components/confirmation_view.vue";
-
-export default {
+  </template>
+  
+  <script>
+  import { collection, addDoc } from "firebase/firestore";
+  import { firestore as db } from './../../main.js';
+  import header_component from "../../components/header_component.vue";
+  import HomePageView from "./../dashboard/HomePageView.vue";
+  import confirmation_view from "./../../components/confirmation_view.vue";
+  
+  export default {
     components: {
-        'header_bar': header_component,
-        'main-content': HomePageView,
-        'confirm_pop_up': confirmation_view
-    },  
+      'header_bar': header_component,
+      'main-content': HomePageView,
+      'confirm_pop_up': confirmation_view
+    },
     data() {
-        return {
-            WaterSource: '',
-            BuildingDepartment: '',
-            Consumption: '',
-            input_x: '',
-            input_x0: '',
-            mainmeter: true,
-            stage_reading: false,
-        };
+      return {
+        mainMeterSources: ['DEEP WELL 1', 'DEEP WELL 2', 'DEEP WELL 3', 'DEEP WELL 4', 'PRIME WATER'],
+        subMeterSources: ['FIC1', 'FIC2','CANTEEN DRINKING FOUNTAIN', 'EXECUTIVE LOUNGE', 'CEAFA FACULTY ROOM', 'RGR', 'CICS DRINKING FOUNTAIN', 'SSC'],
+        selectedWaterSource: '',
+        mainmeter: false,
+        submeter: false,
+        WaterSource: '',
+        BuildingDepartment: '',
+        Consumption: '',
+        input_x: '',
+        input_x0: '',
+        stage_reading: false,
+        /* repetetive pa yung code dito para sana iba iba laman ng fields kada popup pero baka may alam pa 
+        kayo ibang way para di humaba to*/
+        popupData: {
+            'DEEP WELL 1': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'DEEP WELL 2': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'DEEP WELL 3': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'DEEP WELL 4': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'PRIME WATER': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'FIC1': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'FIC2': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'CANTEEN DRINKING FOUNTAIN': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'EXECUTIVE LOUNGE': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'CEAFA FACULTY ROOM': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'RGR': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'CICS DRINKING FOUNTAIN': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            'SSC': {
+                input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+                input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+                input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' }
+            },
+            }
+
+      };
     },    
     methods: {
-        confirm_window(value){
-            console.log("Confirmed value:", value);
-            // Call submit function or perform other actions based on the confirmed value
-            if (value) {
-                this.submitForm();
-            } else {
-                console.log("Submit cancelled")
-            }
-            this.WaterSource = '';
-            this.BuildingDepartment = '';
-            this.Consumption = '';
-            this.input_x = '';
-            this.input_x0 = '';
-            this.stage_reading = false;
-        },
-        async submitForm() {
-            const waterSource = this.WaterSource;
-            const buildingDepartment = this.BuildingDepartment;
-            const consumption = this.Consumption;
-            const currentDate = new Date().toISOString();
-            let path;
-            
-            // Construct the data object
-            const data = {
-                date: currentDate,
-                consumption: consumption,
-                buildingDepartment: buildingDepartment,
-                input_x: this.input_x,
-                input_x0: this.input_x0
-            };
-            
-            try {
-                
-                if(waterSource === 'prime_water' || 
-                waterSource === 'deep_well_1' || 
-                waterSource === 'deep_well_2' || 
-                waterSource === 'deep_well_3' || 
-                waterSource === 'deep_well_4')
-                {
-                    path = `meter_records/main_meter/${waterSource}`
-                } else {
-                    path = `meter_records/submeter/${waterSource}`
-                }
-                await addDoc(collection(db, path), data);
-                console.log('submitted successfully')
-            } catch(error) {
-                console.error("Error storing meter record: ", error);
-            }
+      openPopup(source) {
+        this.selectedWaterSource = source;
+      },
+      closePopup() {
+        this.selectedWaterSource = '';
+      },
+      confirm_window(value){
+        console.log("Confirmed value:", value);
+        if (value) {
+          this.submitForm();
+        } else {
+          console.log("Submit cancelled")
         }
-    }
-}
-</script>
+        this.WaterSource = '';
+        this.BuildingDepartment = '';
+        this.Consumption = '';
+        this.input_x = '';
+        this.input_x0 = '';
+        this.stage_reading = false;
+      },
+      async submitForm() {
+        const waterSource = this.selectedWaterSource;
+        const consumption = this.popupData[waterSource].input1.value;
+        const input_x = this.popupData[waterSource].input2.value;
+        const input_x0 = this.popupData[waterSource].input3.value;
+        const currentDate = new Date().toISOString();
+        let path;
+  
+        const data = {
+          date: currentDate,
+          consumption: consumption,
+          input_x: input_x,
+          input_x0: input_x0
+        };
+  
+        try {
+          if (waterSource === 'PRIME WATER' || 
+              waterSource === 'DEEP WELL 1' || 
+              waterSource === 'DEEP WELL 2' || 
+              waterSource === 'DEEP WELL 3' || 
+              waterSource === 'DEEP WELL 4') {
+            path = `meter_records/main_meter/${waterSource.replace(/\s+/g, '_').toLowerCase()}`;
+          } else {
+            path = `meter_records/submeter/${waterSource.replace(/\s+/g, '_').toLowerCase()}`;
+          }
+          await addDoc(collection(db, path), data);
+          console.log('submitted successfully')
+        } catch (error) {
+          console.error("Error storing meter record: ", error);
+        }
+      },
+      handleInput(event, key) {
+        const inputValue = event.target.value;
+        const inputRegex = /^\d*\.?\d*$/; // allow only numbers and decimal point for inputs
+        const maxValue = 999999;
+  
+        if (!inputRegex.test(inputValue) || parseFloat(inputValue) <= 0 || parseFloat(inputValue) >= maxValue){
+          this.popupData[this.selectedWaterSource][key].error = true;
+        } else {
+          this.popupData[this.selectedWaterSource][key].value = inputValue;
+          this.popupData[this.selectedWaterSource][key].error = false;
+        }
+      }
+    },
+    computed: {
+        isPopupFilled() {
+            return (source) => {
+            const popupData = this.popupData[source];
+            for (const key in popupData) {
+                if (Object.prototype.hasOwnProperty.call(popupData, key)) {
+                if (!popupData[key].value || popupData[key].error) {
+                    return false; //if a field is empty or has an error, return false
+                }
+                }
+            }
+            return true; //fields are filled out properly
+            };
+        },
+    },
 
-<style scoped>
-      .body{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 5rem;
-    }
-    .body a{
-        position: relative;
-        display: block;
-        padding: 10px 30px;
-        border: 4px solid #00aeff;
-        border-radius: 50px;
-        text-transform: uppercase;
-        font-size: 18px;
-        letter-spacing: 3px;
-        background-color: #FFFFFF;
-        color: #00aeff;
-        text-decoration: none;
-        overflow: hidden
-    }
-    .body a:hover{
-        color: white;
-    }
-    .body a span{
-        font-weight: 600;
-        position: relative;
-        z-index: 1;
-        transition: 1s;
-    }
-</style>
+  };
+  </script>
+  
+  <style scoped>
+  .body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+  }
+  .body a {
+    position: relative;
+    display: block;
+    padding: 10px 30px;
+    border: 4px solid #00aeff;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 3px;
+    background-color: #FFFFFF;
+    color: #00aeff;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  .body a:hover {
+    color: white;
+  }
+  .body a span {
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+    transition: 1s;
+  }
+  
+  .input-error {
+    border-color: red !important;
+  }
+  </style>
