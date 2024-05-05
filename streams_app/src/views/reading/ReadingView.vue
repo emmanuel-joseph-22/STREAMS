@@ -18,6 +18,7 @@
               <label :for="'input_' + key" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ input.label }}</label>
               <input :id="'input_' + key" :type="input.type" :placeholder="input.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input.value" :class="{ 'border-red-500': input.error }" @input="handleInput($event, key)"/>
             </div>
+            <button @click="addReadingToLocal" class="add-reading-btn">Add Reading</button>
           </template>
         </div>
       </div>
@@ -47,7 +48,7 @@
             </div>
           </div>
   
-          <div v-on:click="submit" class="body">
+          <div v-on:click="submitAllReadings" class="body">
             <a href="#" class="bg-bsu-base bg-opacity-50">
               <span>Submit</span>
               <div class="wave"></div>
@@ -64,6 +65,7 @@
   import header_component from "../../components/header_component.vue";
   import HomePageView from "./../dashboard/HomePageView.vue";
   import confirmation_view from "./../../components/confirmation_view.vue";
+  import { mapActions } from 'vuex';
   
   export default {
     components: {
@@ -84,6 +86,7 @@
         input_x: '',
         input_x0: '',
         stage_reading: false,
+        isSubmitting: false,
         /* repetetive pa yung code dito para sana iba iba laman ng fields kada popup pero baka may alam pa 
         kayo ibang way para di humaba to*/
         popupData: {
@@ -221,6 +224,78 @@
         }
       }
     },
+    addReadingToLocal() {
+      const waterSource = this.selectedWaterSource;
+      const consumption = this.popupData[waterSource].input1.value;
+      const input_x = this.popupData[waterSource].input2.value || '';  // Consider empty as default
+      const input_x0 = this.popupData[waterSource].input3.value || ''; // Consider empty as default
+
+      if (!consumption) { // Ensure consumption is provided
+        alert('Consumption is a required field.');
+        return;
+      }
+
+      const reading = {
+        waterSource,
+        data: {
+            date: new Date().toISOString(),
+            consumption,
+            input_x,
+            input_x0
+        }
+      };
+
+    // Add the reading to Vuex
+    this.addReading(reading);
+    console.log('Reading added:', { waterSource, data: reading.data });
+
+    // Clear the input fields in the UI
+    this.resetInputFields(waterSource);
+    },
+    //resetting input function
+    resetInputFields(source) {
+      if (this.popupData[source]) {
+        this.popupData[source].input1.value = '';
+        this.popupData[source].input2.value = '';
+        this.popupData[source].input3.value = '';
+      }
+    },
+    async submitAllReadings() {
+      this.isSubmitting = true; //temporary fix to looping submit problem 
+      if (!navigator.onLine) {
+        alert('No internet connection. Please connect to the internet and try again.');
+        return;
+      }
+
+      let hasSubmittedAny = false;
+
+      for (let reading of this.$store.state.readings) {
+        if (!reading || !reading.data || !reading.data.consumption) {
+          console.error('Invalid or incomplete reading data, skipping:', JSON.stringify(reading));
+          continue;
+        }
+
+        this.selectedWaterSource = reading.waterSource;
+        this.popupData[this.selectedWaterSource] = {
+            input1: { value: reading.data.consumption },
+            input2: { value: reading.data.input_x || '' },
+            input3: { value: reading.data.input_x0 || '' }
+        };
+
+        await this.submitForm();
+        console.log('Successfully submitted reading for:', this.selectedWaterSource);
+        hasSubmittedAny = true;
+      }
+
+      if (hasSubmittedAny) {
+        this.$store.dispatch('clearReadings');  // Clear readings if any were submitted
+        console.log('All readings cleared from store.');
+        alert('All applicable readings submitted successfully!');
+      } else {
+        alert('No valid readings were available to submit.');
+      }
+    this.isSubmitting = false;
+    }
     computed: {
         isPopupFilled() {
             return (source) => {
@@ -273,5 +348,22 @@
   
   .input-error {
     border-color: red !important;
+  }
+
+  .add-reading-btn {
+    padding: 10px 20px;
+    background-color: #007BFF; /* Bootstrap primary blue, adjust as needed */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    width: 100%;
+    }
+
+  .add-reading-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
   }
   </style>
