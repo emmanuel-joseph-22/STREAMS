@@ -16,7 +16,8 @@ const store = createStore({
         totalAccumulated: 0,
         monthly_avg_value: 0,
         daily_avg_value: 0,
-        quarter_avg_value: 0 //ewan
+        quarter_avg_value: 0, //ewan
+        readings: JSON.parse(localStorage.getItem('readings')||'[]')//for reading local storage
     },
     mutations: {
         // Mutation to set the user's role
@@ -40,6 +41,12 @@ const store = createStore({
         },
         setDailyAvg(state, avg){
             state.daily_avg_value = avg
+        },
+        ADD_READING(state, reading) {
+            state.readings.push(reading);
+        },
+        CLEAR_READINGS(state) {
+            state.readings = [];
         }
     },
     actions: {
@@ -103,6 +110,12 @@ const store = createStore({
             } catch(error){
                 console.log(error)
             }
+        },
+        addReading({ commit }, reading){
+            commit('ADD_READING', reading);
+        },
+        clearReadings({ commit }){
+            commit('CLEAR_READINGS');
         }
     },/*
     module: {
