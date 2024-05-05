@@ -53,7 +53,7 @@
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
-                <span class="text-3xl font-bold">{{ totalAccumulated }} m3</span>
+                <span class="text-3xl font-bold">{{ $store.state.totalAccumulated }} m<sup>3</sup></span>
                 <p class="text-white">Total Accumulated</p>
                 <div class="flex flex-row px-8">
                   <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
@@ -80,7 +80,7 @@
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ avgMonthly }} m3</p>
+                    <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }} m3</p>
                 </span>
                 <p class="text-white">AVG Monthly</p>
                 <div class="flex flex-row px-8">
@@ -94,7 +94,7 @@
               </div>
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ avgDaily }} m3</p>
+                    <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }} m3</p>
                 </span>
                 <p class="text-white">AVG Daily</p>
                 <div class="flex flex-row px-8">
@@ -193,6 +193,7 @@
 <script setup>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
+import store from "@/store";
 import {
   TitleComponent,
   TooltipComponent,
@@ -201,35 +202,267 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
-import { search_record, monthly_query, daily_query, quarterly_consumption } from "@/dashboard_query"; 
+import { search_record,/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
+use([
+    CanvasRenderer,
+    TitleComponent,
+    TooltipComponent,
+    LegendComponent,
+    GridComponent
+]);
 
-const daily_water_consumption_container = ref({
-    'date': [],
-    'deep_well_1': [], 
-    'deep_well_2': [],
-    'deep_well_3': [],
-    'deep_well_4': [],
-    'prime_water': [],
-    'total_consumption': []
-  }) 
+provide(THEME_KEY, "white");
+//main meter graph
+const pie_main_meter = ref(null);
+//submeter graph
+const submeter_graph = ref(null);
+// daily water consumption
+const consumption_chart = ref(null);
+//monthly chart
+const twelve_month_chart = ref(null);
+//quarter chart
+const quarter_chart = ref(null);
 
-const monthly_water_consumption_container = ref({
-  'deep_well_1': [], 
-  'deep_well_2': [],
-  'deep_well_3': [],
-  'deep_well_4': [],
-  'prime_water': [],
-  'total_consumption': []
-})
+onMounted(() => {
+    try{
+   
+      // eslint-disable-next-line
+      monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
+      // eslint-disable-next-line
+      Daily_xAxisDate.value = daily_water_consumption_container.value.date 
+      // eslint-disable-next-line
+      Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
+      // eslint-disable-next-line
+      //quarter_yAxis.value = quarter_container.value.total_consumption;
 
-const quarter_container = ref({
-  'deep_well_1': [], 
-  'deep_well_2': [],
-  'deep_well_3': [],
-  'deep_well_4': [],
-  'prime_water': [],
-  'total_consumption': []
-})
+      pie_main_meter.value = {
+        title: {
+          text: "Main Meters",
+          left: "center"
+        },
+        tooltip: {
+          trigger: "item",
+          // format including percentage
+          formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
+        },
+        legend: {
+          top: '7%',
+          left: "center",
+          //data: main_meter
+        },
+
+        series: [
+          {
+            name: "Source",
+            type: "pie",
+            top: '12%',
+            radius: ["30%", "70%"],
+            avoidLabelOverlap: true,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            data: [
+              { value: 735, name: "Prime Water" },
+              { value: 510, name: "Deep Well 1" },
+              { value: 334, name: "Deep Well 2" },
+              { value: 135, name: "Deep Well 3" },
+              { value: 20, name: "Deep Well 4" }
+            ],
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: 20,
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            label: {
+              show: false,
+              position: 'center'
+            },
+          }
+        ]
+      }
+      submeter_graph.value = {
+        title: {
+          text: "Submeters",
+          left: "center"
+        },
+        tooltip: {
+          trigger: "item",
+          // format including percentage
+          formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
+        },
+        legend: {
+          top: '7%',
+          left: "center",
+          //data: main_meter
+        },
+
+        series: [
+          {
+            name: "Source",
+            type: "pie",
+            top: '12%',
+            radius: ["30%", "70%"],
+            avoidLabelOverlap: true,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            data: [
+              { value: 73, name: "FIC-FOOD INNOVATION 1" },
+              { value: 57, name: "FIC-FOOD INNOVATION 2" },
+              { value: 34, name: "RGR" },
+              { value: 32, name: "CANTEEN DRINKING FOUNTAIN" },
+              { value: 20, name: "CANTEEN DRINKING FOUNTAIN" },
+              { value: 45, name: "EXECUTIVE LOUNGE" },
+              { value: 31, name: "CEAFA FACULTY ROOM" },
+              { value: 55, name: "CICS DRINKING FOUNTAIN" },
+              { value: 19, name: "SSC" }
+            ],
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: 20,
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            label: {
+              show: false,
+              position: 'center'
+            },
+          }
+        ]
+      }
+      consumption_chart.value = {
+        title: {
+          text: 'Daily Water Consumption',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis',
+          formatter: function(params) {
+            return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+          }
+        },
+        xAxis: [{
+          type: 'category',
+          data: Daily_xAxisDate,
+          name: 'Date',
+          nameLocation: 'center', 
+          nameTextStyle: {
+            fontWeight: 'bold' 
+          },
+            nameGap: 35,
+        }],
+        yAxis: {
+          type: 'value',
+          name: 'Cubic Meter (m3)',
+          nameLocation: 'center', 
+          nameTextStyle: {
+            fontWeight: 'bold',
+          },
+            nameGap: 35, 
+        },
+        series: [{
+          name: 'Data',
+          type: 'bar',
+          data: Daily_yAxisConsumption
+          }]
+      }
+      twelve_month_chart.value = {
+        title: {
+          text: 'Monthly Water Consumption',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis',
+          formatter: function(params) {
+            return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+          }
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          name: 'Months',
+          nameLocation: 'center', 
+          nameTextStyle: {
+            fontWeight: 'bold' 
+          },
+            nameGap: 35,
+        },
+        yAxis: {
+          type: 'value',
+          name: 'Cubic Meter (m3)',
+          nameLocation: 'center', 
+          nameTextStyle: {
+            fontWeight: 'bold' 
+          },
+            nameGap: 35,
+        },
+        series: [
+          {
+            name: 'Data',
+            data: monthly_yAxis,
+            type: 'bar',
+          }
+        ]
+        
+      }
+      quarter_chart.value = {
+        title: {
+          text: 'Quarterly Water Consumption',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis',
+          formatter: function(params) {
+            return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+          }
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+          name: 'Quarters',
+          nameLocation: 'center', 
+          nameTextStyle: {
+            fontWeight: 'bold' 
+          },
+            nameGap: 35,
+        },
+        yAxis: {
+          type: 'value',
+          name: 'Cubic Meter (m3)',
+          nameLocation: 'center', 
+          nameTextStyle: {
+            fontWeight: 'bold' 
+          },
+            nameGap: 35,
+        },
+        series: [
+          {
+            name: 'Data',
+            data: quarter_yAxis,
+            type: 'bar',
+          }
+        ]
+        
+      }
+      
+    } catch (error) {
+      console.error('Error getting document:', error);
+    }
+});
+
 // daily water consumption
 const Daily_yAxisConsumption = ref([])
 const Daily_xAxisDate = ref([])
@@ -241,198 +474,16 @@ const monthly_yAxis = ref([])
 const quarterly_filter_output = ref("")
 const quarter_yAxis = ref([])
 
-onMounted(async () => {
-    try{
-      console.log('garapata ni bubbles')
-      //await fetchWaterSourceData(daily_water_consumption_container)
-      //await lipat_data_hohoho()
-      //await lipat_data_hohoho()
-      
-      const startTime = performance.now();
-      await daily_query(daily_water_consumption_container);
-      await monthly_query(monthly_water_consumption_container);
-      await quarterly_consumption(monthly_water_consumption_container, quarter_container);
-        // eslint-disable-next-line
-        monthly_yAxis.value = monthly_water_consumption_container.value.total_consumption;
-        // eslint-disable-next-line
-        Daily_xAxisDate.value = daily_water_consumption_container.value.date 
-        // eslint-disable-next-line
-        Daily_yAxisConsumption.value = daily_water_consumption_container.value.total_consumption;
-        
-        // eslint-disable-next-line
-        quarter_yAxis.value = quarter_container.value.total_consumption;
-        console.log(daily_water_consumption_container)
-        console.log(monthly_water_consumption_container);
-        console.log(quarter_container)
-      
-      const endTime = performance.now();
-
-      // Calculate the time difference
-      const executionTime = endTime - startTime;
-
-      console.log("Execution time:", executionTime, "milliseconds");
-      
-    } catch (error) {
-      console.error('Error getting document:', error);
-    }
-});
-
-use([
-  CanvasRenderer,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  GridComponent
-]);
-
-provide(THEME_KEY, "white");
-//main meter graph
-const pie_main_meter = ref({
-  title: {
-    text: "Main Meters",
-    left: "center"
-  },
-  tooltip: {
-    trigger: "item",
-    // format including percentage
-    formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
-  },
-  legend: {
-    top: '7%',
-    left: "center",
-    //data: main_meter
-  },
-
-  series: [
-    {
-      name: "Source",
-      type: "pie",
-      top: '12%',
-      radius: ["30%", "70%"],
-      avoidLabelOverlap: true,
-      itemStyle: {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
-      },
-      data: [
-        { value: 735, name: "Prime Water" },
-        { value: 510, name: "Deep Well 1" },
-        { value: 334, name: "Deep Well 2" },
-        { value: 135, name: "Deep Well 3" },
-        { value: 20, name: "Deep Well 4" }
-      ],
-      emphasis: {
-        label: {
-          show: true,
-          fontSize: 20,
-          fontWeight: 'bold'
-        }
-      },
-      labelLine: {
-        show: false
-      },
-      label: {
-        show: false,
-        position: 'center'
-      },
-    }
-  ]
-});
-//submeter graph
-const submeter_graph = ref({
-  title: {
-    text: "Submeters",
-    left: "center"
-  },
-  tooltip: {
-    trigger: "item",
-    // format including percentage
-    formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
-  },
-  legend: {
-    top: '7%',
-    left: "center",
-    //data: main_meter
-  },
-
-  series: [
-    {
-      name: "Source",
-      type: "pie",
-      top: '12%',
-      radius: ["30%", "70%"],
-      avoidLabelOverlap: true,
-      itemStyle: {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
-      },
-      data: [
-        { value: 73, name: "FIC-FOOD INNOVATION 1" },
-        { value: 57, name: "FIC-FOOD INNOVATION 2" },
-        { value: 34, name: "RGR" },
-        { value: 32, name: "CANTEEN DRINKING FOUNTAIN" },
-        { value: 20, name: "CANTEEN DRINKING FOUNTAIN" },
-        { value: 45, name: "EXECUTIVE LOUNGE" },
-        { value: 31, name: "CEAFA FACULTY ROOM" },
-        { value: 55, name: "CICS DRINKING FOUNTAIN" },
-        { value: 19, name: "SSC" }
-      ],
-      emphasis: {
-        label: {
-          show: true,
-          fontSize: 20,
-          fontWeight: 'bold'
-        }
-      },
-      labelLine: {
-        show: false
-      },
-      label: {
-        show: false,
-        position: 'center'
-      },
-    }
-  ]
-});
-// daily water consumption
-const consumption_chart = ref({
-  title: {
-    text: 'Daily Water Consumption',
-    left: 'center'
-  },
-  tooltip: {
-    trigger: 'axis',
-    formatter: function(params) {
-      return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
-    }
-  },
-  xAxis: [{
-    type: 'category',
-    data: Daily_xAxisDate,
-    name: 'Date',
-    nameLocation: 'center', 
-    nameTextStyle: {
-      fontWeight: 'bold' 
-    },
-      nameGap: 35,
-  }],
-  yAxis: {
-    type: 'value',
-    name: 'Cubic Meter (m3)',
-    nameLocation: 'center', 
-    nameTextStyle: {
-      fontWeight: 'bold',
-    },
-      nameGap: 35, 
-  },
-  series: [{
-    name: 'Data',
-    type: 'bar',
-    data: Daily_yAxisConsumption
-    }]
-});
+const daily_water_consumption_container = store.state.daily_values
+const monthly_water_consumption_container = store.state.monthly_values
+const quarter_container = ref({
+  'deep_well_1': [], 
+  'deep_well_2': [],
+  'deep_well_3': [],
+  'deep_well_4': [],
+  'prime_water': [],
+  'total_consumption': []
+})
 /*
 consumption_chart.value.on('click', 'series', function (params) {
   // Access the data related to the clicked bar
@@ -468,87 +519,7 @@ consumption_chart.value.on('click', 'series', function (params) {
   
 });*/
 
-//monthly chart
-const twelve_month_chart = ref({
-  title: {
-    text: 'Monthly Water Consumption',
-    left: 'center'
-  },
-  tooltip: {
-    trigger: 'axis',
-    formatter: function(params) {
-      return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
-    }
-  },
-  xAxis: {
-    type: 'category',
-    data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    name: 'Months',
-    nameLocation: 'center', 
-    nameTextStyle: {
-      fontWeight: 'bold' 
-    },
-      nameGap: 35,
-  },
-  yAxis: {
-    type: 'value',
-    name: 'Cubic Meter (m3)',
-    nameLocation: 'center', 
-    nameTextStyle: {
-      fontWeight: 'bold' 
-    },
-      nameGap: 35,
-  },
-  series: [
-    {
-      name: 'Data',
-      data: monthly_yAxis,
-      type: 'bar',
-    }
-  ]
-  
-});
 
-//quarter chart
-const quarter_chart = ref({
-  title: {
-    text: 'Quarterly Water Consumption',
-    left: 'center'
-  },
-  tooltip: {
-    trigger: 'axis',
-    formatter: function(params) {
-      return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
-    }
-  },
-  xAxis: {
-    type: 'category',
-    data: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
-    name: 'Quarters',
-    nameLocation: 'center', 
-    nameTextStyle: {
-      fontWeight: 'bold' 
-    },
-      nameGap: 35,
-  },
-  yAxis: {
-    type: 'value',
-    name: 'Cubic Meter (m3)',
-    nameLocation: 'center', 
-    nameTextStyle: {
-      fontWeight: 'bold' 
-    },
-      nameGap: 35,
-  },
-  series: [
-    {
-      name: 'Data',
-      data: quarter_yAxis,
-      type: 'bar',
-    }
-  ]
-  
-});
 
 // nav : main and sub meters
 const selectedGraph = ref('mainMeter');
@@ -562,17 +533,12 @@ const navigate = (direction) => {
 };
 
  // initialize with a default value (Highlights)
-const totalAccumulated = ref(0);
-totalAccumulated.value = 24;
+//const totalAccumulated = ref();
 
 const avgQuarterly = ref(0);
 avgQuarterly.value = 23;
 
-const avgMonthly = ref(0);
-avgMonthly.value = 22;
 
-const avgDaily = ref(0);
-avgDaily.value = 22;
 
 
 // data for search record
@@ -626,7 +592,6 @@ const monthly_filter = () => {
 const quarterly_filter = () => {
   quarter_yAxis.value = quarter_container.value[quarterly_filter_output.value];
 }
-
 </script>
 <script>
 /* eslint-disable */
