@@ -200,8 +200,8 @@ import {
   GridComponent 
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
-import { ref, provide, onMounted } from "vue";
-import { search_record, monthly_and_daily_query, quarterly_consumption } from "@/dashboard_query"; 
+import { ref, provide, /*onMounted*/ } from "vue";
+import { search_record, /*monthly_and_daily_query, quarterly_consumption*/ } from "@/dashboard_query"; 
 
 const daily_water_consumption_container = ref({
     'date': [],
@@ -241,7 +241,7 @@ const monthly_yAxis = ref([])
 const quarterly_filter_output = ref("")
 const quarter_yAxis = ref([])
 
-onMounted(async () => {
+/*onMounted(async () => {
     try{
       await monthly_and_daily_query(monthly_water_consumption_container, daily_water_consumption_container);
       // eslint-disable-next-line
@@ -259,7 +259,7 @@ onMounted(async () => {
     } catch (error) {
       console.error('Error getting document:', error);
     }
-});
+});*/
 
 use([
   CanvasRenderer,
