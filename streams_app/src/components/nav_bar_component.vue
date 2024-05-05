@@ -120,38 +120,39 @@
             </div>
         </div>
 
-        <!-- top bar for mobile -->
-        <div class="flex">
-            <div class="more_settings z-10" v-if="isMobile" @click="toggleSidebar">
-                <img src="hamburger.png" alt="more_setting">
-            </div>
-        </div>
-
-        <div class="flex">
-            <div class="fixed inset-0 bg-white-100 bg-opacity-60" @click="toggleSidebar"></div>
-            <div id="sidebar" class="bg-gray-800 text-white w-16 flex-shrink-0" @click="toggleSidebar">
-                <div class="pl-6 pt-4 flex flex-row">
-                    <img src="streams_logo.png" alt="more_setting" class="w-8 h-8">
-                    <div class="name text font-bold text-xl transition ease-in-out 300 pt-1 pl-3">
-                        STREAMS
-                    </div>
+        <!-- sidebar for mobile -->
+        <div class="sidebar" v-if="isMobile" :class="{ collapsed: sidebarOpen }"> 
+            <div class="flex">
+                <div class="more_settings z-10" v-if="!sidebarOpen" @click="toggleSidebar" style="cursor: pointer;">
+                    <img src="hamburger.png" alt="more_setting">
                 </div>
+            </div>
+            <div class="flex">
+                <div class="fixed inset-0 bg-gray-800 bg-opacity-60 z-10" v-if="sidebarOpen" @click="toggleSidebar"></div>
+                <div id="sidebar" class="bg-gray-800 text-white w-16" v-if="sidebarOpen" @click="toggleSidebar">
+                    <div class="pl-6 pt-4 flex flex-row">
+                        <img src="streams_logo.png" alt="more_setting" class="w-8 h-8">
+                        <div class="name text font-bold text-xl transition ease-in-out 300 pt-1 pl-3">
+                            STREAMS
+                        </div>
+                    </div>
 
-                <!--<router-link class="navbar_label" to="/feedback" title="Feedback">
-                    <span class="feedback">Feedback</span>
-                </router-link>-->
+                    <router-link class="navbar_label" to="/feedback" title="Feedback">
+                        <span class="feedback">Feedback</span>
+                    </router-link>
 
-                <router-link class="navbar_label" to="/tips" title="Useful Techniques">
-                    <span class="tips">Let's Learn</span>
-                </router-link>
+                    <router-link class="navbar_label" to="/tips" title="Useful Techniques">
+                        <span class="tips">Let's Learn</span>
+                    </router-link>
 
-                <router-link class="navbar_label" to="/settings" title="Account Setting">
-                    <span class="settings">Account Settings</span>
-                </router-link>
+                    <router-link class="navbar_label" to="/settings" title="Account Setting">
+                        <span class="settings">Account Settings</span>
+                    </router-link>
 
-                <router-link class="navbar_label" to="/home" title="Logout">
-                    <span class="logout">Logout</span>
-                </router-link>
+                    <router-link class="navbar_label" to="/home" title="Logout">
+                        <span class="logout">Logout</span>
+                    </router-link>
+                </div>
             </div>
         </div>
     </div>
@@ -217,21 +218,28 @@ export default {
         this.more_settings = false;
       }
     },
-    // Add the updated toggleSidebar function
-    toggleSidebar() {
+    /*toggleSidebar() {
         var sidebar = document.getElementById("sidebar");
         var mainContent = document.querySelector(".flex");
 
         sidebar.classList.toggle("active");
         mainContent.classList.toggle("active");
 
-        // Add event listener to close sidebar on click outside
         document.addEventListener("click", event => {
-            if (!sidebar.contains(event.target) && !mainContent.contains(event.target)) {
-            this.toggleSidebar();
+            const isInSidebar = sidebar.contains(event.target);
+            const isInMainContent = mainContent.contains(event.target);
+
+            if (!(isInSidebar || isInMainContent)) {
+                this.toggleSidebar();
             }
         });
-    },
+    }*/
+    toggleSidebar() {
+          this.sidebarOpen = !this.sidebarOpen;
+          if (!this.sidebarOpen) {
+            this.more_settings = false;
+          }
+      }
   },
 };
 </script>
@@ -400,7 +408,7 @@ export default {
 }
 .more_settings.collapsed {
     width: 90px;
-    transition: ease-in-out 0.4s;
+    transition: ease-in-out 0.6s;
 }
 #sidebar {
     position: fixed;
@@ -409,15 +417,15 @@ export default {
     width: 200px;
     height: 100vh;
     background-color:var(--navy);
-    transition: transform 0.3s;
-    transform: translateX(-200px);
-    z-index: 999;
+    transition: ease-in-out 0.6s;
+    transform: translateX(-50px) 0.6s ease-in-out;
+    z-index: 10;
 }
   
-#sidebar.active {
-    transform: translateX(0);
-}
-  
+#sidebar.collapsed {
+    transform: translateX(-140px);
+  }
+
 .flex-1 {
     margin-left: 200px;
     transition: margin-left 0.3s;

@@ -1,11 +1,9 @@
 import { doc, getDocs, collection, orderBy, query, limit, where /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
 
-const meterRecordsRef = collection(db, 'meter_records');
-const mainMeterRef = doc(meterRecordsRef, 'main_meter');
+
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-
 
 /* pagpasok ng data ng emu sa firestore
 export async function lipat_data_hohoho(){
@@ -39,10 +37,10 @@ export async function lipat_data_hohoho(){
     }
     console.log("done")
 }*/
-
 //
-export async function daily_query(daily_obj){
-    
+export async function daily_query(daily_obj){  
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     try{
         for(let i = 0; i < main_meter.length; i++){
             let consumption = 0
@@ -94,6 +92,8 @@ export async function daily_query(daily_obj){
     return daily_obj
 }
 export async function monthly_query(month_obj){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     try{
         for(let i = 0; i < main_meter.length; i++){
             for(let j = 0; j < month_path.length; j++){  
@@ -256,6 +256,8 @@ export async function monthly_and_daily_query(month_obj, daily_obj){
 }*/
 // for reports
 export async function fetchWaterSourceData(waterSource){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
     console.log(prevMonth)
     const date_temp = [];
@@ -283,7 +285,6 @@ export async function fetchWaterSourceData(waterSource){
     console.log(date_temp, consumptionArray)
     return { dates: date_temp.reverse(), values: consumptionArray.reverse() }; 
 }
-
 /* la pang case for submeter
 export async function fetch_data(main_meter_object){
     //const date_obj = new Date();
@@ -326,69 +327,122 @@ export async function fetch_data(main_meter_object){
     }
     return main_meter_object
 }*/
-
-/* highlights
-export async function getTotalAccumulated(total){
+// highlights for accumulated
+export async function getTotalAccumulated(){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
+    let total = 0;
     const currentYear = 2023
     const startDate = new Date(currentYear, 0, 1);
 
+    // Extract year, month, and day
+    const year = startDate.getFullYear();
+    // JavaScript months are zero-based, so January is 0
+    const month = startDate.getMonth() + 1; // Adding 1 to adjust month to be from 1 to 12
+    const day = startDate.getDate();
+
+    // Format into "year-mm-dd" format
+    const formattedStartDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+
+    const currentDate = new Date();
+    currentDate.setFullYear(currentYear);
+
+    // Extract year, month, and day
+    const curryear = currentDate.getFullYear();
+    // JavaScript months are zero-based, so January is 0
+    const currmonth = currentDate.getMonth() + 1; // Adding 1 to adjust month to be from 1 to 12
+    const currday = currentDate.getDate();
+    // Format into "year-mm-dd" format
+    const formattedCurrentDate = `${curryear}-${currmonth < 10 ? '0' + currmonth : currmonth}-${currday < 10 ? '0' + currday : currday}`;
+
+    console.log(formattedStartDate, formattedCurrentDate)
     try{
-        for(let i = 0; i < main_meter.length; i++){
-            const consumption_temp = []
-            const dailyQuery = query(collection(mainMeterRef, main_meter[i]), 
-                    orderBy('date', 'desc'), 
-                    where('date', '>=', startDate),
-                    where('date', '<=')
-                );
-            const meterSnapshot = await getDocs(dailyQuery);
-            meterSnapshot.forEach((doc) => {
-                // get water consumption
-                const waterConsumption = parseFloat(doc.data().consumption);
-                const estConsumption = Math.round(waterConsumption * 1000) / 1000;
-                consumption_temp.push(estConsumption);
-            });
-            daily_obj[main_meter[i]] = consumption_temp.reverse()
-        }
-        const totalQuery = query(collection(mainMeterRef, 'total_consumption'), 
-                orderBy('date', 'desc'), limit(30));
-        const totalSnapshot = await getDocs(totalQuery);
-        const total_temp = []
-        const date_temp = []
-        totalSnapshot.forEach((doc) => {
+        let total_consumption = 0
+        const dailyQuery = query(collection(mainMeterRef, 'total_consumption'), 
+                orderBy('date', 'asc'), 
+                where('date', '>=', formattedStartDate),
+                where('date', '<=', formattedCurrentDate)
+            );
+        const meterSnapshot = await getDocs(dailyQuery);
+        meterSnapshot.forEach((doc) => {
             // get water consumption
-            // get date
-            const dateField = doc.data().date;
-            const dateString = new Date(dateField)
-            // format the date into words
-            const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
-            date_temp.push(formattedDate)
             const waterConsumption = parseFloat(doc.data().consumption);
-            const estConsumption = Math.round(waterConsumption * 1000) / 1000;
-            total_temp.push(estConsumption);
+            
+            total_consumption += waterConsumption;
         });
-        daily_obj['date'] = date_temp.reverse();
-        daily_obj['total_consumption'] = total_temp.reverse();
+        total += total_consumption;
+    } catch (error) {
+        console.log('error', error)
+    }
+    const estConsumption = Math.round(total * 1000) / 1000;
+    console.log(estConsumption)
+    return estConsumption
+}
+// highlights for avg monthly
+export async function avg_monthly(){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
+    let avg_est = 0
+    const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
+    console.log(prevMonth)
+    //const date_temp = [];
+    const consumptionArray = [];
+    try{
+        const reportsQuery = query(collection(mainMeterRef, 'total_consumption'), where('month', '==', prevMonth), orderBy('date', 'asc'));          
+        const reportSnapshot = await getDocs(reportsQuery);
+        //console.log(reportSnapshot.size)
+        reportSnapshot.forEach( (doc) => {
+            /*
+            const dateField = doc.data().date;
+            date_temp.push(dateField)*/
+
+            // for water consumption
+            const waterConsumption = doc.data().consumption;
+            const estConsumption = Math.round(waterConsumption * 1000) / 1000;
+            
+            consumptionArray.push(estConsumption);
+        });
+        const sum = consumptionArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        const avg_month_consumption = sum / consumptionArray.length
+        avg_est = Math.round(avg_month_consumption * 1000) / 1000;
     } catch (error) {
         console.log(error)
-    }
-    console.log(daily_obj)
-    return daily_obj
-}*/
-/*
-export async function avg_daily(quarter_obj){
-    const currentMonth = new Date().getMonth() + 1;
-    if(currentMonth > 3 && currentMonth < 7){
-        
-    } else if (currentMonth > 6 && currentMonth < 10){
-        
-    } else if (currentMonth > 9 && currentMonth <= 12){
-        
-    } else if (currentMonth < 4) {
-        
-    }
-}*/
+    }        
+
+    return avg_est;
+}
+// highlights for avg monthly
+export async function avg_daily(){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
+    let avg_est = 0
+    //const date_temp = [];
+    const consumptionArray = [];
+    try{
+        for(let i = 0; i < main_meter.length; i++){
+            const reportsQuery = query(collection(mainMeterRef, main_meter[i]), orderBy('date', 'desc'), limit(1));          
+            const reportSnapshot = await getDocs(reportsQuery);
+             //console.log(reportSnapshot.size)
+            reportSnapshot.forEach( (doc) => {
+                const waterConsumption = doc.data().consumption;
+                const estConsumption = Math.round(waterConsumption * 1000) / 1000;
+                
+                consumptionArray.push(estConsumption);
+            });    
+        }
+        const sum = consumptionArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        const avg_consumption = sum / consumptionArray.length
+        avg_est = Math.round(avg_consumption * 1000) / 1000;
+    } catch (error) {
+        console.log(error)
+    }        
+
+    return avg_est;
+}
 // search
 export async function search_record(date_input, waterSource){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     let value = 0;
     try {  
         const [year, month, day] = date_input.split("-");

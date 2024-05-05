@@ -24,7 +24,7 @@ import { onMounted, onUnmounted } from 'vue';
 
 export default {
   setup() {
-    const allowedRoutes = ['/home', '/reading', '/report', '/map'];
+    const allowedRoutes = ['/home', '/reading', '/report', '/events', '/map'];
     // Function to handle back button press
     const handleBackButton = () => {
       try {
