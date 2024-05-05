@@ -18,7 +18,7 @@
               <label :for="'input_' + key" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ input.label }}</label>
               <input :id="'input_' + key" :type="input.type" :placeholder="input.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="input.value" :class="{ 'border-red-500': input.error }" @input="handleInput($event, key)"/>
             </div>
-            <button @click="addReadingToLocal" class="add-reading-btn">Add Reading</button>
+            <button @click="addReadingToLocal" class="add-reading-btn p-2.5 8 bg-bsu-blue text-white rounded-full cursor-pointer text-base mt-20 w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders">Add Reading</button>
           </template>
         </div>
       </div>
@@ -41,7 +41,7 @@
             <button @click="submeter = !submeter" class="text-black bg-bsu-base font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
             <div v-if="submeter" class="mb-2">
               <ul class="bg-bsu-blue bg-opacity-60 w-full p-4">
-                <li v-for="(source, index) in subMeterSources" :key="index" :class="{'bg-green-500': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" class="hover:bg-bsu-hover border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white">
+                <li v-for="(source, index) in subMeterSources" :key="index" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" class="hover:bg-bsu-hover border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white">
                   <a @click="openPopup(source)">{{ source }}</a>
                 </li>
               </ul>
@@ -295,7 +295,7 @@
         alert('No valid readings were available to submit.');
       }
     this.isSubmitting = false;
-    }
+    },
     computed: {
         isPopupFilled() {
             return (source) => {
@@ -350,10 +350,10 @@
     border-color: red !important;
   }
 
-  .add-reading-btn {
+/*  .add-reading-btn {
     padding: 10px 20px;
     background-color: #007BFF; /* Bootstrap primary blue, adjust as needed */
-    color: white;
+/*    color: white;
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -365,5 +365,5 @@
 
   .add-reading-btn:hover {
     background-color: #0056b3; /* Darker blue on hover */
-  }
+  /*}*/
   </style>
