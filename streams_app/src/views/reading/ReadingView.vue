@@ -65,7 +65,7 @@
   import header_component from "../../components/header_component.vue";
   import HomePageView from "./../dashboard/HomePageView.vue";
   import confirmation_view from "./../../components/confirmation_view.vue";
-  import { mapActions } from 'vuex';
+  //import { mapActions } from 'vuex';
   
   export default {
     components: {
@@ -181,18 +181,24 @@
         this.stage_reading = false;
       },
       async submitForm() {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0];
+        const [year, month, day] = formattedDate.split("-");
         const waterSource = this.selectedWaterSource;
         const consumption = this.popupData[waterSource].input1.value;
         const input_x = this.popupData[waterSource].input2.value;
         const input_x0 = this.popupData[waterSource].input3.value;
-        const currentDate = new Date().toISOString();
+        
         let path;
   
         const data = {
-          date: currentDate,
+          date: formattedDate,
           consumption: consumption,
           input_x: input_x,
-          input_x0: input_x0
+          input_x0: input_x0,
+          year: year,
+          month: month,
+          day: day
         };
   
         try {
