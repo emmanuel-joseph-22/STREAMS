@@ -79,7 +79,7 @@
                     </router-link>
                     <!-- convservation tips ewan san lalagay -->
                     <router-link class="navbar_link" to="/tips">
-                        <div class="other_link_label"><span>Let's Learn</span></div>
+                        <div class="other_link_label"><span>Learn More</span></div>
                     </router-link>
                     <!-- profile view -->
                     <router-link class="navbar_link" to="/settings">
@@ -142,7 +142,7 @@
                     </router-link>
 
                     <router-link class="navbar_label" to="/tips" title="Useful Techniques">
-                        <span class="tips">Let's Learn</span>
+                        <span class="tips">Learn More</span>
                     </router-link>
 
                     <router-link class="navbar_label" to="/settings" title="Account Setting">

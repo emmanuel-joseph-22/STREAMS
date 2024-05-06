@@ -6,7 +6,7 @@
       <loaderSpinner v-if="isLoading" />
       <dashboard-content v-else>
 <!-- search record -->
-        <button @click="togglePopup" class="circle-button fixed bottom-10 right-5 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
+        <button @click="togglePopup" class="circle-button fixed bottom-16 right-5 lg:bottom-10 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
             <img src="search-button.png" alt="Search icon" class="w-6 h-6">
         </button>
         <div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>
