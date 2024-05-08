@@ -14,9 +14,19 @@ const store = createStore({
         quarterly_values: null,
         //highlights
         totalAccumulated: 0,
+        maxTotal: 0,
+        minTotal: 0,
         monthly_avg_value: 0,
+        maxOfCurrentMonth: 0,
+        minOfCurrentMonth: 0,
         daily_avg_value: 0,
+        maxDaily: 0,
+        minDaily: 0,
+        maxSource: 0,
+        minSource: 0,
         quarter_avg_value: 0, //ewan
+
+        //readings
         readings: JSON.parse(localStorage.getItem('readings')||'[]')//for reading local storage
     },
     mutations: {
@@ -36,11 +46,35 @@ const store = createStore({
         setTotalAccumulated(state, total){
             state.totalAccumulated = total
         }, 
+        setMaxTotal(state, max){
+            state.maxTotal = max
+        },
+        setMinTotal(state, min){
+            state.minTotal = min
+        },
         setMonthlyAvg(state, avg){
             state.monthly_avg_value = avg
         },
+        setMaxOfCurrentMonth(state, max){
+            state.maxOfCurrentMonth = max
+        },
+        setMinOfCurrentMonth(state, min){
+            state.minOfCurrentMonth = min
+        },
         setDailyAvg(state, avg){
             state.daily_avg_value = avg
+        },
+        setMaxDaily(state, max){
+            state.maxDaily = max
+        },
+        setMinDaily(state, min){
+            state.minDaily = min
+        },
+        setMaxSource(state, source){
+            state.maxSource = source
+        },
+        setMinSource(state, source){
+            state.minSource = source
         },
         ADD_READING(state, reading) {
             state.readings.push(reading);
@@ -89,24 +123,34 @@ const store = createStore({
         },
         async setTotalAccumulated({commit}){
             try{
-                const total = await getTotalAccumulated()
+                const [total, min, minDate, max, maxDate] = await getTotalAccumulated()
+                console.log('min:', minDate, 'max:', maxDate)
                 commit('setTotalAccumulated', total)
+                commit('setMaxTotal', max)
+                commit('setMinTotal', min)
             } catch(error){
                 console.log(error)
             }
         },
         async setMonthlyAvg({commit}){
             try{
-                const avg = await avg_monthly()
+                const [avg, min, minDate, max, maxDate] =  await avg_monthly()
+                console.log('min avg:', minDate, 'max avg:', maxDate)
                 commit('setMonthlyAvg', avg)
+                commit('setMaxOfCurrentMonth', max)
+                commit('setMinOfCurrentMonth', min)
             } catch(error){
                 console.log(error)
             }
         },
         async setDailyAvg({commit}){
             try{
-                const avg = await avg_daily()
+                const [avg, min, minSource, max, maxSource] = await avg_daily()
                 commit('setDailyAvg', avg)
+                commit('setMaxDaily', max)
+                commit('setMinDaily', min)
+                commit('setMaxSource', maxSource)
+                commit('setMinSource', minSource)
             } catch(error){
                 console.log(error)
             }

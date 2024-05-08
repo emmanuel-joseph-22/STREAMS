@@ -122,8 +122,9 @@ export async function monthly_query(month_obj){
     return month_obj
 }
 export async function quarterly_consumption(month_obj, q_obj){
-    const currentMonth = new Date().getMonth() + 1;
+    //const currentMonth = new Date().getMonth() + 1;
     for(let i = 0; i < main_meter.length; i++ ){
+        /*
         if(currentMonth > 3 && currentMonth < 7){
             //q1
             q1_calculator(month_obj, q_obj, i)
@@ -137,12 +138,12 @@ export async function quarterly_consumption(month_obj, q_obj){
             q2_calculator(month_obj, q_obj, i)
             q3_calculator(month_obj, q_obj, i)
         } else if (currentMonth < 4) {
-            //q4
+            //q4*/
             q1_calculator(month_obj, q_obj, i)
             q2_calculator(month_obj, q_obj, i)
             q3_calculator(month_obj, q_obj, i)
             q4_calculator(month_obj, q_obj, i)
-        }
+        //}
     }
     return q_obj
 }
@@ -335,6 +336,10 @@ export async function getTotalAccumulated(){
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     let total = 0;
+    let maxConsumption = null;
+    let maxDate = null;
+    let minConsumption = null;
+    let minDate = null;
     const currentYear = 2023
     const startDate = new Date(currentYear, 0, 1);
 
@@ -358,7 +363,6 @@ export async function getTotalAccumulated(){
     // Format into "year-mm-dd" format
     const formattedCurrentDate = `${curryear}-${currmonth < 10 ? '0' + currmonth : currmonth}-${currday < 10 ? '0' + currday : currday}`;
 
-    console.log(formattedStartDate, formattedCurrentDate)
     try{
         let total_consumption = 0
         const dailyQuery = query(collection(mainMeterRef, 'total_consumption'), 
@@ -370,7 +374,29 @@ export async function getTotalAccumulated(){
         meterSnapshot.forEach((doc) => {
             // get water consumption
             const waterConsumption = parseFloat(doc.data().consumption);
-            
+            if(!maxConsumption){
+                maxConsumption = waterConsumption
+                maxDate = doc.data().date;
+            } else {
+                if(maxConsumption < waterConsumption ){
+                    maxConsumption = waterConsumption
+                    maxDate = doc.data().date;
+                } else {
+                    // skip
+                }
+            }
+
+            if(!minConsumption){
+                minConsumption = waterConsumption
+                minDate = doc.data().date;
+            } else {
+                if(minConsumption > waterConsumption ){
+                    minConsumption = waterConsumption
+                    minDate = doc.data().date;
+                } else {
+                    // skip
+                }
+            }
             total_consumption += waterConsumption;
         });
         total += total_consumption;
@@ -378,14 +404,20 @@ export async function getTotalAccumulated(){
         console.log('error', error)
     }
     const estConsumption = Math.round(total * 1000) / 1000;
+    const estMin = Math.round(minConsumption * 1000) / 1000;
+    const estMax = Math.round(maxConsumption * 1000) / 1000;
     console.log(estConsumption)
-    return estConsumption
+    return [ estConsumption, estMin, minDate, estMax, maxDate ]
 }
 // highlights for avg monthly
 export async function avg_monthly(){
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     let avg_est = 0
+    let maxConsumption = null;
+    let maxDate = null;
+    let minConsumption = null;
+    let minDate = null;
     const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
     console.log(prevMonth)
     //const date_temp = [];
@@ -400,25 +432,54 @@ export async function avg_monthly(){
             date_temp.push(dateField)*/
 
             // for water consumption
+
             const waterConsumption = doc.data().consumption;
             const estConsumption = Math.round(waterConsumption * 1000) / 1000;
-            
+            if(!maxConsumption){
+                maxConsumption = waterConsumption
+                maxDate = doc.data().date;
+            } else {
+                if(maxConsumption < waterConsumption ){
+                    maxConsumption = waterConsumption
+                    maxDate = doc.data().date;
+                } else {
+                    // skip
+                }
+            }
+            if(!minConsumption){
+                minConsumption = waterConsumption
+                minDate = doc.data().date;
+            } else {
+                if(minConsumption > waterConsumption ){
+                    minConsumption = waterConsumption
+                    minDate = doc.data().date;
+                } else {
+                    // skip
+                }
+            }
             consumptionArray.push(estConsumption);
         });
         const sum = consumptionArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
         const avg_month_consumption = sum / consumptionArray.length
         avg_est = Math.round(avg_month_consumption * 1000) / 1000;
+
     } catch (error) {
         console.log(error)
     }        
-
-    return avg_est;
+    const estMin = Math.round(minConsumption * 1000) / 1000;
+    const estMax = Math.round(maxConsumption * 1000) / 1000;
+    console.log(minDate, estMin, maxDate, estMax)
+    return [avg_est, estMin, minDate, estMax, maxDate]
 }
 // highlights for avg monthly
 export async function avg_daily(){
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     let avg_est = 0
+    let maxConsumption = null;
+    let maxSource = null;
+    let minConsumption = null;
+    let minSource = null;
     //const date_temp = [];
     const consumptionArray = [];
     try{
@@ -431,7 +492,31 @@ export async function avg_daily(){
                 const estConsumption = Math.round(waterConsumption * 1000) / 1000;
                 
                 consumptionArray.push(estConsumption);
+
+                if(!maxConsumption){
+                    maxConsumption = waterConsumption
+                    maxSource = main_meter[i]
+                } else {
+                    if(maxConsumption < waterConsumption ){
+                        maxConsumption = waterConsumption
+                        maxSource =  main_meter[i]
+                    } else {
+                        // skip
+                    }
+                }
+                if(!minConsumption){
+                    minConsumption = waterConsumption
+                    minSource = main_meter[i]
+                } else {
+                    if(minConsumption > waterConsumption ){
+                        minConsumption = waterConsumption
+                        minSource = main_meter[i]
+                    } else {
+                        // skip
+                    }
+                }
             });    
+            
         }
         const sum = consumptionArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
         const avg_consumption = sum / consumptionArray.length
@@ -439,8 +524,22 @@ export async function avg_daily(){
     } catch (error) {
         console.log(error)
     }        
+    const estMin = Math.round(minConsumption * 1000) / 1000;
+    const estMax = Math.round(maxConsumption * 1000) / 1000;
+    const min_meter = formatString(minSource)
+    const max_meter = formatString(maxSource)
+    return [avg_est, estMin, min_meter, estMax, max_meter];
+}
 
-    return avg_est;
+function formatString(str) {
+    // Split the string into an array of words separated by underscores
+    let words = str.split('_');
+
+    // Capitalize the first letter of each word
+    words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+
+    // Join the words back together with spaces
+    return words.join(' ');
 }
 // search
 export async function search_record(date_input, waterSource){
