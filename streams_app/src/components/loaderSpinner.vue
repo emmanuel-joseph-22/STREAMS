@@ -1,5 +1,5 @@
 <template>
-    <div class="body">
+    <div class="loader_page">
         <div class="loader">
             <span style="--i:1;"></span>
             <span style="--i:2;"></span>
@@ -24,29 +24,37 @@
 </template>
 
 <style scoped>
-.body{
+.loader_page{
     display: flex;
     justify-content: center;
     align-items: 100vh;
     min-height: 100vh;
-    background-color: #FFFFFF
+    min-width: 100vw;
+    background-color: #FFFFFF;
+    z-index: 40;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
 }
 svg{
     width: 0;
     height: 0;
 }
 .loader{
+    text-align: center;
     position: relative;
-    width: 200px;
-    height: 200px;
+    margin-bottom: 40px;
+    width: 110px;
+    height: 110px;
     filter: url(#gooey);
 }
 .loader span{
     position: absolute;
     top: 0;
     left: 0;
-    width: 70%;
-    height: 70%;
+    width: 100%;
+    height: 100%;
     display: block;
     animation: animate 3s ease-in-out infinite;
     animation-delay: calc(0.2s * var(--i));
