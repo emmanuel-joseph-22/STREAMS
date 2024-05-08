@@ -33,13 +33,13 @@
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
         <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
           <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
-          <h2 class="text-3xl font-bold mt-14">{{ search_water_source }}</h2>
+          <h2 class="text-3xl font-bold mt-14">{{ formattedwaterSource }}</h2>
           <h2 class="text-xl font-bold text-white mb-4">{{ location }}</h2>
           <div class="record_details_container flex border-2 border-[#36B4E7] rounded-lg">
             <div class="record_details text-lg mt-4" style="flex-grow: 1;">
                 <div class="rec_field text-white p-2">Class: {{ classf }}</div>
                 <div class="rec_field text-white p-2 mt-2">Date: {{ search_date }}</div>
-                <div class="rec_field text-white p-2 mb-2">Time: {{ time }}</div>
+                <!--<div class="rec_field text-white p-2 mb-2">Time: {{ time }}</div>-->
             </div>
             <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#36B4E7] rounded-lg flex flex-col items-center justify-center">
                 <h2 class="text-3xl font-bold">{{ meter }}</h2>
@@ -199,7 +199,10 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
-import { quarterly_consumption, search_record,/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
+import { quarterly_consumption, search_record/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
+import { formatString } from "@/format";
+
+
 use([
     CanvasRenderer,
     TitleComponent,
@@ -533,9 +536,10 @@ avgQuarterly.value = 8803.492;
 // data for search record
 // initialized as today kase tinatamad ako mag error handling lmao
 const search_date = ref(`${ new Date().toISOString().slice(0, 10) }`)
-const time = ref("")
+// const time = ref("")
 const meter = ref("")
 const search_water_source = ref("")
+const formattedwaterSource = ref("")
 const location = ref("")
 const classf = ref("Main")
 
@@ -549,6 +553,7 @@ const togglePopup = () => {
 const showRecord = ref(false);
 const toggleRecord = async () => {
   const record = await search_record(search_date.value, search_water_source.value)
+  formattedwaterSource.value = formatString(search_water_source.value)
   if(record == 0){
     meter.value = "no reading"
   } else {

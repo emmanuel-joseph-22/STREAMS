@@ -1,5 +1,6 @@
 import { doc, getDocs, collection, orderBy, query, limit, where /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
+import formatString from './format.js';
 import store from "./store/index.js";
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
@@ -516,16 +517,6 @@ export async function avg_daily(){
     return [avg_est, estMin, min_meter, estMax, max_meter];
 }
 
-function formatString(str) {
-    // Split the string into an array of words separated by underscores
-    let words = str.split('_');
-
-    // Capitalize the first letter of each word
-    words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-
-    // Join the words back together with spaces
-    return words.join(' ');
-}
 // search
 export async function search_record(date_input, waterSource){
     const meterRecordsRef = collection(db, 'meter_records');
