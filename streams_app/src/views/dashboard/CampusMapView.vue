@@ -1,6 +1,6 @@
 <template>
   <home-page>
-    <header-bar style="background-color: #0E5E7B;">
+    <header-bar>
       <h1 class="dashboard font-arial font-bold text-4xl ml-3">Map</h1>
     </header-bar>
     <main-content>

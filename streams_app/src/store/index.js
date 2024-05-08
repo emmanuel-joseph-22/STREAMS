@@ -27,7 +27,10 @@ const store = createStore({
         quarter_avg_value: 0, //ewan
 
         //readings
-        readings: JSON.parse(localStorage.getItem('readings')||'[]')//for reading local storage
+        readings: JSON.parse(localStorage.getItem('readings')||'[]'), //for reading local storage
+
+        // loader signal
+        loading: false
     },
     mutations: {
         // Mutation to set the user's role
@@ -81,6 +84,12 @@ const store = createStore({
         },
         CLEAR_READINGS(state) {
             state.readings = [];
+        },
+        startLoading(state) {
+            state.loading = true; // Set loading state to true
+        },
+        stopLoading(state) {
+        state.loading = false; // Set loading state to false
         }
     },
     actions: {

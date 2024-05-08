@@ -1,6 +1,6 @@
 import { doc, getDocs, collection, orderBy, query, limit, where /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
-
+import store from "./store/index.js";
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 
@@ -342,19 +342,15 @@ export async function getTotalAccumulated(){
     let minDate = null;
     const currentYear = 2023
     const startDate = new Date(currentYear, 0, 1);
-
     // Extract year, month, and day
     const year = startDate.getFullYear();
     // JavaScript months are zero-based, so January is 0
     const month = startDate.getMonth() + 1; // Adding 1 to adjust month to be from 1 to 12
     const day = startDate.getDate();
-
     // Format into "year-mm-dd" format
     const formattedStartDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
-
     const currentDate = new Date();
     currentDate.setFullYear(currentYear);
-
     // Extract year, month, and day
     const curryear = currentDate.getFullYear();
     // JavaScript months are zero-based, so January is 0
@@ -362,7 +358,6 @@ export async function getTotalAccumulated(){
     const currday = currentDate.getDate();
     // Format into "year-mm-dd" format
     const formattedCurrentDate = `${curryear}-${currmonth < 10 ? '0' + currmonth : currmonth}-${currday < 10 ? '0' + currday : currday}`;
-
     try{
         let total_consumption = 0
         const dailyQuery = query(collection(mainMeterRef, 'total_consumption'), 
@@ -385,7 +380,6 @@ export async function getTotalAccumulated(){
                     // skip
                 }
             }
-
             if(!minConsumption){
                 minConsumption = waterConsumption
                 minDate = doc.data().date;
@@ -420,18 +414,11 @@ export async function avg_monthly(){
     let minDate = null;
     const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
     console.log(prevMonth)
-    //const date_temp = [];
     const consumptionArray = [];
     try{
         const reportsQuery = query(collection(mainMeterRef, 'total_consumption'), where('month', '==', prevMonth), orderBy('date', 'asc'));          
         const reportSnapshot = await getDocs(reportsQuery);
-        //console.log(reportSnapshot.size)
         reportSnapshot.forEach( (doc) => {
-            /*
-            const dateField = doc.data().date;
-            date_temp.push(dateField)*/
-
-            // for water consumption
 
             const waterConsumption = doc.data().consumption;
             const estConsumption = Math.round(waterConsumption * 1000) / 1000;
@@ -490,7 +477,6 @@ export async function avg_daily(){
             reportSnapshot.forEach( (doc) => {
                 const waterConsumption = doc.data().consumption;
                 const estConsumption = Math.round(waterConsumption * 1000) / 1000;
-                
                 consumptionArray.push(estConsumption);
 
                 if(!maxConsumption){
@@ -516,7 +502,6 @@ export async function avg_daily(){
                     }
                 }
             });    
-            
         }
         const sum = consumptionArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
         const avg_consumption = sum / consumptionArray.length
@@ -565,6 +550,14 @@ export async function search_record(date_input, waterSource){
     }
     console.log(value)
     return value
+}
+
+export async function fetchData(){
+    await store.dispatch(`setTotalAccumulated`)
+    await store.dispatch('setMonthlyAvg')
+    await store.dispatch('setDailyAvg')
+    await store.dispatch('setDailyConsumption')
+    await store.dispatch('setMonthlyConsumption')
 }
 /* no use pero baka magamit pa ung algo
 export async function monthly_consumption(){

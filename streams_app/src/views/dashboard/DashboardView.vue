@@ -5,7 +5,7 @@
       </header-bar>
       <loaderSpinner v-if="isLoading" />
       <dashboard-content v-else>
-<!-- search record -->
+        <!-- search record -->
         <button @click="togglePopup" class="circle-button fixed bottom-16 right-5 lg:bottom-10 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
             <img src="search-button.png" alt="Search icon" class="w-6 h-6">
         </button>
@@ -29,7 +29,7 @@
           </div>
           <button @click="togglePopup" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
         </div>
-<!-- display record -->
+      <!-- display record -->
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
         <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
           <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
@@ -48,7 +48,7 @@
         </div>
           <button @click="toggleRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>
         </div>
-<!-- highlighted data -->
+        <!-- highlighted data -->
         <div class="grid grid-cols-10 w-full gap-8 mt-5">
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
@@ -125,7 +125,6 @@
     <button class="arrow-button px-12" @click="navigate('right')">►</button>
   </div>
 </div>
-
 <!-- daily consumption chart -->
 <div class="col-span-10 md:col-span-6 box border shadow-md">
   <div class="filter-button flex justify-end md:mr-4">
@@ -140,9 +139,8 @@
   </div>
   <v-chart class="box border shadow-md" style="height: 400px;" :option="consumption_chart"/>
 </div>
-
 <!-- monthly box -->
-<div class="col-span-10 md:col-span-6 box border shadow-md mb-10" style="height: 400px;">
+<div class="col-span-10 md:col-span-6 box border shadow-md" style="height: 400px;">
   <div class="filter-button flex justify-end md:mr-4">
     <select v-model="monthly_filter_output" @change="monthly_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
       <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
@@ -161,9 +159,8 @@
     <button @click="togglePopup2" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
   </div>
 </div>
-
 <!-- quarterly box -->
-<div class="col-span-10 md:col-span-4 box border shadow-md" style="height: 400px;">
+<div class="col-span-10 md:col-span-4 box border shadow-md" style="height: 400px; margin: 0 0 60px 0;">
   <div class="filter-button flex justify-end md:mr-4">
     <select v-model="quarterly_filter_output" @change="quarterly_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
       <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
@@ -534,7 +531,8 @@ const navigate = (direction) => {
 const avgQuarterly = ref(0);
 avgQuarterly.value = 8803.492;
 // data for search record
-const search_date = ref("")
+// initialized as today kase tinatamad ako mag error handling lmao
+const search_date = ref(`${ new Date().toISOString().slice(0, 10) }`)
 const time = ref("")
 const meter = ref("")
 const search_water_source = ref("")

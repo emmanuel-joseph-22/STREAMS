@@ -1,5 +1,6 @@
 <template>
   <div>
+    <lodiSpener v-if="$store.state.loading == true"/>
     <!--<img src="image23.png">-->
     <router-view/>
   </div>
@@ -21,8 +22,12 @@
 import { App } from '@capacitor/app';
 import router from './router/index';
 import { onMounted, onUnmounted } from 'vue';
+import loaderSpinner from './components/loaderSpinner.vue';
 
 export default {
+  components: {
+    lodiSpener: loaderSpinner
+  },
   setup() {
     const allowedRoutes = ['/home', '/reading', '/report', '/events', '/map'];
     // Function to handle back button press

@@ -157,6 +157,7 @@
     import { firestore as db } from './../../main.js';
     import store from './../../store/index.js'; // Import the Vuex store
     import { doc, getDoc } from 'firebase/firestore';
+import { fetchData } from '@/dashboard_query.js';
 
     const email = ref("");
     const password = ref("");
@@ -223,7 +224,7 @@
 
         // Check if the role is updated in the store
         console.log("Vuex store role:", store.state.role);
-        
+        await fetchData()
         router.push('/home');
     } catch (error) {
         console.log(error.code);

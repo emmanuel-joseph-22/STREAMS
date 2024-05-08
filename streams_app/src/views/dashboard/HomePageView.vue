@@ -7,26 +7,11 @@
 
 <script>
 import nav_bar from '../../components/nav_bar_component.vue';
-/*
-import { monthly_consumption, quarterly_consumption } from '../dashboard_query.js';
-
-import { reactive } from 'vue';
-import { useStore } from 'vuex';
-*/
-import store from '@/store';
 
 export default {
     components: {
         "nav-bar": nav_bar
     },
-    async mounted(){
-        await store.dispatch(`setTotalAccumulated`)
-        await store.dispatch('setMonthlyAvg')
-        await store.dispatch('setDailyAvg')
-        await store.dispatch('setDailyConsumption')
-        await store.dispatch('setMonthlyConsumption')
-    }
-    
 }
 </script>
 

@@ -7,6 +7,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 import './assets/tailwind.css';
+import { fetchData } from './dashboard_query';
 
 /*web app's Firebase configuration*/
 const firebaseConfig = {
@@ -27,7 +28,6 @@ initializeFirestore(db_app, {
 export const firestore = getFirestore(db_app);
 export const database = getDatabase(db_app);
 
-
 // vue app
 export const app = createApp(App);
 app.use(router).use(store)
@@ -37,10 +37,22 @@ app.mount('#app');
 // Get the authentication instance
 const auth = getAuth(db_app);
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async user => {
   if (user) {
-    // User is already authenticated, proceed with auto-login
-    router.push('/'); // Redirect to the home page or any authenticated page
+    try {
+      // Dispatch Vuex action to start loading spinner
+      store.commit('startLoading');
+
+      await fetchData()
+      // User is already authenticated, proceed with auto-login
+      router.push('/'); // Redirect to the home page or any authenticated page
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error
+    } finally {
+      // Dispatch Vuex action to stop loading spinner
+      store.commit('stopLoading');
+    }
   } else {
     // User is not authenticated, redirect to the login page or perform any other action
     router.push('/login');

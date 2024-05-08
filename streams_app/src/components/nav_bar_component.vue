@@ -6,17 +6,17 @@
                 <!-- tinanggal ko class=icon ang cute nagzzooom -->
                 <div v-show="!navbarCollapsed">
                     <div class="flex">
-                        <span @click="toggleNavbar" title="Close Bar" style="margin-left: 25px; transition: ease-in-out 1s; cursor: pointer;">
-                            <img class="icon" src="streams_logo.png" alt="Toggle Icon"  >
+                        <span @click="toggleNavbar" title="Close Bar" style="margin-left: 25px; cursor: pointer;">
+                            <img class="streams_icon" src="streams_logo.png" alt="Toggle Icon"  >
                         </span>
                         <div class="name text-[#FFFFFF] font-bold text-xl transition ease-in-out 300 pt-5 pl-3">
                             STREAMS
                         </div>
                     </div>
                 </div>
-                <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar" style="margin-left: 10px; transition: ease-in-out 1s; cursor: pointer;">
+                <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar" style="margin-left: 10px; cursor: pointer;">
                     <span>
-                        <img class="icon" src="streams_logo.png" alt="Toggle Icon" >
+                        <img class="streams_icon" src="streams_logo.png" alt="Toggle Icon" >
                     </span>
                 </div>
 
@@ -297,6 +297,11 @@ export default {
         fill: white;
         transition: ease-in-out 0.6s;
     }
+    .streams_icon{
+        width: 44px;
+        height: 42px;
+        margin-top: 10px;
+    }
     .navlink_label, .other_link_label{
         transition: ease-in-out 0.3s;
         transition-delay: .2s;
@@ -419,7 +424,7 @@ export default {
     background-color:var(--navy);
     transition: ease-in-out 0.6s;
     transform: translateX(-50px) 0.6s ease-in-out;
-    z-index: 10;
+    z-index: 20;
 }
   
 #sidebar.collapsed {
@@ -434,18 +439,20 @@ export default {
 .flex-1.active {
     margin-left: 200px;
 }
-
+.navbar_label:first-of-type{
+    margin-top: 40px;
+}
 .navbar_label{
     width: 95%;
-    height: 70px;
+    height: 50px;
     text-align: center;
     display: flex;
     padding-left: 7px;
-    margin: 30px auto;
+    margin: 15px auto;
+    font-size: 1.2rem;
 }
 
 .logout{
-    margin-top: 10px;
     display: inline-block;
     text-align: center;
     transition: ease-in-out 0.6s;
