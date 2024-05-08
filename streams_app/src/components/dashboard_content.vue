@@ -1,5 +1,5 @@
 <template>
-    <div class="content relative flex mx-4">
+    <div class="content relative flex">
         <slot></slot>
     </div>
 </template>

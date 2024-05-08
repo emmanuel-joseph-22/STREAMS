@@ -1,5 +1,3 @@
-
-
 export function formatString(str) {
     // Split the string into an array of words separated by underscores
     let words = str.split('_');

@@ -3,8 +3,7 @@
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
       </header-bar>
-      <loaderSpinner v-if="isLoading" />
-      <dashboard-content v-else>
+      <dashboard-content>
         <!-- search record -->
         <button @click="togglePopup" class="circle-button fixed bottom-16 right-5 lg:bottom-10 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
             <img src="search-button.png" alt="Search icon" class="w-6 h-6">
@@ -43,7 +42,6 @@
             </div>
             <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#36B4E7] rounded-lg flex flex-col items-center justify-center">
                 <h2 class="text-3xl font-bold">{{ meter }}</h2>
-                <p>Cubic Meters</p>
             </div>
         </div>
           <button @click="toggleRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>
@@ -52,7 +50,7 @@
         <div class="grid grid-cols-10 w-full gap-8 mt-5">
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out ml-2">
                 <span class="text-3xl font-bold">{{ $store.state.totalAccumulated }} m<sup>3</sup></span>
                 <p class="text-white">Total Accumulated</p>
                 <div class="flex flex-row px-8">
@@ -92,7 +90,7 @@
                     </svg>{{$store.state.minOfCurrentMonth}}</p>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out mr-2">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }} m<sup>3</sup></p>
                 </span>
@@ -214,12 +212,12 @@ use([
 // daily water consumption
 const Daily_yAxisConsumption = ref([])
 const Daily_xAxisConsumption = ref([])
-const daily_filter_output = ref("")
+const daily_filter_output = ref("total_consumption")
 
-const monthly_filter_output = ref("")
+const monthly_filter_output = ref("total_consumption")
 const monthly_yAxis = ref([])
 
-const quarterly_filter_output = ref("")
+const quarterly_filter_output = ref("total_consumption")
 const quarter_yAxis = ref([])
 const daily_water_consumption_container = ref({})
 const monthly_water_consumption_container = ref({})
@@ -555,7 +553,7 @@ const toggleRecord = async () => {
   const record = await search_record(search_date.value, search_water_source.value)
   formattedwaterSource.value = formatString(search_water_source.value)
   if(record == 0){
-    meter.value = "no reading"
+    meter.value = 'no reading'
   } else {
     meter.value = record;
   }
@@ -611,5 +609,7 @@ export default {
 </script>
 
 <style scoped>
-
+.filter-button:focus {
+  border-color: transparent;
+}
 </style>

@@ -207,42 +207,44 @@ import { fetchData } from '@/dashboard_query.js';
     
 
     const login = async () => {
-    const auth = getAuth();
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
-        
-        // Successful login
-        const user = userCredential.user; // Retrieve the user object
-        const userId = user.uid; // Retrieve the user ID (UID)
-        const userRole = await fetchUserRole(userId);
+        const auth = getAuth();
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
+            store.commit('startLoading');
+            // Successful login
+            const user = userCredential.user; // Retrieve the user object
+            const userId = user.uid; // Retrieve the user ID (UID)
+            const userRole = await fetchUserRole(userId);
 
-        console.log("User ID (UID):", userId);
-        console.log("User role:", userRole);
+            console.log("User ID (UID):", userId);
+            console.log("User role:", userRole);
 
-        // Dispatching the action to update the role in the store
-        store.dispatch('updateRole', userRole);
+            // Dispatching the action to update the role in the store
+            store.dispatch('updateRole', userRole);
 
-        // Check if the role is updated in the store
-        console.log("Vuex store role:", store.state.role);
-        await fetchData()
-        router.push('/home');
-    } catch (error) {
-        console.log(error.code);
-        switch (error.code) {
-            case "auth/invalid-email":
-                errorMsg.value = "Invalid email";
-                break;
-            case "auth/user-not-found":
-                errorMsg.value = "Email not found";
-                break;
-            case "auth/wrong-password":
-                errorMsg.value = "Invalid Password";
-                break;
-            default:
-                errorMsg.value = "Email or password was incorrect";
-                break;
+            // Check if the role is updated in the store
+            console.log("Vuex store role:", store.state.role);
+            await fetchData()
+            router.push('/home');
+            
+        } catch (error) {
+            console.log(error.code);
+            switch (error.code) {
+                case "auth/invalid-email":
+                    errorMsg.value = "Invalid email";
+                    break;
+                case "auth/user-not-found":
+                    errorMsg.value = "Email not found";
+                    break;
+                case "auth/wrong-password":
+                    errorMsg.value = "Invalid Password";
+                    break;
+                default:
+                    errorMsg.value = "Email or password was incorrect";
+                    break;
+            }
         }
-    }
-};
+        store.commit('stopLoading');
+    };
 
 </script>

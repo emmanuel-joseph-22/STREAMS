@@ -905,14 +905,15 @@ const formatFDCTable = () => {
 }
 
 .button {
-  width: 100px; /* Adjust button width as needed */
+font-size: 1.2rem;
+  width: 60px; /* Adjust button width as needed */
   height: 50px;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease;
   background-color: #00152c; /* Add button background color */
   color: #fff; /* Change button text color */
-  border-radius: 4px; /* Add border radius */
+  border-radius: 5px; /* Add border radius */
 }
 
 .active-button {

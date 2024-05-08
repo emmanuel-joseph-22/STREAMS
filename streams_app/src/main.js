@@ -37,11 +37,12 @@ app.mount('#app');
 // Get the authentication instance
 const auth = getAuth(db_app);
 
+// Dispatch Vuex action to start loading spinner
+store.commit('startLoading');
+
 onAuthStateChanged(auth, async user => {
   if (user) {
     try {
-      // Dispatch Vuex action to start loading spinner
-      store.commit('startLoading');
 
       await fetchData()
       // User is already authenticated, proceed with auto-login
@@ -56,6 +57,7 @@ onAuthStateChanged(auth, async user => {
   } else {
     // User is not authenticated, redirect to the login page or perform any other action
     router.push('/login');
+    store.commit('stopLoading');
   }
 });
 
