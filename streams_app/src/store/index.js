@@ -12,18 +12,26 @@ const store = createStore({
         monthly_values: null,
         //quarterly
         quarterly_values: null,
-        //highlights
-        totalAccumulated: 0,
-        maxTotal: 0,
-        minTotal: 0,
-        monthly_avg_value: 0,
-        maxOfCurrentMonth: 0,
-        minOfCurrentMonth: 0,
-        daily_avg_value: 0,
-        maxDaily: 0,
-        minDaily: 0,
-        maxSource: 0,
-        minSource: 0,
+
+        //highlights for total
+        totalAccumulated: 0, // total consumption
+        maxTotalDate: null, // date of peak consumption
+        minTotalDate: null, // date lowest consumption
+        maxTotal: 0, // peak conusmption
+        minTotal: 0, // lowest consumption
+
+        monthly_avg_value: 0, // avg consumption
+        maxOfCurrentMonth: 0, // peak consumption
+        minOfCurrentMonth: 0, // lowest consumption
+        maxMonthDate: null, // date of peak consumption
+        minMonthDate: null, // date lowest consumption
+
+        daily_avg_value: 0, // avg consumption
+        maxDaily: 0, // peak consumption
+        minDaily: 0, // lowest consumption
+        maxSource: 0, // water source
+        minSource: 0, // water source
+
         quarter_avg_value: 0, //ewan
 
         //readings
@@ -55,6 +63,12 @@ const store = createStore({
         setMinTotal(state, min){
             state.minTotal = min
         },
+        setMaxTotalDate(state, date){
+            state.maxTotalDate = date
+        },
+        setMinTotalDate(state, date){
+            state.minTotalDate = date
+        },
         setMonthlyAvg(state, avg){
             state.monthly_avg_value = avg
         },
@@ -63,6 +77,12 @@ const store = createStore({
         },
         setMinOfCurrentMonth(state, min){
             state.minOfCurrentMonth = min
+        },
+        setMinMonthDate(state, min){
+            state.minMonthDate = min
+        },
+        setMaxMonthDate(state, min){
+            state.maxMonthDate = min
         },
         setDailyAvg(state, avg){
             state.daily_avg_value = avg
@@ -133,10 +153,11 @@ const store = createStore({
         async setTotalAccumulated({commit}){
             try{
                 const [total, min, minDate, max, maxDate] = await getTotalAccumulated()
-                console.log('min:', minDate, 'max:', maxDate)
                 commit('setTotalAccumulated', total)
                 commit('setMaxTotal', max)
                 commit('setMinTotal', min)
+                commit('setMaxTotalDate', maxDate)
+                commit('setMinTotalDate', minDate)
             } catch(error){
                 console.log(error)
             }
@@ -144,10 +165,11 @@ const store = createStore({
         async setMonthlyAvg({commit}){
             try{
                 const [avg, min, minDate, max, maxDate] =  await avg_monthly()
-                console.log('min avg:', minDate, 'max avg:', maxDate)
                 commit('setMonthlyAvg', avg)
                 commit('setMaxOfCurrentMonth', max)
                 commit('setMinOfCurrentMonth', min)
+                commit('setMinMonthDate', minDate)
+                commit('setMaxMonthDate', maxDate)
             } catch(error){
                 console.log(error)
             }

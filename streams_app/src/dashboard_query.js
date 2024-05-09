@@ -264,12 +264,10 @@ export async function fetchWaterSourceData(waterSource){
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
-    console.log(prevMonth)
     const date_temp = [];
     const consumptionArray = [];
     try{
-        const reportsQuery = query(collection(mainMeterRef, waterSource), where('month', '==', prevMonth), orderBy('date', 'desc'));          
-                            console.log('panget')
+        const reportsQuery = query(collection(mainMeterRef, waterSource), where('month', '==', prevMonth), orderBy('date', 'desc'));    
         const reportSnapshot = await getDocs(reportsQuery);
         //console.log(reportSnapshot.size)
         reportSnapshot.forEach( (doc) => {
@@ -287,7 +285,6 @@ export async function fetchWaterSourceData(waterSource){
     } catch (error) {
         console.log(error)
     }        
-    console.log(date_temp, consumptionArray)
     return { dates: date_temp.reverse(), values: consumptionArray.reverse() }; 
 }
 /* la pang case for submeter
@@ -372,22 +369,35 @@ export async function getTotalAccumulated(){
             const waterConsumption = parseFloat(doc.data().consumption);
             if(!maxConsumption){
                 maxConsumption = waterConsumption
-                maxDate = doc.data().date;
+                const date = doc.data().date
+                const dateString = new Date(date)
+                const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+    
+                maxDate = formattedDate;
             } else {
                 if(maxConsumption < waterConsumption ){
                     maxConsumption = waterConsumption
-                    maxDate = doc.data().date;
+                    const date = doc.data().date
+                    const dateString = new Date(date)
+                    const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+                    maxDate = formattedDate;
                 } else {
                     // skip
                 }
             }
             if(!minConsumption){
                 minConsumption = waterConsumption
-                minDate = doc.data().date;
+                const date = doc.data().date
+                const dateString = new Date(date)
+                const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+                minDate = formattedDate
             } else {
                 if(minConsumption > waterConsumption ){
                     minConsumption = waterConsumption
-                    minDate = doc.data().date;
+                    const date = doc.data().date
+                    const dateString = new Date(date)
+                    const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+                    minDate = formattedDate
                 } else {
                     // skip
                 }
@@ -401,7 +411,6 @@ export async function getTotalAccumulated(){
     const estConsumption = Math.round(total * 1000) / 1000;
     const estMin = Math.round(minConsumption * 1000) / 1000;
     const estMax = Math.round(maxConsumption * 1000) / 1000;
-    console.log(estConsumption)
     return [ estConsumption, estMin, minDate, estMax, maxDate ]
 }
 // highlights for avg monthly
@@ -414,7 +423,6 @@ export async function avg_monthly(){
     let minConsumption = null;
     let minDate = null;
     const prevMonth = (new Date().getMonth()).toString().padStart(2, '0');
-    console.log(prevMonth)
     const consumptionArray = [];
     try{
         const reportsQuery = query(collection(mainMeterRef, 'total_consumption'), where('month', '==', prevMonth), orderBy('date', 'asc'));          
@@ -425,22 +433,35 @@ export async function avg_monthly(){
             const estConsumption = Math.round(waterConsumption * 1000) / 1000;
             if(!maxConsumption){
                 maxConsumption = waterConsumption
-                maxDate = doc.data().date;
+                const date = doc.data().date
+                const dateString = new Date(date)
+                const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+    
+                maxDate = formattedDate;
             } else {
                 if(maxConsumption < waterConsumption ){
                     maxConsumption = waterConsumption
-                    maxDate = doc.data().date;
+                    const date = doc.data().date
+                    const dateString = new Date(date)
+                    const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+                    maxDate = formattedDate;
                 } else {
                     // skip
                 }
             }
             if(!minConsumption){
                 minConsumption = waterConsumption
-                minDate = doc.data().date;
+                const date = doc.data().date
+                const dateString = new Date(date)
+                const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+                minDate = formattedDate
             } else {
                 if(minConsumption > waterConsumption ){
                     minConsumption = waterConsumption
-                    minDate = doc.data().date;
+                    const date = doc.data().date
+                    const dateString = new Date(date)
+                    const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+                    minDate = formattedDate
                 } else {
                     // skip
                 }
@@ -456,7 +477,6 @@ export async function avg_monthly(){
     }        
     const estMin = Math.round(minConsumption * 1000) / 1000;
     const estMax = Math.round(maxConsumption * 1000) / 1000;
-    console.log(minDate, estMin, maxDate, estMax)
     return [avg_est, estMin, minDate, estMax, maxDate]
 }
 // highlights for avg monthly
@@ -524,7 +544,6 @@ export async function search_record(date_input, waterSource){
     let value = 0;
     try {  
         const [year, month, day] = date_input.split("-");
-        console.log()
         const recordQuery = query(collection(mainMeterRef, waterSource), 
                             where('month', '==', month),
                             where('day', '==', day),
@@ -539,16 +558,15 @@ export async function search_record(date_input, waterSource){
     } catch(error) {
         console.log("Error searching a record:", error)
     }
-    console.log(value)
     return value
 }
 
 export async function fetchData(){
     await store.dispatch(`setTotalAccumulated`)
-    await store.dispatch('setMonthlyAvg')
-    await store.dispatch('setDailyAvg')
-    await store.dispatch('setDailyConsumption')
-    await store.dispatch('setMonthlyConsumption')
+    //await store.dispatch('setMonthlyAvg')
+    //await store.dispatch('setDailyAvg')
+    //await store.dispatch('setDailyConsumption')
+    //await store.dispatch('setMonthlyConsumption')
 }
 /* no use pero baka magamit pa ung algo
 export async function monthly_consumption(){

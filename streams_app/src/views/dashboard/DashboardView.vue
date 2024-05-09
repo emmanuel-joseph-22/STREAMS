@@ -50,58 +50,82 @@
         <div class="grid grid-cols-10 w-full gap-8 mt-5">
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out ml-2">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out ml-2">
                 <span class="text-3xl font-bold">{{ $store.state.totalAccumulated }} m<sup>3</sup></span>
-                <p class="text-white">Total Accumulated</p>
+                <p class="text-white mb-4">Total Accumulated</p>
                 <div class="flex flex-row px-8">
-                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                  <div class="subtitles">
+                  <p :title="peakTotalDate" class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
                     <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>{{ $store.state.maxTotal }}</p>
-                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    </svg>{{ $store.state.maxTotal }}m<sup>3</sup></p>
+                  </div>
+                  <div class="subtitles">
+                  <p :title="flopTotalDate" class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
                     <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>{{ $store.state.minTotal }}</p>
+                    </svg>{{ $store.state.minTotal }}m<sup>3</sup></p>
+                    <div></div>
+                  </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ avgQuarterly }} m<sup>3</sup></p>
+                    <p class="text-3xl font-bold">{{ avgQuarterly }}m<sup>3</sup></p>
                 </span>
-                <p class="text-white">AVG Quarterly</p>
+                <p class="text-white mb-4">AVG Quarterly</p>
                 <div class="flex flex-row px-8">
-                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
-                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>20234</p>
-                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
-                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>15907</p>
+                  <div class="subtitles">
+                    <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                      <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                      </svg>20234
+                    </p>
+
+                  </div>
+                  <div class="subtitles">
+                    <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                      <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                      </svg>15907
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }} m<sup>3</sup></p>
+                    <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }}m<sup>3</sup></p>
                 </span>
-                <p class="text-white">AVG Monthly</p>
+                <p class="text-white mb-4">AVG Monthly</p>
                 <div class="flex flex-row px-8">
-                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
-                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>{{$store.state.maxOfCurrentMonth}}</p>
-                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
-                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>{{$store.state.minOfCurrentMonth}}</p>
+                  <div class="subtitles">
+                    <p :title="peakMonthDate" class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                      <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                      </svg>{{$store.state.maxOfCurrentMonth}}m<sup>3</sup>
+                    </p>
+                  </div>
+                  <div class="subtitles">
+                    <p :title="flopMonthDate" class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                      <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                      </svg>{{$store.state.minOfCurrentMonth}}m<sup>3</sup>
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[150px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out mr-2">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out mr-2">
                 <span class="text-base">
-                    <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }} m<sup>3</sup></p>
+                    <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }}m<sup>3</sup></p>
                 </span>
-                <p class="text-white">AVG Daily</p>
+                <p class="text-white mb-4">AVG Daily</p>
                 <div class="flex flex-row px-8">
-                  <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
-                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>{{ $store.state.maxDaily }}</p>
-                  <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
-                    <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
-                    </svg>{{ $store.state.minDaily }}</p>
+                  <div class="subtitles">
+                    <p :title="peakSource" class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                      <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                      </svg>{{ $store.state.maxDaily }}m<sup>3</sup>
+                    </p>
+                  </div>
+                  <div class="subtitles">
+                    <p :title="flopSource" class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                      <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+                      </svg>{{ $store.state.minDaily }}m<sup>3</sup>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -198,7 +222,7 @@ import {
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, onMounted } from "vue";
 import { quarterly_consumption, search_record/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
-import { formatString } from "@/format";
+import formatString from "@/format";
 
 
 use([
@@ -458,8 +482,6 @@ const quarter_chart = ref({
 });
 onMounted(async () => {
     try{
-      console.log('asa dashboard')
-
       daily_water_consumption_container.value = store.state.daily_values
       monthly_water_consumption_container.value = store.state.monthly_values
       //eslint-disable-next-line  
@@ -470,8 +492,6 @@ onMounted(async () => {
         Daily_xAxisConsumption.value = daily_water_consumption_container.value.date
       await quarterly_consumption(monthly_water_consumption_container, quarter_container)  
       quarter_yAxis.value = quarter_container.value.total_consumption;
-        console.log(daily_water_consumption_container)
-        console.log(monthly_water_consumption_container);
     } catch (error) {
       console.error('Error getting document:', error);
     }
@@ -591,7 +611,6 @@ const quarterly_filter = () => {
 import HomePageView from './HomePageView.vue';
 import header from '../../components/header_component.vue';
 import dashboard_content from '../../components/dashboard_content.vue';
-import loaderSpinner from './../../components/loaderSpinner.vue';
 
 export default {
     components: {
@@ -605,11 +624,37 @@ export default {
         isLoading: false
       }
     },
+    computed: {
+      peakTotalDate(){
+        return this.$store.state.maxTotalDate
+      },
+      flopTotalDate(){
+        return this.$store.state.minTotalDate
+      },
+      peakMonthDate(){
+        return this.$store.state.maxMonthDate
+      },
+      flopMonthDate(){
+        return this.$store.state.minMonthDate
+      }, 
+      peakSource(){
+        return this.$store.state.maxSource
+      }, 
+      flopSource(){
+        return this.$store.state.minSource
+      }
+
+    }
 }
 </script>
 
 <style scoped>
-.filter-button:focus {
+input:focus, textarea:focus, select:focus {
   border-color: transparent;
+  outline: none;
+}
+.subtitles{
+  line-height: 0.4;
+  cursor: pointer;
 }
 </style>
