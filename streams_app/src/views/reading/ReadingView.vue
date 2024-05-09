@@ -11,7 +11,7 @@
     <!--POPUP-->
       <div class="bg-white w-full h-full rounded-lg shadow-lg">
         <span class="absolute top-16 right-10 cursor-pointer text-gray-600 text-2xl" @click="closePopup">&times;</span>
-        <h2 class="mt-8">{{ selectedWaterSource }}</h2>
+        <h2 class="mt-8">{{  capitalize(selectedWaterSource)  }}</h2>
         <!--CONTENTS NG POPUP-->
         <template v-if="popupData[selectedWaterSource]">
           <div v-for="(input, key) in popupData[selectedWaterSource]" :key="key" class="m3-cont flex flex-col flex-start w-auto h-14 mb-8 mt-4 t-7 p-4">
