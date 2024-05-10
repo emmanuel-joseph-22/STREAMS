@@ -21,10 +21,10 @@
         </div>
       </div>
       <!-- Right content -->
-      <div class="right-content">
-        <div class="box1">
+      <div class="right-content overflow-x-hidden">
+        <div class="box1 overflow-y-hidden">
           <div class="box-header">Report</div>
-          <div class="box-body" v-if="activeButtonIndex === 0">
+          <div class="box-body h-[400px] overflow-y-auto" v-if="activeButtonIndex === 0">
             <h2 class="text-2xl font-semibold mb-4">Daily Water Inventory</h2>
             <!-- Table markup for Daily Water Inventory -->
             <table class="elegant-table">
@@ -56,7 +56,7 @@
           <div class="chart-container" v-if="activeButtonIndex === 4" id="dw2ChartContainer"></div>
 
           <!-- Event tables for Event Report -->
-          <div class="box-body" v-if="activeButtonIndex === 5">
+          <div class="box-body h-[400px] overflow-y-auto" v-if="activeButtonIndex === 5">
             <!-- CEAFA Building Events Table -->
             <div class="my-8">
               <h2 class="text-2xl font-semibold mb-4">CEAFA Building Events</h2>
@@ -125,8 +125,8 @@
 <!--Mobile PopUp-->
       
       <!--<div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>-->
-      <div class="popup-container fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-11/12" v-if="showPopup && isMobile">
-        <div class="popup-content h-full flex flex-col">
+      <div class="popup-container fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[570px] border border-black bg-white text-[#042334] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-10/12" v-if="showPopup && isMobile">
+        <div class="popup-content h-[510px] flex flex-col">
               <div class="box-header">{{ rows[activeButtonIndex]?.title }}</div>
               <div class="box-body overflow-y-auto">
                 <table v-if="activeButtonIndex === 0" class="elegant-table">
@@ -155,7 +155,7 @@
               <div v-else-if="activeButtonIndex === 4" class="chart-container" id="dw2ChartContainer"></div>
               <textarea v-model="userReport" v-if="activeButtonIndex !== null" placeholder="Type your report here..." rows="4"></textarea>
           </div>
-          <button class="close-button absolute bottom-4 right-4 text-red-500 hover:text-red-700 cursor-pointer" @click="togglePopup">Close</button>
+          <button class="close-button absolute bottom-2 right-4 text-red-500 hover:text-red-700 cursor-pointer" @click="togglePopup">Close</button>
         </div>
     </div>
   </home-page>
