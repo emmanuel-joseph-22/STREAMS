@@ -655,7 +655,16 @@ export default{
       pieDate,
       passMonthToPie,
       passQuarterToPie,
-      focusToPie
+      focusToPie,
+
+      search_date,
+      meter,
+      search_water_source,
+      formattedwaterSource,
+      showPopup,
+      showRecord,
+      quarPopup,
+      monthlyPopup
     }
   }
 }
