@@ -67,32 +67,61 @@
             </div>
 
             <!-- Floating popup form -->
-<div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60 z-50">
-    <div class="popup-box bg-white p-6 rounded-md shadow-md w-2/3 md:w-1/2 lg:w-1/3">
-        <h2 class="text-lg font-semibold mb-4">Add Event</h2>
+            <div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60 z-50">
+                <div class="popup-box bg-white p-6 rounded-md shadow-md w-2/3 md:w-1/2 lg:w-1/3">
+                    <h2 class="text-lg font-semibold mb-4">Add Event</h2>
 
-        <!-- Error message display -->
-        <div v-if="error" class="text-red-500 text-sm mb-2">{{ error }}</div>
 
         <form @submit.prevent="saveEventData" class="grid gap-4">
             <!-- Building Location Dropdown -->
-            <select v-model="newRow.buildingLocation" class="input-field" :class="{ 'border-red-500': error === 'Please select a building location.' }">
-                <option value="" disabled selected>Select Building Location</option>
-                <option value="CEAFA Building">CEAFA Building</option>
-                <option value="Fitness Development Center">Fitness Development Center</option>
-            </select>
+            <div class="input-container">
+                <select v-model="newRow.buildingLocation" class="input-field" :class="{ 'border-red-500': error === 'Please select a building location.' }">
+                    <option value="" disabled selected>Select Building Location</option>
+                    <option value="CEAFA Building">CEAFA Building</option>
+                    <option value="Fitness Development Center">Fitness Development Center</option>
+                </select>
+                <div v-if="error === 'Please select a building location.'" class="error-message">{{ error }}</div>
+            </div>
 
-            <!-- Other form inputs... -->
-            <input v-model="newRow.dateOfEvent" type="date" placeholder="Date of Event" class="input-field" :class="{ 'border-red-500': error === 'Please provide a date of event.' }" />
-            <input v-model="newRow.timeOfEvent" type="time" placeholder="Time of Event" class="input-field" :class="{ 'border-red-500': error === 'Please provide a time of event.' }" />
-            <input v-model="newRow.facility" type="text" placeholder="Facility" class="input-field" :class="{ 'border-red-500': error === 'Please provide a facility.' }" />
-            <input v-model="newRow.numberOfHours" type="number" placeholder="Number of Hours" class="input-field" :class="{ 'border-red-500': error === 'Please provide the number of hours.' }" />
-            <input v-model="newRow.department" type="text" placeholder="Office/College Department" class="input-field" :class="{ 'border-red-500': error === 'Please provide a department.' }" />
-            <input v-model="newRow.purposeEvent" type="text" placeholder="Purpose/Event" class="input-field" :class="{ 'border-red-500': error === 'Please provide the purpose/event.' }" />
+            <!-- Date of Event -->
+            <div class="input-container">
+                <input v-model="newRow.dateOfEvent" type="date" placeholder="Date of Event" class="input-field" :class="{ 'border-red-500': error === 'Please provide a date of event.' }" />
+                <div v-if="error === 'Please provide a date of event.'" class="error-message">{{ error }}</div>
+            </div>
+
+            <!-- Time of Event -->
+            <div class="input-container">
+                <input v-model="newRow.timeOfEvent" type="time" placeholder="Time of Event" class="input-field" :class="{ 'border-red-500': error === 'Please provide a time of event.' }" />
+                <div v-if="error === 'Please provide a time of event.'" class="error-message">{{ error }}</div>
+            </div>
+
+            <!-- Facility -->
+            <div class="input-container">
+                <input v-model="newRow.facility" type="text" placeholder="Facility" class="input-field" :class="{ 'border-red-500': error === 'Please provide a facility.' }" />
+                <div v-if="error === 'Please provide a facility.'" class="error-message">{{ error }}</div>
+            </div>
+
+            <!-- Number of Hours -->
+            <div class="input-container">
+                <input v-model="newRow.numberOfHours" type="number" placeholder="Number of Hours" class="input-field" :class="{ 'border-red-500': error === 'Please provide the number of hours.' }" />
+                <div v-if="error === 'Please provide the number of hours.'" class="error-message">{{ error }}</div>
+            </div>
+
+            <!-- Department -->
+            <div class="input-container">
+                <input v-model="newRow.department" type="text" placeholder="Office/College Department" class="input-field" :class="{ 'border-red-500': error === 'Please provide a department.' }" />
+                <div v-if="error === 'Please provide a department.'" class="error-message">{{ error }}</div>
+            </div>
+
+            <!-- Purpose/Event -->
+            <div class="input-container">
+                <input v-model="newRow.purposeEvent" type="text" placeholder="Purpose/Event" class="input-field" :class="{ 'border-red-500': error === 'Please provide the purpose/event.' }" />
+                <div v-if="error === 'Please provide the purpose/event.'" class="error-message">{{ error }}</div>
+            </div>
 
             <!-- Save and Close buttons -->
             <div class="flex justify-between mt-4">
-                <button type="submit" class="w-24 md:w-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">Save</button>
+                <button type="submit" class="w-26 md:w-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">Save</button>
                 <button @click="toggleForm" class="text-red-500 hover:text-red-700">Close</button>
             </div>
         </form>
@@ -272,7 +301,7 @@ export default {
 
 .input-field {
     padding: 8px;
-    border: 1px solid #d1d5db;
+    border: 2px solid #d1d5db;
     border-radius: 0.375rem;
     width: 100%;
     box-sizing: border-box;
@@ -282,4 +311,14 @@ export default {
 .input-field.border-red-500 {
     border-color: red;
 }  
+
+
+.error-message {
+    position: relative;
+    padding: 4px;
+    text-align: left;
+    font-size: 0.75rem;
+    color: red;
+}
+
 </style>
