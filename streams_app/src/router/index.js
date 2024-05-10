@@ -3,8 +3,6 @@ import LogIn from '../views/authentication/LogIn.vue';
 import SignUp from '../views/authentication/SignUp.vue';
 import Reading from '../views/reading/ReadingView.vue';
 import Settings from '../views/AccountSettings/SettingsView.vue';
-import Password from '../views/AccountSettings/PasswordView.vue';
-import DefName from '../views/AccountSettings/DefNameView.vue';
 import Feedback from '../views/others/FeedbackView.vue';
 import Tips from '../views/others/TipsView.vue';
 import Events from '../views/dashboard/EventsView.vue';
@@ -49,16 +47,6 @@ const routes = [
       path: '/settings',
       name: 'settings',
       component: Settings
-    },
-    {
-      path: '/password',
-      name: 'password',
-      component: Password
-    },
-    {
-      path: '/defname',
-      name: 'defname',
-      component: DefName
     },
     {
       path: '/feedback',
