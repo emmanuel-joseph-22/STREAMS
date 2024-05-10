@@ -1,19 +1,16 @@
 <template>
-    <div class="container mx-auto px-4 py-6">
+    <home-page>
         <header-bar>
-            <h1 class="text-4xl font-semibold ml-24">Events</h1>
+            <h1 class="font-arial font-bold text-4xl ml-3">Events</h1>
         </header-bar>
-        <home-page>
-            <!-- Button to toggle the form -->
-            <div class="my-8">
-                <button @click="toggleForm" class="bg-blue-500 text-white px-4 py-2 rounded-md">
-                    {{ showForm ? 'Close' : 'Add Event' }}
-                </button>
-            </div>
+    <div class="container mx-auto px-4 py-6">
+            <button @click="toggleForm" class="circle-button fixed bottom-16 right-5 lg:bottom-10 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white  hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
+                <img src="add.png" alt="add-events-icon" class="w-6 h-6">
+            </button>
 
             <!-- Table for CEAFA Building events -->
-            <div class="my-8">
-                <h2 class="text-2xl font-semibold mb-4">CEAFA Building Events</h2>
+            <h2 class="text-2xl font-semibold mb-4">CEAFA Building Events</h2>
+            <div class="my-8 overflow-x-auto">
                 <table class="w-full bg-white border rounded shadow-md">
                     <thead>
                         <tr class="bg-gray-200">
@@ -41,8 +38,8 @@
             </div>
 
             <!-- Table for Fitness Development Center events -->
-            <div class="my-8">
-                <h2 class="text-2xl font-semibold mb-4">Fitness Development Center Events</h2>
+            <h2 class="text-2xl font-semibold mb-4">Fitness Development Center Events</h2>
+            <div class="my-8 overflow-x-auto">
                 <table class="w-full bg-white border rounded shadow-md">
                     <thead>
                         <tr class="bg-gray-200">
@@ -73,7 +70,7 @@
 <div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60 z-50">
     <div class="popup-box bg-white p-6 rounded-md shadow-md w-2/3 md:w-1/2 lg:w-1/3">
         <h2 class="text-lg font-semibold mb-4">Add Event</h2>
-        
+
         <!-- Error message display -->
         <div v-if="error" class="text-red-500 text-sm mb-2">{{ error }}</div>
 
@@ -95,15 +92,14 @@
 
             <!-- Save and Close buttons -->
             <div class="flex justify-between mt-4">
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
-                <button @click="toggleForm" class="bg-gray-500 text-white px-4 py-2 rounded-md">Close</button>
+                <button type="submit" class="w-24 md:w-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">Save</button>
+                <button @click="toggleForm" class="text-red-500 hover:text-red-700">Close</button>
             </div>
         </form>
     </div>
 </div>
-
-        </home-page>
     </div>
+</home-page>
 </template>
 
 <script>
@@ -285,5 +281,5 @@ export default {
 /* Error styling */
 .input-field.border-red-500 {
     border-color: red;
-}
+}  
 </style>
