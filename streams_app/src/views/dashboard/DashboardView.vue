@@ -9,11 +9,11 @@
             <img src="search-button.png" alt="Search icon" class="w-6 h-6">
         </button>
         <div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>
-        <div v-if="showPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
+        <div v-if="showPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-white text-[#042334] rounded-md shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
           <h2 class="text-xl font-bold mt-4">Search Record</h2>
           <div class="box">
             <div class="flex flex-col items-center mt-[20%]">
-              <select v-model="search_water_source" class="field rounded-md p-2 mt-4 w-[300px] text-[#042334]">
+              <select v-model="search_water_source" class="field rounded-md p-2 mt-4 w-[300px] text-[#042334] border border-gray-500">
                 <option value="" disabled selected>Select a source</option>
                 <option value="prime_water" class="dept_option">Prime Water</option>
                 <option value="deep_well_1" class="dept_option">Deep well 1</option>
@@ -21,16 +21,16 @@
                 <option value="deep_well_3" class="dept_option">Deep well 3</option>
                 <option value="deep_well_4" class="dept_option">Deep well 4</option>
               </select>
-              <input class="field rounded-md p-2 mt-4 w-[300px] text-[#042334]" type="date" v-model="search_date"/>
-              <button @click="toggleRecord" class="button-search absolute m-2 bottom-12 w-24 h-14 m-5 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">Search</button>
+              <input class="field rounded-md p-2 mt-4 w-[300px] text-[#042334] border border-gray-500" type="date" v-model="search_date"/>
+              <button @click="toggleRecord" class="button-search absolute bottom-4 left-8 text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out flex items-left justify-left">Search</button>
             </div>
             <br/>
           </div>
-          <button @click="togglePopup" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
+          <button @click="togglePopup" class="btn-close absolute bottom-4 right-8 text-red-500 hover:text-red-700">Close</button>
         </div>
       <!-- display record -->
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
-        <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
+        <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-white text-[#042334] rounded-md shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
           <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
           <h2 class="text-3xl font-bold mt-14">{{ formattedwaterSource }}</h2>
           <h2 class="text-xl font-bold text-white mb-4">{{ location }}</h2>
@@ -55,12 +55,12 @@
                 <p class="text-white mb-4">Total Accumulated</p>
                 <div class="flex flex-row px-8">
                   <div class="subtitles">
-                  <p :title="peakTotalDate" class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                  <p :title="peakTotalDate" class="text-red-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="mr-2">
                     <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                     </svg>{{ $store.state.maxTotal }}m<sup>3</sup></p>
                   </div>
                   <div class="subtitles">
-                  <p :title="flopTotalDate" class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                  <p :title="flopTotalDate" class="text-green-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="mr-2">
                     <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                     </svg>{{ $store.state.minTotal }}m<sup>3</sup></p>
                     <div></div>
@@ -74,13 +74,13 @@
                 <p class="text-white mb-4">AVG Quarterly</p>
                 <div class="flex flex-row px-8">
                   <div class="subtitles">
-                    <p class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                    <p class="text-red-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="mr-2">
                       <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                       </svg>{{ $store.state.peakQrt }}m<sup>3</sup>
                     </p>
                   </div>
                   <div class="subtitles">
-                    <p class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    <p class="text-green-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="mr-2">
                       <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                       </svg>{{ $store.state.flopQrt }}m<sup>3</sup>
                     </p>
@@ -94,13 +94,13 @@
                 <p class="text-white mb-4">AVG Monthly</p>
                 <div class="flex flex-row px-8">
                   <div class="subtitles">
-                    <p :title="peakMonthDate" class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                    <p :title="peakMonthDate" class="text-red-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="mr-2">
                       <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                       </svg>{{$store.state.maxOfCurrentMonth}}m<sup>3</sup>
                     </p>
                   </div>
                   <div class="subtitles">
-                    <p :title="flopMonthDate" class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    <p :title="flopMonthDate" class="text-green-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="mr-2">
                       <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                       </svg>{{$store.state.minOfCurrentMonth}}m<sup>3</sup>
                     </p>
@@ -114,13 +114,13 @@
                 <p class="text-white mb-4">AVG Daily</p>
                 <div class="flex flex-row px-8">
                   <div class="subtitles">
-                    <p :title="peakSource" class="text-red-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="">
+                    <p :title="peakSource" class="text-red-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="red" class="mr-2">
                       <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                       </svg>{{ $store.state.maxDaily }}m<sup>3</sup>
                     </p>
                   </div>
                   <div class="subtitles">
-                    <p :title="flopSource" class="text-green-500 font-bold px-8 py-2 flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="">
+                    <p :title="flopSource" class="text-green-500 font-bold px-8 py-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="18" height="18" fill="green" class="mr-2">
                       <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
                       </svg>{{ $store.state.minDaily }}m<sup>3</sup>
                     </p>

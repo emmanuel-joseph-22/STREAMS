@@ -121,7 +121,7 @@
 
             <!-- Save and Close buttons -->
             <div class="flex justify-between mt-4">
-                <button type="submit" class="w-26 md:w-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center">Save</button>
+                <button type="submit" class="w-26 md:w-14 text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out flex items-center justify-center">Save</button>
                 <button @click="toggleForm" class="text-red-500 hover:text-red-700">Close</button>
             </div>
         </form>
