@@ -139,8 +139,8 @@
       <option class="dept_option text-[#042334]">Last ...</option>
     </select>
   </div>
-  <v-chart class="mainmeter" :option="pie_main_meter" v-if="selectedGraph === 'mainMeter'" style="height: 350px;"/>
-  <v-chart class="submeter" :option="submeter_graph" v-else-if="selectedGraph === 'subMeter'" style="height: 350px;"/>
+  <v-chart ref="pie_main" class="mainmeter" :option="pie_main_meter" v-if="selectedGraph === 'mainMeter'" style="height: 350px;"/>
+  <v-chart ref="pie_sub" class="submeter" :option="submeter_graph" v-else-if="selectedGraph === 'subMeter'" style="height: 350px;"/>
   <div class="navigation-buttons">
     <button class="arrow-button px-12" @click="navigate('left')">◄</button>
     <button class="arrow-button px-12" @click="navigate('right')">►</button>
@@ -158,7 +158,7 @@
       <option value="deep_well_4" class="dept_option text-[#042334]">Deep Well 4</option>
     </select>
   </div>
-  <v-chart class="box border shadow-md" style="height: 400px;" :option="consumption_chart" @click="passDayToPie"/>
+  <v-chart ref="daily_chart" class="box border shadow-md" style="height: 400px;" :option="consumption_chart" @click="passDayToPie"/>
 </div>
 <!-- monthly box -->
 <div class="col-span-10 md:col-span-6 box border shadow-md" style="height: 400px;">
@@ -172,7 +172,7 @@
       <option value="deep_well_4" class="dept_option text-[#042334]">Deep Well 4</option>
     </select>
   </div>
-  <v-chart id="monthly_chart" style="height: 370px;" :option="twelve_month_chart" @click="passMonthToPie"/>
+  <v-chart ref="monthly_chart" id="monthly_chart" style="height: 370px;" :option="twelve_month_chart" @click="passMonthToPie"/>
 
   <div v-if="monthlyPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup2"></div>
   <div v-if="monthlyPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
@@ -194,7 +194,7 @@
   </div>
   <!-- Add your quarterly chart here -->
 
-            <v-chart id="quarter_chart" style="height: 370px;" :option="quarter_chart" @click="passQuarterToPie"/>
+            <v-chart ref="quarterly_chart" id="quarter_chart" style="height: 370px;" :option="quarter_chart" @click="passQuarterToPie"/>
             <!-- pop up-->
             <div v-if="quarPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup1"></div>
             <div v-if="quarPopup" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-[#042334] border-4 border-[#36B4E7] text-[#36B4E7] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out">
@@ -267,6 +267,21 @@ export default{
       return this.$store.state.minSource
     }
 
+  },
+  mounted(){
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  methods: {
+    handleResize() {
+      this.$refs.pie_main.resize();
+      this.$refs.daily_chart.resize();
+      this.$refs.monthly_chart.resize();
+      this.$refs.quarterly_chart.resize();
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   },
   setup(){
 
