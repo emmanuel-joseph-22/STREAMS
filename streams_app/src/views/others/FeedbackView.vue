@@ -1,7 +1,8 @@
 <template>
   <home-page>
     <header-bar>
-      <h1 class="text-4xl font-semibold ml-3">Feedback</h1>
+      <h1 class="text-4xl font-semibold ml-3">STREAMS</h1>
+      <p>Community Forum</p>
     </header-bar>
 
     <div class="feedback">

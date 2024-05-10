@@ -214,7 +214,6 @@ export default {
     onUnmounted(() => {
       window.removeEventListener("resize", updateScreenWidth); 
     });
-
     // Function to format CEAFA events for PDF
 const formatCEAFATable = () => {
     // Define table headers
@@ -234,7 +233,6 @@ const formatCEAFATable = () => {
     // Return an array containing headers and rows
     return [headers, ...rows];
 };
-
 // Function to format FDC events for PDF
 const formatFDCTable = () => {
     // Define table headers
@@ -254,8 +252,6 @@ const formatFDCTable = () => {
     // Return an array containing headers and rows
     return [headers, ...rows];
 };
-
-
     // Handle button click
     const handleButtonClick = async (index) => {
         activeButtonIndex.value = index;
@@ -315,7 +311,6 @@ const formatFDCTable = () => {
         // Reset user report value
         userReport.value = '';
     };
-
     // Fetch events data from Firestore
     const fetchEvents = async () => {
     try {
@@ -361,8 +356,6 @@ const formatFDCTable = () => {
         console.error('Error fetching events data:', error);
     }
 };
-
-
     // Handle PDF printing
     const handlePrint = async () => {
         let chartImage = '';
@@ -405,7 +398,6 @@ const formatFDCTable = () => {
         // Generate the PDF from the combined content
         generatePDF(chartImage, textareaContent, tableContent);
     };
-
     // Generate PDF file
     const generatePDF = async (chartImage, textContent, tableContent) => {
     try {
@@ -535,8 +527,6 @@ const formatFDCTable = () => {
         console.error('Error generating PDF:', error);
     }
 };
-
-
     // Function to convert ECharts chart to image
     const getChartImage = async (chartContainer) => {
         const chart = echarts.getInstanceByDom(chartContainer);
@@ -546,7 +536,6 @@ const formatFDCTable = () => {
         });
         return base64Image;
     };
-
     const GeneralDailyConsumptionChart = async () => {
         try {
             // Fetch data from all water sources
@@ -637,7 +626,6 @@ const formatFDCTable = () => {
             console.error("Error fetching water source data:", error);
         }
     };
-
     const PW_BarChart = async () => {
         try {
             const primeWaterData = await fetchWaterSourceData('prime_water');
@@ -701,7 +689,6 @@ const formatFDCTable = () => {
             console.error("Error fetching water source data:", error);
         }
     };
-
     const DW1_BarChart = async () => {
         try {
             const dw1Data = await fetchWaterSourceData('deep_well_1');
@@ -764,7 +751,6 @@ const formatFDCTable = () => {
             console.error("Error fetching water source data:", error);
         }
     };
-
     const DW2_BarChart = async () => {
         try {
             const dw2Data = await fetchWaterSourceData('deep_well_2');
