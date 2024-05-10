@@ -1,12 +1,12 @@
 <template>
     <div>
         <!-- nav bar for web -->
-        <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }">
+        <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }" @click="toggleNavbar" title="Expand/Collapse SideBar" >
             <header>
                 <!-- tinanggal ko class=icon ang cute nagzzooom -->
                 <div v-show="!navbarCollapsed">
                     <div class="flex">
-                        <span @click="toggleNavbar" title="Close Bar" style="margin-left: 25px; cursor: pointer;">
+                        <span style="margin-left: 25px; cursor: pointer;">
                             <img class="streams_icon" src="streams_logo.png" alt="Toggle Icon"  >
                         </span>
                         <div class="name text-[#FFFFFF] font-bold text-xl transition ease-in-out 300 pt-5 pl-3">
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="navbarCollapsed" @click="toggleNavbar" title="Open Bar" style="margin-left: 10px; cursor: pointer;">
+                <div v-if="navbarCollapsed" style="margin-left: 10px; cursor: pointer;">
                     <span>
                         <img class="streams_icon" src="streams_logo.png" alt="Toggle Icon" >
                     </span>
@@ -54,7 +54,7 @@
                 </router-link>
 
                 <!-- map div -->
-                <router-link class="navbar_link" to="/map" title="Maps">
+                <router-link class="navbar_link"  to="/map" title="Maps">
                     <div class="navbar_icon">
                         <!-- nav icon -->
                         <img class="icon" src="map_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
@@ -75,7 +75,7 @@
                 <div class="dropdown_content" v-if="more_settings">
                     <!-- feedback link -->
                     <router-link class="navbar_link" to="/feedback">
-                        <div class="other_link_label"><span>Feedback</span></div>
+                        <div class="other_link_label"><span>Community</span></div>
                     </router-link>
                     <!-- convservation tips ewan san lalagay -->
                     <router-link class="navbar_link" to="/tips">
@@ -138,7 +138,7 @@
                     </div>
 
                     <router-link class="navbar_label" to="/feedback" title="Feedback">
-                        <span class="feedback">Feedback</span>
+                        <span class="feedback">Community</span>
                     </router-link>
 
                     <router-link class="navbar_label" to="/tips" title="Useful Techniques">
@@ -261,6 +261,7 @@ export default {
         z-index: 10; /* oa nyan */
         display: flex;
         flex-direction: column;
+        cursor: pointer;
     }
     .nav_bar.collapsed {
         width: 90px;

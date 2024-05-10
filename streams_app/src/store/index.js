@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 //import dataModule from './data';
-import { avg_daily, avg_monthly, daily_query, getTotalAccumulated, monthly_query } from '@/dashboard_query';
+import {daily_query, monthly_query, getTotalAccumulated, avg_monthly, avg_daily, quarterly_consumption } from '@/dashboard_query';
 const store = createStore({
     state: {
         role: null, // User's role state
@@ -32,8 +32,9 @@ const store = createStore({
         maxSource: 0, // water source
         minSource: 0, // water source
 
-        quarter_avg_value: 0, //ewan
-
+        q_avg: 0, //ewan
+        peakQrt: 0,
+        flopQrt: 0,
         //readings
         readings: JSON.parse(localStorage.getItem('readings')||'[]'), //for reading local storage
 
@@ -99,6 +100,15 @@ const store = createStore({
         setMinSource(state, source){
             state.minSource = source
         },
+        setQuarterlyAvg(state, avg){
+            state.q_avg = avg
+        },
+        setPeakQrt(state, max){
+            state.peakQrt = max
+        },
+        setFlopQrt(state, min){
+            state.flopQrt = min
+        },
         ADD_READING(state, reading) {
             state.readings.push(reading);
         },
@@ -141,15 +151,6 @@ const store = createStore({
                 console.log(error)
             }
         },
-        setQuarterlyConsumption({commit}){
-            try{
-                const object = 0
-                console.log('baguhin pa code')
-                commit('setQuarterlyConsumption', object)
-            } catch(error){
-                console.log(error)
-            }
-        },
         async setTotalAccumulated({commit}){
             try{
                 const [total, min, minDate, max, maxDate] = await getTotalAccumulated()
@@ -183,6 +184,45 @@ const store = createStore({
                 commit('setMaxSource', maxSource)
                 commit('setMinSource', minSource)
             } catch(error){
+                console.log(error)
+            }
+        },
+        setQuarterlyConsumption({state, commit}){
+            try{
+                const quarter_array = quarterly_consumption(state.monthly_values)
+                console.log(quarter_array)
+                commit('setQuarterlyConsumption', quarter_array)
+            } catch(error){
+                console.log(error)
+            }
+        },
+        setQuarterlyAvg({commit}){
+            try{
+                const quarter_cont = store.state.quarterly_values.total_consumption
+                if(quarter_cont.length === 0){
+                    // no max min and avg  
+                    console.log('walang quarterly values total consumption')                  
+                } else {
+                    let sum = 0
+                    let maxVal = quarter_cont[0]
+                    let minVal = quarter_cont[0]
+                    for(let i = 0; i < quarter_cont.length; i++){
+                        if(quarter_cont[i] > maxVal){
+                            maxVal = quarter_cont[i]
+                        }
+                        if(quarter_cont[i] < minVal){
+                            minVal = quarter_cont[i]
+                        }
+                        sum += quarter_cont[i]
+                    }           
+                    const avg = sum / quarter_cont.length 
+                    const final_avg = Math.round(avg * 1000) / 1000
+                    commit('setQuarterlyAvg', final_avg)  
+                    commit('setPeakQrt', maxVal)  
+                    commit('setFlopQrt', minVal)    
+                }
+
+            } catch(error) {
                 console.log(error)
             }
         },

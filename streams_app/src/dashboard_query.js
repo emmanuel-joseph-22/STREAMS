@@ -5,10 +5,30 @@ import store from "./store/index.js";
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 
-/* pagpasok ng data ng emu sa firestore
+export async function fetchData(){
+    try{
+        store.commit('startLoading');
+        await store.dispatch(`setTotalAccumulated`)
+        await store.dispatch('setMonthlyAvg')
+        await store.dispatch('setDailyAvg')
+        await store.dispatch('setMonthlyConsumption')
+        await store.dispatch('setDailyConsumption')
+        store.dispatch('setQuarterlyConsumption')
+        store.dispatch('setQuarterlyAvg')
+        
+        //await lipat_data_hohoho()
+    } catch(error){
+        console.log(error)
+    } finally {
+        store.commit('stopLoading');
+    }
+}
+
+/*pagpasok ng data ng emu sa firestore
 export async function lipat_data_hohoho(){
     const startDate = new Date(2023, 0, 1);
-
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     for(let i = 0; i < DW2.length; i++){
         // Calculate the date for the current iteration
         //const currentDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
@@ -79,7 +99,7 @@ export async function daily_query(){
             const dateField = doc.data().date;
             const dateString = new Date(dateField)
             // format the date into words
-            const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric'}).format(dateString);
+            const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric'}).format(dateString);
             date_temp.push(formattedDate)
             const waterConsumption = parseFloat(doc.data().consumption);
             const estConsumption = Math.round(waterConsumption * 1000) / 1000;
@@ -93,6 +113,7 @@ export async function daily_query(){
     return daily_obj
 }
 export async function monthly_query(month_obj){
+    const currentYear = '2023'
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     try{
@@ -102,7 +123,8 @@ export async function monthly_query(month_obj){
                 let totalConsumption = 0;
                 const monthlyQuery = query(collection(mainMeterRef, main_meter[i]), 
                                             orderBy('date', 'asc'),
-                                            where('month', '==', month_path[j]));
+                                            where('month', '==', month_path[j]),
+                                            where('year', '==', currentYear));
                 const meterSnapshot = await getDocs(monthlyQuery);
                 meterSnapshot.forEach((doc) => {
                     const waterConsumption = parseFloat(doc.data().consumption);
@@ -120,9 +142,74 @@ export async function monthly_query(month_obj){
     } catch (error) {
         console.log(error)
     }
+    //console.log(month_obj)
     return month_obj
 }
-export async function quarterly_consumption(month_obj, q_obj){
+export function quarterly_consumption(month_obj){
+    const q_obj = {
+        'deep_well_1': [], 
+        'deep_well_2': [],
+        'deep_well_3': [],
+        'deep_well_4': [],
+        'prime_water': [],
+        'total_consumption': []
+    }
+    for(let i = 0; i < main_meter.length; i++ ){
+        q1_calculator(month_obj, q_obj, i)
+        q2_calculator(month_obj, q_obj, i)
+        q3_calculator(month_obj, q_obj, i)
+        q4_calculator(month_obj, q_obj, i)
+    }
+    return q_obj
+}
+// quarterly helper
+function q1_calculator(month_obj, q_obj, i){
+    const meter = main_meter[i];
+    if(month_obj[meter]){
+        const q_total = month_obj[meter][0] +  month_obj[meter][1] +  month_obj[meter][2] 
+        q_obj[meter][0] = Math.round(q_total * 1000) / 1000;
+        
+        if(!q_obj['total_consumption'][0]){
+            q_obj['total_consumption'][0] = Math.round(q_total * 1000) / 1000;
+        } else {
+            q_obj['total_consumption'][0] = Math.round((q_obj['total_consumption'][0] + q_total) * 1000) / 1000;
+        }
+    }
+}
+function q2_calculator(month_obj, q_obj, i){
+    const meter = main_meter[i];
+    const q_total = month_obj[meter][3] +  month_obj[meter][4] +  month_obj[meter][5];
+    q_obj[meter][1] = Math.round(q_total * 1000) / 1000;
+    if(!q_obj['total_consumption'][1]){
+        q_obj['total_consumption'][1] = Math.round(q_total * 1000) / 1000;
+    } else {
+        q_obj['total_consumption'][1] = Math.round((q_obj['total_consumption'][1] + q_total) * 1000) / 1000;
+    }
+}
+function q3_calculator(month_obj, q_obj, i){
+    const meter = main_meter[i];
+    const q_total = month_obj[meter][6] +  month_obj[meter][7] +  month_obj[meter][8] 
+    q_obj[meter][2] = Math.round(q_total * 1000) / 1000;
+    if(!q_obj['total_consumption'][2]){
+        q_obj['total_consumption'][2] = Math.round(q_total * 1000) / 1000;
+    } else {
+        q_obj['total_consumption'][2] = Math.round((q_obj['total_consumption'][2] + q_total) * 1000) / 1000;
+    }
+}
+function q4_calculator(month_obj, q_obj, i){
+    const meter = main_meter[i];    
+    const q_total = month_obj[meter][9] +  month_obj[meter][10] +  month_obj[meter][11] 
+    q_obj[meter][3] = Math.round(q_total * 1000) / 1000;
+    if(!q_obj['total_consumption'][3]){
+        q_obj['total_consumption'][3] = Math.round(q_total * 1000) / 1000;
+    } else {
+        q_obj['total_consumption'][3] = Math.round((q_obj['total_consumption'][3] + q_total) * 1000) / 1000;
+    }
+}
+/*
+
+export function quarterly_consumption(month_obj){
+    const q_obj = {}
     //const currentMonth = new Date().getMonth() + 1;
     for(let i = 0; i < main_meter.length; i++ ){
         /*
@@ -139,7 +226,7 @@ export async function quarterly_consumption(month_obj, q_obj){
             q2_calculator(month_obj, q_obj, i)
             q3_calculator(month_obj, q_obj, i)
         } else if (currentMonth < 4) {
-            //q4*/
+            //q4
             q1_calculator(month_obj, q_obj, i)
             q2_calculator(month_obj, q_obj, i)
             q3_calculator(month_obj, q_obj, i)
@@ -148,44 +235,7 @@ export async function quarterly_consumption(month_obj, q_obj){
     }
     return q_obj
 }
-// quarterly helper
-function q1_calculator(month_obj, q_obj, i){
-    const q_total = month_obj.value[main_meter[i]][0] +  month_obj.value[main_meter[i]][1] +  month_obj.value[main_meter[i]][2] 
-    q_obj.value[main_meter[i]][0] = Math.round(q_total * 1000) / 1000;
-    if(!q_obj.value['total_consumption'][0]){
-        q_obj.value['total_consumption'][0] = Math.round(q_total * 1000) / 1000;
-    } else {
-        q_obj.value['total_consumption'][0] = Math.round((q_obj.value['total_consumption'][0] + q_total) * 1000) / 1000;
-    }
-}
-function q2_calculator(month_obj, q_obj, i){
-    const q_total = month_obj.value[main_meter[i]][3] +  month_obj.value[main_meter[i]][4] +  month_obj.value[main_meter[i]][5];
-    q_obj.value[main_meter[i]][1] = Math.round(q_total * 1000) / 1000;
-    if(!q_obj.value['total_consumption'][1]){
-        q_obj.value['total_consumption'][1] = Math.round(q_total * 1000) / 1000;
-    } else {
-        q_obj.value['total_consumption'][1] = Math.round((q_obj.value['total_consumption'][1] + q_total) * 1000) / 1000;
-    }
-}
-function q3_calculator(month_obj, q_obj, i){
-    const q_total = month_obj.value[main_meter[i]][6] +  month_obj.value[main_meter[i]][7] +  month_obj.value[main_meter[i]][8] 
-    q_obj.value[main_meter[i]][2] = Math.round(q_total * 1000) / 1000;
-    if(!q_obj.value['total_consumption'][2]){
-        q_obj.value['total_consumption'][2] = Math.round(q_total * 1000) / 1000;
-    } else {
-        q_obj.value['total_consumption'][2] = Math.round((q_obj.value['total_consumption'][2] + q_total) * 1000) / 1000;
-    }
-}
-function q4_calculator(month_obj, q_obj, i){
-    const q_total = month_obj.value[main_meter[i]][9] +  month_obj.value[main_meter[i]][10] +  month_obj.value[main_meter[i]][11] 
-    q_obj.value[main_meter[i]][3] = Math.round(q_total * 1000) / 1000;
-    if(!q_obj.value['total_consumption'][3]){
-        q_obj.value['total_consumption'][3] = Math.round(q_total * 1000) / 1000;
-    } else {
-        q_obj.value['total_consumption'][3] = Math.round((q_obj.value['total_consumption'][3] + q_total) * 1000) / 1000;
-    }
-}
-/*
+
 export async function monthly_and_daily_query(month_obj, daily_obj){
     /*const date_obj = new Date();
     const currentMonth = date_obj.getMonth() + 1;
@@ -561,13 +611,7 @@ export async function search_record(date_input, waterSource){
     return value
 }
 
-export async function fetchData(){
-    await store.dispatch(`setTotalAccumulated`)
-    //await store.dispatch('setMonthlyAvg')
-    //await store.dispatch('setDailyAvg')
-    //await store.dispatch('setDailyConsumption')
-    //await store.dispatch('setMonthlyConsumption')
-}
+
 /* no use pero baka magamit pa ung algo
 export async function monthly_consumption(){
     try {
@@ -689,8 +733,8 @@ export async function daily_consumption(object){
     return object
 }*/
 
-//lipat data bla bla bla ignore nyo nalang
-/*
+/*lipat data bla bla bla ignore nyo nalang
+
 const prime_water = [
     0,
     0,

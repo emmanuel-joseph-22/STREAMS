@@ -8,7 +8,6 @@ import { getDatabase } from "firebase/database";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 import './assets/tailwind.css';
 import { fetchData } from './dashboard_query';
-
 /*web app's Firebase configuration*/
 const firebaseConfig = {
   apiKey: "AIzaSyBR5Tyx6-Oj996DaGOP2WKY80ijL4zWN_0",
@@ -38,26 +37,25 @@ app.mount('#app');
 const auth = getAuth(db_app);
 
 // Dispatch Vuex action to start loading spinner
-store.commit('startLoading');
+
 
 onAuthStateChanged(auth, async user => {
   if (user) {
     try {
-
-      await fetchData()
+      if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
+        console.log('bitch magffffetch')
+        await fetchData()
+      }
       // User is already authenticated, proceed with auto-login
       router.push('/'); // Redirect to the home page or any authenticated page
     } catch (error) {
       console.error('Error fetching data:', error);
       // Handle error
-    } finally {
-      // Dispatch Vuex action to stop loading spinner
-      store.commit('stopLoading');
     }
   } else {
     // User is not authenticated, redirect to the login page or perform any other action
     router.push('/login');
-    store.commit('stopLoading');
+
   }
 });
 

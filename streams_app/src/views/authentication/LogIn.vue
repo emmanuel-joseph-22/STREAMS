@@ -157,7 +157,7 @@
     import { firestore as db } from './../../main.js';
     import store from './../../store/index.js'; // Import the Vuex store
     import { doc, getDoc } from 'firebase/firestore';
-import { fetchData } from '@/dashboard_query.js';
+    import { fetchData } from '@/dashboard_query.js';
 
     const email = ref("");
     const password = ref("");
@@ -210,7 +210,7 @@ import { fetchData } from '@/dashboard_query.js';
         const auth = getAuth();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
-            store.commit('startLoading');
+            //store.commit('startLoading');
             // Successful login
             const user = userCredential.user; // Retrieve the user object
             const userId = user.uid; // Retrieve the user ID (UID)
@@ -221,10 +221,12 @@ import { fetchData } from '@/dashboard_query.js';
 
             // Dispatching the action to update the role in the store
             store.dispatch('updateRole', userRole);
-
+            if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
+                console.log('bitch magffffetch')
+                await fetchData()
+            }
             // Check if the role is updated in the store
             console.log("Vuex store role:", store.state.role);
-            await fetchData()
             router.push('/home');
             
         } catch (error) {
