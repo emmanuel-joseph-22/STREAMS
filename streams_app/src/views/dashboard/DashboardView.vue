@@ -43,13 +43,13 @@
           <h2 class="text-s text-[#042334] font-bold">Water Consumption Record</h2>
           <h2 class="text-3xl text-[#042334] font-bold mt-14">{{ formattedwaterSource }}</h2>
           <h2 class="text-xl font-bold text-[#042334] mb-4">{{ location }}</h2>
-          <div class="record_details_container flex border-2 border-[#36B4E7] rounded-lg">
+          <div class="record_details_container flex border-2 border-[#042334] rounded-lg">
             <div class="record_details text-lg mt-4" style="flex-grow: 1;">
                 <div class="rec_field text-[#042334] p-2">Class: {{ classf }}</div>
                 <div class="rec_field text-[#042334] p-2 mt-2">Date: {{ search_date }}</div>
                 <!--<div class="rec_field text-[#042334] p-2 mb-2">Time: {{ time }}</div>-->
             </div>
-            <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#36B4E7] rounded-lg flex flex-col items-center justify-center">
+            <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#042334] rounded-lg flex flex-col items-center justify-center">
                 <h2 class="text-3xl font-bold">{{ meter }}m<sup>3</sup></h2>
             </div>
         </div>
