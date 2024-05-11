@@ -31,17 +31,17 @@
       <!-- display record -->
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
         <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-white text-[#042334] rounded-md shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
-          <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
-          <h2 class="text-3xl font-bold mt-14">{{ formattedwaterSource }}</h2>
-          <h2 class="text-xl font-bold text-white mb-4">{{ location }}</h2>
+          <h2 class="text-s text-[#042334] font-bold">Water Consumption Record</h2>
+          <h2 class="text-3xl text-[#042334] font-bold mt-14">{{ formattedwaterSource }}</h2>
+          <h2 class="text-xl font-bold text-[#042334] mb-4">{{ location }}</h2>
           <div class="record_details_container flex border-2 border-[#36B4E7] rounded-lg">
             <div class="record_details text-lg mt-4" style="flex-grow: 1;">
-                <div class="rec_field text-white p-2">Class: {{ classf }}</div>
-                <div class="rec_field text-white p-2 mt-2">Date: {{ search_date }}</div>
-                <!--<div class="rec_field text-white p-2 mb-2">Time: {{ time }}</div>-->
+                <div class="rec_field text-[#042334] p-2">Class: {{ classf }}</div>
+                <div class="rec_field text-[#042334] p-2 mt-2">Date: {{ search_date }}</div>
+                <!--<div class="rec_field text-[#042334] p-2 mb-2">Time: {{ time }}</div>-->
             </div>
             <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#36B4E7] rounded-lg flex flex-col items-center justify-center">
-                <h2 class="text-3xl font-bold">{{ meter }}</h2>
+                <h2 class="text-3xl font-bold">{{ meter }}m<sup>3</sup></h2>
             </div>
         </div>
           <button @click="toggleRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>

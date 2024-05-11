@@ -2,11 +2,11 @@
     <home-page>
         <div class="tips">
             <div class="tips_header">
-                <h1 class="relative mt-4 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl">LET'S LEARN</h1>
-                <p class="px-4 py-2 text-center">This page is intended to disseminate information about the importance of conserving water.</p>
+                <h1 class="relative mt-4 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl">LEARN MORE</h1>
+                <p class="px-4 py-2 text-center">This page is intended to disseminate information about the importance of conserving water and how can we achieve it in different ways.</p>
             </div>
             <div class="tips_section relative">
-                <div class="tips-buttons top-2 flex relative border border-4 border-blue-300 bg-blue-200 text-black items-center justify-center rounded-2xl mx-auto w-12/12 md:w-3/4 lg:w-2/3 xl:w-1/2">
+                <div class="tips-buttons top-2 flex relative border border-4 border-blue-300 bg-blue-200 text-black items-center justify-center rounded-md mx-auto w-12/12 md:w-3/4 lg:w-2/3 xl:w-1/2">
                     <div class="tips-label" @click="showContent('students')">
                         <a href="#" class="px-4 md:px-8 lg:px-12 py-2 md:py-4 text-xs md:text-base">For Students </a>
                     </div>
@@ -23,49 +23,61 @@
                         <div class="tip-content overflow-y-hidden">
                             <div v-if="selectedContent == 'students'" class="relative w-full h-[690px] sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto">
                                 <p class="text-2xl font-bold"><br/>What is Water Conservation?<br/><br/></p>
-                                <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption. <strong>Water conservation</strong> entails both individual actions, such as fixing leaks and using water-efficient appliances, and collective efforts, such as implementing water-saving policies and investing in water infrastructure.</p>
+                                <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption.
+                                    <br/><br/><img src="water_conserve.gif" alt="GIF Conserve" class="p-12"><br/>
+                                    <strong>Water conservation</strong> entails both individual actions, such as fixing leaks and using water-efficient appliances, and collective efforts, such as implementing water-saving policies and investing in water infrastructure.</p>
                                 
                                 <p class="text-2xl font-bold"><br/>10 Ways To Conserve Water as a Student<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
                                 <ol>
                                     <li>
                                         <strong>1. Turn off Taps Properly</strong>
+                                        <br/><img src="turn_off (2).jpg" alt="TurnOff" class="p-24"><br/>
                                         <p>Make sure taps are fully turned off after use, avoiding drips that can waste significant amounts of water over time.</p>
                                     </li><br/>
                                     <li>
                                         <strong>2. Shorter Showers</strong>
+                                        <br/><img src="showering.jpg" alt="Showering" class="p-24"><br/>
                                         <p>Encourage shorter shower times to reduce water usage. Consider using a timer or playing a short song to keep track of time.</p>
                                     </li><br/>
                                     <li>
                                         <strong>3. Fix Leaks Promptly</strong>
+                                        <br/><img src="fix_leak.jpg" alt="Fix Leaks" class="p-24"><br/>
                                         <p>Report any leaks in school faucets, toilets, or pipes to maintenance staff promptly to prevent water wastage.</p>
                                     </li><br/>
                                     <li>
                                         <strong>4. Use Water-Efficient Fixtures</strong>
+                                        <br/><img src="type_of_faucet.jpg" alt="Water Fixtures" class="p-12"><br/>
                                         <p>Encourage the use of water-efficient fixtures such as low-flow faucets and showerheads, which can significantly reduce water consumption.</p>
                                     </li><br/>
                                     <li>
                                         <strong>5. Use Full Loads</strong>
+                                        <br/><img src="loads_clothes.jpg" alt="Loads of Clothes" class="p-12"><br/>
                                         <p>When using dishwashers or laundry machines in school facilities, encourage students to wait until they have full loads before running the machines.</p>
                                     </li><br/>
                                     <li>
                                         <strong>6. Reuse Water</strong>
+                                        <br/><img src="wash_fruit.jpg" alt="Wash Fruits" class="p-12"><br/>
                                         <p>Consider reusing water from activities like washing hands or rinsing vegetables to water plants or clean outdoor areas.</p>
                                     </li><br/>
                                     <li>
                                         <strong>7. Avoid Bottled Water</strong>
+                                        <br/><img src="tumbler.jpg" alt="Tumbler" class="p-12"><br/>
                                         <p>Encourage the use of reusable water bottles instead of single-use plastic bottles to reduce waste and the water footprint associated with their production.</p>
                                     </li><br/>
                                     <li>
                                         <strong>8. Educational Initiatives</strong>
+                                        <br/><img src="teach.jpg" alt="Teaching" class="p-12"><br/>
                                         <p>Organize educational initiatives or campaigns within the school community to raise awareness about the importance of water conservation and ways to reduce water usage.</p>
                                     </li><br/>
                                     <li>
                                         <strong>9. Outdoor Watering Practices</strong>
+                                        <br/><img src="clean_outside.jpg" alt="Clean Outside" class="p-12"><br/>
                                         <p>If applicable, educate students on responsible outdoor watering practices, such as watering plants in the early morning or evening to minimize evaporation.</p>
                                     </li><br/>
                                     <li>
                                         <strong>10. Monitor Usage</strong>
+                                        <br/><img src="monitor.jpg" alt="Monitoring Water" class="p-12"><br/>
                                         <p>Install water meters or implement monitoring systems to track water usage within the school premises, encouraging students to be mindful of their water consumption.</p>
                                     </li><br/>
                                 </ol>
@@ -84,48 +96,60 @@
                             </div>
                             <div v-if="selectedContent == 'staffs'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is Water Conservation?<br/><br/></p>
-                                <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption. <strong>Water conservation</strong> entails both individual actions, such as fixing leaks and using water-efficient appliances, and collective efforts, such as implementing water-saving policies and investing in water infrastructure.</p>
+                                <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption. 
+                                    <br/><br/><img src="water_conserve.gif" alt="GIF Conserve" class="p-12"><br/>
+                                    <strong>Water conservation</strong> entails both individual actions, such as fixing leaks and using water-efficient appliances, and collective efforts, such as implementing water-saving policies and investing in water infrastructure.</p>
                                 <p class="text-2xl font-bold"><br/>10 Ways To Conserve Water as School Staff<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
                                     <ol>
                                         <li>
                                             <strong>1. Regular Maintenance</strong>
+                                            <br/><img src="maintenance.jpg" alt="Water Maintenance" class="p-12"><br/>
                                             <p>Ensure that plumbing fixtures such as faucets, toilets, and pipes are regularly inspected for leaks and promptly repaired.</p>
                                         </li><br/>
                                         <li>
                                             <strong>2. Educational Programs</strong>
+                                            <br/><img src="teach.jpg" alt="Teaching" class="p-12"><br/>
                                             <p>Organize educational programs or workshops for staff members to raise awareness about the importance of water conservation and provide practical tips for reducing water usage.</p>
                                         </li><br/>
                                         <li>
                                             <strong>3. Water-Efficient Fixtures</strong>
+                                            <br/><img src="type_of_faucet.jpg" alt="Water Fixtures" class="p-12"><br/>
                                             <p>Install water-efficient fixtures such as low-flow faucets, aerators, and toilets in school facilities to reduce water consumption without compromising functionality.</p>
                                         </li><br/>
                                         <li>
                                             <strong>4. Smart Irrigation Practices</strong>
+                                            <br/><img src="sprinkler.jpg" alt="Sprinkler" class="p-12"><br/>
                                             <p>Implement smart irrigation systems or timers for outdoor landscaping to optimize watering schedules based on weather conditions and minimize water wastage.</p>
                                         </li><br/>
                                         <li>
                                             <strong>5. Encourage Responsible Behavior</strong>
+                                            <br/><img src="advice.jpg" alt="Water from Rain" class="p-12"><br/>
                                             <p>Encourage staff members to adopt responsible water use behaviors, such as turning off taps when not in use, using water-efficient dishwashers and washing machines, and reporting leaks promptly.</p>
                                         </li><br/>
                                         <li>
                                             <strong>6. Reuse Water</strong>
+                                            <br/><img src="water_from_rain.jpg" alt="Water from Rain" class="p-12"><br/>
                                             <p>Explore opportunities for water reuse within school facilities, such as collecting rainwater for irrigation or using treated greywater for flushing toilets.</p>
                                         </li><br/>
                                         <li>
                                             <strong>7. Monitor Usage</strong>
+                                            <br/><img src="monitor.jpg" alt="Monitoring Water" class="p-12"><br/>
                                             <p>Implement monitoring systems to track water usage in different areas of the school, allowing staff to identify areas of high consumption and implement targeted conservation measures.</p>
                                         </li><br/>
                                         <li>
                                             <strong>8. Regular Inspections</strong>
+                                            <br/><img src="fix_leak.jpg" alt="Fix Leaks" class="p-24"><br/>
                                             <p>Conduct regular inspections of water-using equipment and infrastructure to identify and address inefficiencies or leaks promptly.</p>
                                         </li><br/>
                                         <li>
                                             <strong>9. Community Engagement</strong>
+                                            <br/><img src="clean_outside.jpg" alt="Clean Outside" class="p-12"><br/>
                                             <p>Engage with the school community, including students, parents, and local stakeholders, to promote a culture of water conservation and encourage collective action towards sustainability goals.</p>
                                         </li><br/>
                                         <li>
                                             <strong>10. Lead by Example</strong>
+                                            <br/><img src="leader.jpg" alt="Lead by Example" class="p-12"><br/>
                                             <p>Demonstrate leadership in water conservation efforts by setting a positive example through personal actions and advocating for sustainable practices within the school community.</p>
                                         </li><br/><br/>
                                         By implementing these tips, staff members can play a crucial role in promoting water conservation and sustainability within the school environment.
@@ -141,7 +165,9 @@
                             <div v-if="selectedContent == 'sdg6'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is SDG 6 all about?<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
-                                    <strong>SDG 6</strong> stands for Sustainable Development Goal 6, which is one of the seventeen global goals established by the United Nations in 2015 as part of the 2030 Agenda for Sustainable Development.<br/> <strong>SDG 6</strong> focuses specifically on ensuring availability and sustainable management of water and sanitation for all.
+                                    <strong>SDG 6</strong> stands for Sustainable Development Goal 6, which is one of the seventeen global goals established by the United Nations in 2015 as part of the 2030 Agenda for Sustainable Development.<br/>
+                                    <br/><img src="sdg6.jpg" alt="SDG 6" class="p-12"><br/>
+                                    <strong>SDG 6</strong> focuses specifically on ensuring availability and sustainable management of water and sanitation for all.
                                     <br/><br/>
                                     The targets associated with <strong>SDG 6</strong> include:
                                     <br/><br/>
@@ -160,13 +186,23 @@
                                     7. <strong>International Cooperation and Capacity Building</strong>: Support and strengthen the participation of local communities in improving water and sanitation management, and enhance international cooperation to facilitate access to clean water and sanitation.
                                     <br/><br/>
                                 </p>
-                                <p class="text-2xl font-bold"><br/>SDG 12 aims to..?<br/><br/></p>
+                                <div class="video-container">
+                                    <iframe width="560"
+                                    height="315"
+                                    :src="videoUrl"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
+                                </div>
+                                <p class="text-2xl font-bold"><br/>SDG 6 aims to..?<br/><br/></p>
                                 <p class="text-left px-4 py-2"><strong>SDG 6</strong> aims to ensure that everyone has access to clean water and sanitation by 2030, addressing a fundamental aspect of human well-being and sustainable development. It acknowledges the importance of water as a vital resource for health, economic development, and environmental sustainability.</p>
                             </div>
                             <div v-if="selectedContent == 'sdg12'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is SDG 12 all about?<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
-                                    <strong>SDG 12</strong> stands for Sustainable Development Goal 12, which is one of the seventeen global goals established by the United Nations as part of the 2030 Agenda for Sustainable Development.<br/> <strong>SDG 12</strong> focuses on ensuring sustainable consumption and production patterns.
+                                    <strong>SDG 12</strong> stands for Sustainable Development Goal 12, which is one of the seventeen global goals established by the United Nations as part of the 2030 Agenda for Sustainable Development.<br/> 
+                                    <br/><img src="sdg12.jpg" alt="SDG 12" class="p-12"><br/>
+                                    <strong>SDG 12</strong> focuses on ensuring sustainable consumption and production patterns.
                                     <br/><br/>
                                     The targets associated with <strong>SDG 12</strong> include:
                                     <br/><br/>
@@ -191,6 +227,14 @@
                                     <strong>Capacity Building for Sustainable Development</strong>: Develop and implement tools to monitor sustainable development impacts for sustainable tourism that creates jobs and promotes local culture and products.
                                     <br/><br/>
                                 </p>
+                                <div class="video-container2">
+                                    <iframe width="560"
+                                    height="315"
+                                    :src="videoUrls"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
+                                </div>
                                 <p class="text-2xl font-bold"><br/>SDG 12 aims to..?<br/><br/></p>
                                 <p class="text-left px-4 py-2"><strong>SDG 12</strong> aims to promote sustainable consumption and production patterns to ensure that economic growth and development are environmentally sustainable and socially inclusive. It encourages responsible consumption and production practices that minimize waste generation, reduce resource depletion, and promote the efficient use of natural resources.</p>
                             </div>
@@ -204,12 +248,15 @@
 import othersPageView from './othersPageView.vue';
 
 export default {
+    name: 'VideoEmbed',
     components: {
         'home-page': othersPageView,
     },
     data(){
         return {
-            selectedContent: 'students'
+            selectedContent: 'students',
+            videoUrl: 'https://www.youtube.com/embed/66p5VT3XwTk',
+            videoUrls: 'https://www.youtube.com/embed/VaUXquivUwQ'
         }
     },
     mounted(){
@@ -230,5 +277,31 @@ export default {
 .slide-fade-enter, .slide-fade-leave-to /* .slide-fade-leave-active in <2.1.8 */ {
   opacity: 0;
   transform: translateY(-10px);
+}
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+}
+  
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.video-container2 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+}
+  
+.video-container2 iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 </style>

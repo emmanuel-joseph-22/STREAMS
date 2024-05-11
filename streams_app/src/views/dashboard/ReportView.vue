@@ -5,7 +5,7 @@
     </header-bar>
     <div class="content-container">
       <!-- Left content -->
-      <div class="left-content bg-white p-4">
+      <div class="left-content fixed md:top-28 top-14 md:left-52 left-0 bottom-0 w-full md:w-96 p-4 overflow-y-auto;">
         <!-- Creative rows -->
         <div class="flex items-center mb-4" v-for="(row, index) in rows" :key="row.id" @click="handleButtonClick(index)">
             <div class="w-full">
@@ -917,11 +917,11 @@ font-size: 1.2rem;
 }
 
 .left-content {
-  @apply fixed md:top-28 top-14 md:left-52 left-0 bottom-0 w-full md:w-96 bg-white p-4 overflow-y-auto;
+  @apply fixed md:top-28 top-14 md:left-52 left-0 bottom-0 w-full md:w-96 p-4 overflow-y-auto;
 }
 
 .right-content {
-  margin-left: 320px; /* Adjust margin to accommodate fixed left content */
+  margin-left: 300px; /* Adjust margin to accommodate fixed left content */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -931,9 +931,9 @@ font-size: 1.2rem;
 .box1 {
   margin-top: 5%;
   margin-right: 5%;
-  min-width: 700px; /* Minimum width for box1 */
+  min-width: 500px; /* Minimum width for box1 */
   min-height: 500px; /* Minimum height for box1 */
-  width: 100%; /* Adjust width as needed */
+  width: 95%; /* Adjust width as needed */
   background-color: #fff; /* White background color for box body */
   border: 1px solid #ccc; /* Border for box frame */
   border-radius: 8px;
