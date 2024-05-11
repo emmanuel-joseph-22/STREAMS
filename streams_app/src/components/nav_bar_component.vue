@@ -117,7 +117,7 @@
                 </div>
                 <div class="mobile_link">
                     <router-link to="/map"> 
-                        <img class="mobile_icon" src="map2.png" />
+                        <img class="mobile_icon" src="map_icon.png" />
                     </router-link>        
                 </div>
             </div>

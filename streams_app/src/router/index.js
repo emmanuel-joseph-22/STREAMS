@@ -6,6 +6,7 @@ import Settings from '../views/AccountSettings/SettingsView.vue';
 import Feedback from '../views/others/FeedbackView.vue';
 import Tips from '../views/others/TipsView.vue';
 import Events from '../views/dashboard/EventsView.vue';
+
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
@@ -62,11 +63,17 @@ const routes = [
       path: '/events',
       name: 'events',
       component: Events
+    },
+        /* for unrecognized paths */
+    {
+      path: '/:catchAll(.*)',
+      name: 'NotFound',
+      component: () => {'./../views/NotFound.vue'}
     }
 ]
 
 const router = createRouter({
-    mode: 'history',
+    //mode: 'history',
     history: createWebHistory(process.env.BASE_URL),
     routes
   })
