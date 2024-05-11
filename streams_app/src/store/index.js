@@ -5,6 +5,7 @@ import {daily_query, monthly_query, getTotalAccumulated, avg_monthly, avg_daily,
 const store = createStore({
     state: {
         role: null, // User's role state
+        userID: null,
         // try ko lang tong sa dashboard na data
         //daily
         daily_values: null,
@@ -47,6 +48,9 @@ const store = createStore({
         // Mutation to set the user's role
         setRole(state, role) {
             state.role = role;
+        },
+        setUID(state, UID){
+            state.userID = UID
         },
         setDailyConsumption(state, consumption_list){
             state.daily_values = consumption_list
@@ -127,13 +131,16 @@ const store = createStore({
             state.loading = true; // Set loading state to true
         },
         stopLoading(state) {
-        state.loading = false; // Set loading state to false
+            state.loading = false; // Set loading state to false
         }
     },
     actions: {
         // Action to update the user's role in the store
         updateRole({ commit }, role) {
             commit('setRole', role);
+        },
+        setUID({ commit }, UID){
+            commit('setUID', UID)
         },
         async setDailyConsumption( {commit} ){
             try{

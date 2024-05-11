@@ -8,6 +8,8 @@ import { getDatabase } from "firebase/database";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 import './assets/tailwind.css';
 import { fetchData, fetchPie } from './dashboard_query';
+
+
 /*web app's Firebase configuration*/
 const firebaseConfig = {
   apiKey: "AIzaSyBR5Tyx6-Oj996DaGOP2WKY80ijL4zWN_0",
@@ -36,19 +38,20 @@ app.mount('#app');
 // Get the authentication instance
 const auth = getAuth(db_app);
 
-// Dispatch Vuex action to start loading spinner
-
 
 onAuthStateChanged(auth, async user => {
   if (user) {
     try {
+      if(!store.state.userID){
+        store.dispatch('setUID', user.uid)
+      }      
+      //should make a separate case for fetching pie idk
+      await fetchPie()
       if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
-        console.log('bitch magffffetch')
         await fetchData()
       }
-      await fetchPie()
-      // User is already authenticated, proceed with auto-login
-      router.push('/'); // Redirect to the home page or any authenticated page
+      // Redirect to the previous route or the home page if no previous route exists
+      router.push('/'); 
     } catch (error) {
       console.error('Error fetching data:', error);
       // Handle error

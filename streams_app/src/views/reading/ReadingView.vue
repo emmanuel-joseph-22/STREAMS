@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, setDoc, doc } from "firebase/firestore";
 import { firestore as db } from './../../main.js';
 import header_component from "../../components/header_component.vue";
 import HomePageView from "./../dashboard/HomePageView.vue";
@@ -186,6 +186,27 @@ export default {
       this.input_x0 = '';
       this.stage_reading = false;
     },*/
+
+    // for preventing duplication
+    async checkExisitngRecord(category, source, date){
+      try {
+        const waterReadingsRef = collection(db, `meter_records/${category}/${source}`)
+
+        const q = query(waterReadingsRef, where('date', '==', date));
+
+        const querySnapshot = await getDocs(q);
+
+        if(!querySnapshot.empty){
+          return querySnapshot.docs[0].id;
+        } else {
+          return null;
+        }
+      } catch(error) {
+        console.log('error checking existing reading: ', error)
+        throw error
+      }
+    },
+    // this will submit a single reading into firestore
     async submitForm(dateRead) {
       const [year, month, day] = dateRead.split("-");
       const waterSource = this.selectedWaterSource;
@@ -194,7 +215,7 @@ export default {
       const input_x0 = this.popupData[waterSource].input3.value;
       
       let path;
-
+      let source_category;
       const data = {
         consumption: consumption,
         input_x: input_x,
@@ -206,66 +227,120 @@ export default {
       };
 
       try {
-        if (waterSource === this.mainMeterSources[0] || 
-            waterSource === this.mainMeterSources[1] || 
-            waterSource === this.mainMeterSources[2] || 
-            waterSource === this.mainMeterSources[3] || 
-            waterSource === this.mainMeterSources[4]) {
+        // identify the category of the source 
+        //to set the path in firestore and 
+        // in querying in checkexsitingrecord function
+        if (this.mainMeterSources.includes(waterSource)) {
           path = `meter_records/main_meter/${waterSource}`;
+          source_category = 'main_meter'
         } else {
           path = `meter_records/submeter/${waterSource}`;
+          source_category = 'submeter'
         }
-        console.log('hindi ko gets cass')
-        await addDoc(collection(db, path), data);
-        console.log('submitted successfully')
+        // get reading ID if there is
+        const readingID = await this.checkExisitngRecord(source_category, waterSource, dateRead)
+        
+        // if so, update the exisitng record in firestore
+        // if the id container is empty, add the data in a new reading ID
+        if(readingID){
+          await setDoc(doc(collection(db, path), readingID), data)
+          console.log(`updated reading for ${waterSource} at ${dateRead} successfully!`)
+        } else if(!readingID){
+          await addDoc(collection(db, path), data);
+          console.log('submitted successfully')
+        } else {
+          console.log('unsuccessful submission')
+        }
       } catch (error) {
         console.error("Error storing meter record: ", error);
       }
     },
+    async getTotalConsumptionReading(){
+
+    },
     handleInput(event, key) {
       const inputValue = event.target.value;
       const inputRegex = /^\d*\.?\d*$/; // allow only numbers and decimal point for inputs
-      const maxValue = 999999;
 
-      if (!inputRegex.test(inputValue) || parseFloat(inputValue) <= 0 || parseFloat(inputValue) >= maxValue){
-        this.popupData[this.selectedWaterSource][key].error = true;
+      if (key === 'input1') {
+        if (!inputRegex.test(inputValue) || parseFloat(inputValue) < 0 || parseFloat(inputValue) > 999999) {
+          this.popupData[this.selectedWaterSource][key].error = true;
+        } else {
+          this.popupData[this.selectedWaterSource][key].value = inputValue;
+          this.popupData[this.selectedWaterSource][key].error = false;
+        }
       } else {
-        this.popupData[this.selectedWaterSource][key].value = inputValue;
-        this.popupData[this.selectedWaterSource][key].error = false;
+        if (!inputRegex.test(inputValue) || parseFloat(inputValue) < 0) {
+          this.popupData[this.selectedWaterSource][key].error = true;
+        } else {
+          this.popupData[this.selectedWaterSource][key].value = inputValue;
+          this.popupData[this.selectedWaterSource][key].error = false;
+        }
       }
     },
     addReadingToLocal() {
-      console.log('bat di nagana')
       const waterSource = this.selectedWaterSource;
+
+      // check if a reading has already been added in a source
+      if (this.popupData[waterSource].isReadingAdded) {
+        // confirm if they want to edit the previous input
+        if (confirm('A reading has already been added for this water source. Do you want to edit the previous input?')) {
+          // reset the flag  a reading has been added
+          this.popupData[waterSource].isReadingAdded = false;
+        } else {
+          // do not proceed 
+          return;
+        }
+      }
+
+      // if consumption exceeds limit
+      const consumption = parseFloat(this.popupData[waterSource].input1.value);
+      if (consumption > 999999) {
+        alert('Consumption cannot exceed 999999.');
+        return;
+      }
+      
+      // if all fields are valid
+      const isValid = Object.values(this.popupData[waterSource]).every(field => !field.error && field.value !== '');
+      if (!isValid) {
+        alert('Please fill all fields with valid values.');
+        return;
+      }
+
       // format current date in year-mm-dd
       // also slice them into separate parameter
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString().split('T')[0];
-
-      const consumption = this.popupData[waterSource].input1.value;
       const input_x = this.popupData[waterSource].input2.value || '';  // Consider empty as default
       const input_x0 = this.popupData[waterSource].input3.value || ''; // Consider empty as default
-
-      // base case for empty consumption value
-      if (!consumption) {
-        alert('Consumption is a required field.');
-        return;
-      }
-
-      const reading = {
-        waterSource,
-        data: {
+      
+      // if the reading already exists in the store
+      const existingReading = this.$store.state.readings.findIndex(reading => reading.waterSource === waterSource);
+      if (existingReading !== -1) {
+        // if the reading exists, update values
+        this.$store.state.readings[existingReading].data = {
+          date: formattedDate,
+          consumption,
+          input_x,
+          input_x0
+        };
+      } else {
+        // if the reading does not exist, add to the store
+        const reading = {
+          waterSource,
+          data: {
             date: formattedDate,
             consumption,
             input_x,
             input_x0
-        }
-      };
+          }
+        };
+        // Add the reading to Vuex
+        store.dispatch('addReading', reading);
+      }
 
-      // Add the reading to Vuex
-      store.dispatch('addReading', reading);
-      console.log('Reading added:', { waterSource, data: reading.data });
-
+      this.popupData[waterSource].isReadingAdded = true;
+      console.log('eto ung reading: ', store.state.readings)
       // Clear the input fields in the UI
       this.resetInputFields(waterSource);
     },
@@ -282,6 +357,7 @@ export default {
       
       if (!navigator.onLine) {
         alert('No internet connection. Please connect to the internet and try again.');
+        this.isSubmitting = false;
         return;
       }
 
@@ -302,6 +378,8 @@ export default {
         };
 
         await this.submitForm(dateRead);
+        //compute the total consumption
+
         console.log('Successfully submitted reading for:', this.selectedWaterSource);
         hasSubmittedAny = true;
       }
@@ -317,19 +395,22 @@ export default {
     }
   },
   computed: {
-      isPopupFilled() {
-          return (source) => {
-          const popupData = this.popupData[source];
-          for (const key in popupData) {
-              if (Object.prototype.hasOwnProperty.call(popupData, key)) {
-              if (!popupData[key].value || popupData[key].error) {
-                  return false; //if a field is empty or has an error, return false
-              }
-              }
+    isPopupFilled() {
+      return (source) => {
+        const popupData = this.popupData[source];
+        if (popupData.isReadingAdded) {
+          return true; // if Add Resding button is clicked, consider it filled
+        }
+        for (const key in popupData) {
+          if (Object.prototype.hasOwnProperty.call(popupData, key)) {
+            if (!popupData[key].value || popupData[key].error) {
+              return false; // if any field is empty or has an error, return false
+            }
           }
-          return true; //fields are filled out properly
-          };
-      },
+        }
+        return false; // fields are not filled out properly
+      };
+    },
   },
 
 };
