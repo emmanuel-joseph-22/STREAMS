@@ -44,11 +44,12 @@ onAuthStateChanged(auth, async user => {
     try {
       if(!store.state.userID){
         store.dispatch('setUID', user.uid)
-      }
+      }      
+      //should make a separate case for fetching pie idk
+      await fetchPie()
       if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
         await fetchData()
       }
-      await fetchPie()
       // Redirect to the previous route or the home page if no previous route exists
       router.push('/'); 
     } catch (error) {

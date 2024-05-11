@@ -35,7 +35,7 @@
                         </div>
                         <br/>
                         <label for="or-text" class="font-bold relative flex flex-col mb-1 text-mid my-5">-OR-</label>
-                        <router-link to="/home" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-2 sm:my-5"><b>Guest</b></router-link>
+                        <span @click="loadDataForGuest" id="guest" class="font-bold underline cursor-pointer flex flex-col text-mid my-2 sm:my-5"><b>Guest</b></span>
                         <br/>
                         <router-link to="/signup" class="relative text-center">Sign Up</router-link>
                     </div>
@@ -166,6 +166,18 @@
 
     const router = useRouter();
 
+    const loadDataForGuest = async () => {
+        try {
+            await fetchPie()
+            if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
+                await fetchData()
+            }
+            router.push('/home')
+        } catch (error) {
+            console.log('Cant load data for guest:', error)
+        }
+    }
+
     const togglePasswordVisibility = () => {
         passwordVisibility.value = !passwordVisibility.value;
     };
@@ -204,7 +216,6 @@
         return null;
     }
 };
-    
 
     const login = async () => {
         const auth = getAuth();
