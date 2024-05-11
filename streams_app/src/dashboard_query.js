@@ -621,20 +621,36 @@ export async function getMainMetersToPie(){
 // search
 export async function search_record(date_input, waterSource){
     const meterRecordsRef = collection(db, 'meter_records');
+    const subMeterRef = doc(meterRecordsRef, 'submeter')
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     let value = 0;
     try {  
-        const [year, month, day] = date_input.split("-");
-        const recordQuery = query(collection(mainMeterRef, waterSource), 
-                            where('month', '==', month),
-                            where('day', '==', day),
-                            where('year', '==', year), 
-                            limit(1));
-        const recordSnapshot = await getDocs(recordQuery);
-        recordSnapshot.forEach((doc) => {
-            const waterConsumption = doc.data().consumption;
-            value = Math.round(waterConsumption * 1000) / 1000;
-        });
+        if(main_meter.includes(waterSource)){
+            const [year, month, day] = date_input.split("-");
+            const recordQuery = query(collection(mainMeterRef, waterSource), 
+                                where('month', '==', month),
+                                where('day', '==', day),
+                                where('year', '==', year), 
+                                limit(1));
+            const recordSnapshot = await getDocs(recordQuery);
+            recordSnapshot.forEach((doc) => {
+                const waterConsumption = doc.data().consumption;
+                value = Math.round(waterConsumption * 1000) / 1000;
+            });            
+        } else {
+            const [year, month, day] = date_input.split("-");
+            const recordQuery = query(collection(subMeterRef, waterSource), 
+                                where('month', '==', month),
+                                where('day', '==', day),
+                                where('year', '==', year), 
+                                limit(1));
+            const recordSnapshot = await getDocs(recordQuery);
+            recordSnapshot.forEach((doc) => {
+                const waterConsumption = doc.data().consumption;
+                value = Math.round(waterConsumption * 1000) / 1000;
+            });      
+        }
+
         
     } catch(error) {
         console.log("Error searching a record:", error)

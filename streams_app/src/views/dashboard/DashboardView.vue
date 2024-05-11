@@ -20,6 +20,15 @@
                 <option value="deep_well_2" class="dept_option">Deep well 2</option>
                 <option value="deep_well_3" class="dept_option">Deep well 3</option>
                 <option value="deep_well_4" class="dept_option">Deep well 4</option>
+                <!-- for submeters-->
+                <option value="fic_1" class="dept_option">FIC 1</option>
+                <option value="fic_2" class="dept_option">FIC 2</option>
+                <option value="canteen_drinking_fountain" class="dept_option">Canteen Drinking Fountain</option>
+                <option value="executive_lounge" class="dept_option">Executive Lounge</option>
+                <option value="ceafa_faculty_room" class="dept_option">CEAFA Faculty</option>
+                <option value="rgr" class="dept_option">RGR</option>
+                <option value="cics_drinking_fountain" class="dept_option">CICS Drinking Fountain</option>
+                <option value="ssc" class="dept_option">SSC</option>
               </select>
               <input class="field rounded-md p-2 mt-4 w-[300px] text-[#042334] border border-gray-500" type="date" v-model="search_date"/>
               <button @click="toggleRecord" class="button-search absolute bottom-4 left-8 text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out flex items-left justify-left">Search</button>
