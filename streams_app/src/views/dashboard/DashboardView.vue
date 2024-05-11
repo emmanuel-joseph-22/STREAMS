@@ -310,7 +310,7 @@ export default{
             tooltip: {
               trigger: "item",
               // format including percentage
-              formatter: "{a} <br/>{b}: {c}m<sup>3</sup> ({d}%)"
+              formatter: "{b}<br/> Data: {c}m<sup>3</sup> ({d}%)"
             },
             legend: {
               top: '7%',

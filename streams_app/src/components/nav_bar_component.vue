@@ -82,13 +82,16 @@
                         <div class="other_link_label"><span>Learn More</span></div>
                     </router-link>
                     <!-- profile view -->
-                    <router-link class="navbar_link" to="/settings">
+                    <router-link v-if="role" class="navbar_link" to="/settings">
                         <div class="other_link_label"><span>Account Settings</span></div>
                     </router-link>
                     <!-- baka bet nyo magdark mode
                     <div class="navlink_label" @click="switch_mode">Dark Mode</div>  -->
-                    <router-link class="nav_link" to="/">
-                    <div class="other_link_label" @click="logout"><span>Logout</span></div>
+                    <router-link v-if="role"  class="nav_link" to="/">
+                        <div class="other_link_label" @click="logout"><span>Logout</span></div>
+                    </router-link>
+                    <router-link v-if="!role" class="nav_link" to="/login">
+                        <div class="other_link_label">Login</div>
                     </router-link>
                 </div>
         </div>
@@ -145,12 +148,15 @@
                         <span class="tips">Learn More</span>
                     </router-link>
 
-                    <router-link class="navbar_label" to="/settings" title="Account Setting">
+                    <router-link  v-if="role" class="navbar_label" to="/settings" title="Account Setting">
                         <span class="settings">Account Settings</span>
                     </router-link>
 
-                    <router-link class="navbar_label" to="/home" title="Logout">
+                    <router-link v-if="role" class="navbar_label" to="/home" title="Logout">
                         <span class="logout" @click="logout">Logout</span>
+                    </router-link>
+                    <router-link v-if="!role" class="navbar_label" to="/login">
+                        <span class="logout">Login</span>
                     </router-link>
                 </div>
             </div>
@@ -315,9 +321,8 @@ export default {
         cursor: pointer;
     }
     .other_link_label:hover{
-        background-color: var(--dropdownHover);
-        color: var( --text_color);
-        border-radius: 10px;
+        color: var(--navy);
+        font-weight: 500;
         cursor: pointer;
     }
     .navlink_label > span:hover{
@@ -368,7 +373,7 @@ export default {
         background-color: var(--dropdown);
         color: var(--white);
         width: 250px;
-        height: 290px;
+        height: auto;
         border-radius: 20px;
         text-decoration: none;
         z-index: 19;

@@ -216,11 +216,11 @@
             const userId = user.uid; // Retrieve the user ID (UID)
             const userRole = await fetchUserRole(userId);
 
-            console.log("User ID (UID):", userId);
             console.log("User role:", userRole);
 
             // Dispatching the action to update the role in the store
             store.dispatch('updateRole', userRole);
+            store.dispatch('setUID', userId)
             if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
                 console.log('bitch magffffetch')
                 await fetchData()
