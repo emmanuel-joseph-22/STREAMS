@@ -131,13 +131,8 @@
           </div> 
           <!-- main meter graph --> 
 <div id="pie_div" tabindex="0" class="col-span-10 md:col-span-4 box border shadow-md">
-  <div class="filter-button flex justify-end md:mr-4">
-    <select class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
-      <option value="" disabled selected>Filter</option>
-      <option class="dept_option text-[#042334]">Latest</option>
-      <option class="dept_option text-[#042334]">Last ...</option>
-      <option class="dept_option text-[#042334]">Last ...</option>
-    </select>
+  <div @click="refresh_main_pie" title="refresh data" class="refresh_button flex justify-end md:mr-4">
+    <img class="refresh_icon" src="refresh.png"/>
   </div>
   <v-chart ref="pie_main" class="mainmeter" :option="pie_main_meter" v-if="selectedGraph === 'mainMeter'" style="height: 350px;"/>
   <v-chart ref="pie_sub" class="submeter" :option="submeter_graph" v-else-if="selectedGraph === 'subMeter'" style="height: 350px;"/>
@@ -234,7 +229,7 @@ echarts.use([
     LegendComponent,
     GridComponent
 ]);
-provide(THEME_KEY, "white");
+
 export default{
   components: {
     'home-page': HomePageView,
@@ -284,11 +279,10 @@ export default{
     window.removeEventListener('resize', this.handleResize);
   },
   setup(){
-
+    provide(THEME_KEY, "white");
     const daily_water_consumption_container = store.state.daily_values
     const monthly_water_consumption_container = store.state.monthly_values
     const quarter_container = store.state.quarterly_values
-    console.log(monthly_water_consumption_container, quarter_container)
     const Daily_yAxisConsumption = ref(daily_water_consumption_container.total_consumption)
     const Daily_xAxisConsumption = daily_water_consumption_container.date    
     const monthly_yAxis = ref(monthly_water_consumption_container.total_consumption)
@@ -299,11 +293,11 @@ export default{
     const quarterly_filter_output = ref("total_consumption")
 
     const mainWaterSourceBreakdown = ref([                  
-      { value: 0, name: "Prime Water" },
-      { value: 0, name: "Deep Well 1" },
-      { value: 0, name: "Deep Well 2" },
-      { value: 0, name: "Deep Well 3" },
-      { value: 0, name: "Deep Well 4" }])
+      { value: store.state.pieMainMeter[4], name: "Prime Water" },
+      { value: store.state.pieMainMeter[0], name: "Deep Well 1" },
+      { value: store.state.pieMainMeter[1], name: "Deep Well 2" },
+      { value: store.state.pieMainMeter[2], name: "Deep Well 3" },
+      { value: store.state.pieMainMeter[3], name: "Deep Well 4" }])
     const pieDate = ref('bitch')
 
 
@@ -316,54 +310,45 @@ export default{
             tooltip: {
               trigger: "item",
               // format including percentage
-              formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
+              formatter: "{a} <br/>{b}: {c}m<sup>3</sup> ({d}%)"
             },
             legend: {
               top: '7%',
               left: "center",
-              //data: main_meter
             },
 
             series: [
               {
                 name: "Source",
                 type: "pie",
-                top: '12%',
-                radius: ["30%", "70%"],
-                avoidLabelOverlap: true,
+                radius: "55%",
+                center: ["50%", "60%"],
                 itemStyle: {
-                  borderRadius: 10,
+                  borderRadius: 2,
                   borderColor: '#fff',
-                  borderWidth: 2
+                  borderWidth: 1
                 },
                 data: mainWaterSourceBreakdown,
                 emphasis: {
-                  label: {
-                    show: true,
-                    fontSize: 20,
-                    fontWeight: 'bold'
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: "rgba(0, 0, 0, 0.2)"
                   }
-                },
-                labelLine: {
-                  show: false
-                },
-                label: {
-                  show: false,
-                  position: 'center'
-                },
+                }
               }
             ]
     });
     //submeter graph
     const submeter_graph = ref({
             title: {
-              text: "Submeters",
+              text: "Submeters di pa okay",
               left: "center"
             },
             tooltip: {
               trigger: "item",
               // format including percentage
-              formatter: "{a} <br/>{b} : {c} m3 ({d}%)"
+              formatter: "{a} <br/>{b}: {c}m<sup>3</sup> ({d}%)"
             },
             legend: {
               top: '7%',
@@ -420,7 +405,7 @@ export default{
             tooltip: {
               trigger: 'axis',
               formatter: function(params) {
-                return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+                return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + 'm<sup>3</sup>';
               }
             },
             xAxis: [{
@@ -457,13 +442,13 @@ export default{
             tooltip: {
               trigger: 'axis',
               formatter: function(params) {
-                return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+                return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + 'm<sup>3</sup>';
               }
             },
             xAxis: {
               type: 'category',
               data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-              name: 'Months',
+              name: '2023',
               nameLocation: 'center', 
               nameTextStyle: {
                 fontWeight: 'bold' 
@@ -496,13 +481,13 @@ export default{
             tooltip: {
               trigger: 'axis',
               formatter: function(params) {
-                return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + ' m3';
+                return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + 'm<sup>3</sup>';
               }
             },
             xAxis: {
               type: 'category',
               data: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
-              name: 'Quarters',
+              name: '2023',
               nameLocation: 'center', 
               nameTextStyle: {
                 fontWeight: 'bold' 
@@ -528,6 +513,14 @@ export default{
     });
 
     const pieMeterDiv = document.getElementById('pie_div')
+    const refresh_main_pie = () => {
+      mainWaterSourceBreakdown.value =       
+      [{ value: store.state.pieMainMeter[4], name: "Prime Water" },
+      { value: store.state.pieMainMeter[0], name: "Deep Well 1" },
+      { value: store.state.pieMainMeter[1], name: "Deep Well 2" },
+      { value: store.state.pieMainMeter[2], name: "Deep Well 3" },
+      { value: store.state.pieMainMeter[3], name: "Deep Well 4" }]
+    }
     const focusToPie = () => {
       pieMeterDiv.focus()
     }
@@ -679,7 +672,8 @@ export default{
       showPopup,
       showRecord,
       quarPopup,
-      monthlyPopup
+      monthlyPopup,
+      refresh_main_pie
     }
   }
 }
@@ -688,6 +682,16 @@ export default{
 
 
 <style scoped>
+.refresh_icon{
+  width: 100%;
+  height: 100%;
+}
+.refresh_button{
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  margin: 5px 5px 0px auto;
+}
 input:focus, textarea:focus, select:focus {
   border-color: transparent;
   outline: none;

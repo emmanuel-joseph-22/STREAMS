@@ -5,6 +5,13 @@ import store from "./store/index.js";
 const main_meter = ['deep_well_1', 'deep_well_2', 'deep_well_3', 'deep_well_4', 'prime_water']
 const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 
+export async function fetchPie(){
+    try{
+        await store.dispatch('setPieMainMeter')
+    } catch(error) {
+        console.log(error)
+    }
+}
 export async function fetchData(){
     try{
         store.commit('startLoading');
@@ -15,7 +22,7 @@ export async function fetchData(){
         await store.dispatch('setDailyConsumption')
         store.dispatch('setQuarterlyConsumption')
         store.dispatch('setQuarterlyAvg')
-        
+
         //await lipat_data_hohoho()
     } catch(error){
         console.log(error)
@@ -586,6 +593,30 @@ export async function avg_daily(){
     const max_meter = formatString(maxSource)
     return [avg_est, estMin, min_meter, estMax, max_meter];
 }
+
+export async function getMainMetersToPie(){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
+    //const date_temp = [];
+    const consumptionArray = [];
+    try{
+        for(let i = 0; i < main_meter.length; i++){
+            const reportsQuery = query(collection(mainMeterRef, main_meter[i]), orderBy('date', 'desc'), limit(1));          
+            const reportSnapshot = await getDocs(reportsQuery);
+             //console.log(reportSnapshot.size)
+            reportSnapshot.forEach((doc) => {
+                const waterConsumption = doc.data().consumption;
+                const estConsumption = Math.round(waterConsumption * 1000) / 1000;
+                consumptionArray[i]=estConsumption;
+            });    
+        }    
+        return consumptionArray;
+    } catch (error) {
+        console.log(error)
+    }        
+
+}
+
 
 // search
 export async function search_record(date_input, waterSource){

@@ -7,7 +7,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 import './assets/tailwind.css';
-import { fetchData } from './dashboard_query';
+import { fetchData, fetchPie } from './dashboard_query';
 /*web app's Firebase configuration*/
 const firebaseConfig = {
   apiKey: "AIzaSyBR5Tyx6-Oj996DaGOP2WKY80ijL4zWN_0",
@@ -46,6 +46,7 @@ onAuthStateChanged(auth, async user => {
         console.log('bitch magffffetch')
         await fetchData()
       }
+      await fetchPie()
       // User is already authenticated, proceed with auto-login
       router.push('/'); // Redirect to the home page or any authenticated page
     } catch (error) {

@@ -435,6 +435,7 @@ export default {
   height: 1px;
   background-color: #ccc;
 }
+
 /* gawa ni yvan
 .feedback h1{
         color: #0E5E7B;

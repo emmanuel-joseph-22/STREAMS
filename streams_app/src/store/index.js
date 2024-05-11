@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 //import dataModule from './data';
-import {daily_query, monthly_query, getTotalAccumulated, avg_monthly, avg_daily, quarterly_consumption } from '@/dashboard_query';
+import {daily_query, monthly_query, getTotalAccumulated, avg_monthly, avg_daily, quarterly_consumption, getMainMetersToPie } from '@/dashboard_query';
 const store = createStore({
     state: {
         role: null, // User's role state
@@ -12,7 +12,9 @@ const store = createStore({
         monthly_values: null,
         //quarterly
         quarterly_values: null,
-
+        // main meter in pie
+        pieMainMeter: null,
+        pieSubmeter: null,
         //highlights for total
         totalAccumulated: 0, // total consumption
         maxTotalDate: null, // date of peak consumption
@@ -109,6 +111,12 @@ const store = createStore({
         setFlopQrt(state, min){
             state.flopQrt = min
         },
+        setPieMainMeter(state, source_list){
+            state.pieMainMeter = source_list
+        },
+        setPieSubmeter(state, source_list){
+            state.pieSubmeter = source_list
+        },
         ADD_READING(state, reading) {
             state.readings.push(reading);
         },
@@ -190,7 +198,6 @@ const store = createStore({
         setQuarterlyConsumption({state, commit}){
             try{
                 const quarter_array = quarterly_consumption(state.monthly_values)
-                console.log(quarter_array)
                 commit('setQuarterlyConsumption', quarter_array)
             } catch(error){
                 console.log(error)
@@ -225,6 +232,13 @@ const store = createStore({
             } catch(error) {
                 console.log(error)
             }
+        },
+        async setPieMainMeter({commit}){
+            const source_list = await getMainMetersToPie();
+            commit('setPieMainMeter', source_list)
+        },
+        setPieSubmeter({commit}, source_list){
+            commit('setPieSubmeter', source_list)
         },
         addReading({ commit }, reading){
             commit('ADD_READING', reading);
