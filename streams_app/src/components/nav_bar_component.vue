@@ -204,6 +204,8 @@ export default {
         },
         logout(){
             store.dispatch('updateRole', null);
+            store.dispatch('setUID', null)
+            store.dispatch('setUserInfo', null, null)
             const auth = getAuth()
             signOut(auth).then(() => {
                 console.log("Logged out!");

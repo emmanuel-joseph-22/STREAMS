@@ -29,13 +29,13 @@
             <div class="flex justify-center items-center">
                 <div class="default-name flex flex-col items-start lg:w-2/4 mt-4">
                     <label for="input-change" class="change-label font-bold text-white">Default Name</label>
-                    <input v-model="currentDN" id="input-change" type="text" name="change" required placeholder="Default Name" class="change-input w-full lg:w-3/2 px-4 py-2 border-2 border-blue-500 rounded-md text-base text-blue-900 focus:outline-none">
+                    <input v-model="defaultName" id="input-change" type="text" name="change" required placeholder="Default Name" class="change-input w-full lg:w-3/2 px-4 py-2 border-2 border-blue-500 rounded-md text-base text-blue-900 focus:outline-none">
                 </div>
             </div>
             <div class="flex justify-center items-center">
                 <div class="change-1 flex flex-col items-start lg:w-2/4 mt-4">
                     <label for="input-change-1" class="change-1-label font-bold text-white">New Default Name</label>
-                    <input autofocus id="input-change-1" type="text" name="change-1" required placeholder="New Default Name" class="change-1-input w-full lg:w-3/2 px-4 py-2 border-2 border-blue-500 rounded-md text-base text-blue-900 focus:outline-none">
+                    <input autofocus v-model="newName" id="input-change-1" type="text" name="change-1" required placeholder="New Default Name" class="change-1-input w-full lg:w-3/2 px-4 py-2 border-2 border-blue-500 rounded-md text-base text-blue-900 focus:outline-none">
                 </div>
             </div>
             
@@ -83,7 +83,9 @@
   <script>
   import AccountPageView from './AccountPageView.vue';
   import header_component from "../../components/header_component.vue";
-  
+  import store from '@/store';
+  import { updateDisplayName, changePassword } from '@/user';
+
   export default {
     components: {
       'home-page': AccountPageView,
@@ -92,9 +94,10 @@
     data() {
       return {
         showPopup: false,
-        defaultName: 'Aquatech',
-        emailAd: 'aquatech@gmail.com',
-        currentDN: 'Aquatech',
+        defaultName: store.state.userDisplayName,
+        emailAd: store.state.userEmail,
+        newName: '',
+        currentDN: '',
         showPasswordPopup: false,
         currentPassword: '',
         newPassword: ''
@@ -104,7 +107,10 @@
       closePopup() {
         this.showPopup = false;
       },
-      changeDefaultName(){
+      async changeDefaultName(){
+        await updateDisplayName(this.newName)
+        store.dispatch('setUserInfo', this.newName)
+        this.defaultName = this.newName
         this.closePopup();
       },
       closePasswordPopup() {
@@ -113,6 +119,7 @@
         this.newPassword = '';
       },
       changePassword() {
+        changePassword(this.newPassword)
         this.closePasswordPopup();
       }
     },

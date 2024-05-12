@@ -6,6 +6,8 @@ const store = createStore({
     state: {
         role: null, // User's role state
         userID: null,
+        userDisplayName: null,
+        userEmail: null,
         // try ko lang tong sa dashboard na data
         //daily
         daily_values: null,
@@ -51,6 +53,12 @@ const store = createStore({
         },
         setUID(state, UID){
             state.userID = UID
+        },
+        setUserDisplayName(state, name){
+            state.userDisplayName = name
+        },
+        setUserEmail(state, email){
+            state.userEmail = email
         },
         setDailyConsumption(state, consumption_list){
             state.daily_values = consumption_list
@@ -141,6 +149,10 @@ const store = createStore({
         },
         setUID({ commit }, UID){
             commit('setUID', UID)
+        },
+        setUserInfo({commit}, name, email){
+            commit('setUserDisplayName', name)
+            commit('setUserEmail', email)
         },
         async setDailyConsumption( {commit} ){
             try{

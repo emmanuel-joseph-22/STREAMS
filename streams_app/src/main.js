@@ -8,7 +8,7 @@ import { getDatabase } from "firebase/database";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 import './assets/tailwind.css';
 import { fetchData, fetchPie } from './dashboard_query';
-
+import { getUserInfo } from './user';
 
 /*web app's Firebase configuration*/
 const firebaseConfig = {
@@ -44,6 +44,8 @@ onAuthStateChanged(auth, async user => {
     try {
       if(!store.state.userID){
         store.dispatch('setUID', user.uid)
+        const [name, email] = await getUserInfo()
+        store.dispatch('setUserInfo', name, email)    
       }      
       //should make a separate case for fetching pie idk
       await fetchPie()
