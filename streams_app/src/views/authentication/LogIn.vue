@@ -1,11 +1,11 @@
 <template>
-    <div class="bg-cover bg-center opacity-90 bg-[url('/public/Alangilan-entrance-facade.jpg')] h-screen">
+    <div class="bg-cover bg-center inset-0 opacity-90 bg-[url('/public/Alangilan-entrance-facade.jpg')] h-screen">
         <div class="login relative flex flex-column">
-            <h1 class="streams fixed left-10 mt-10 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl text-blue-400">STREAMS</h1>
-            <div class="prj-name absolute flex">
-                <img src="Batangas_State_Logo 2.png" class="fixed left-44 pl-10 pt-8">
-                <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-56 pl-14 pt-8">
-                <img src="aquatech_v1.png" class="fixed left-72 pl-12 pt-8">
+            <div class="prj-name">
+    <!--       <h1 class="streams fixed left-10 mt-10 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl text-blue-400">STREAMS</h1>   -->
+                <img src="Batangas_State_Logo 2.png" class="fixed left-10 pl-10 pt-8">
+                <img src="434129671_1095342188180256_5566497575336269927_n-removebg-preview 1.png" class="fixed left-20 pl-16 pt-8">
+                <img src="aquatech_v1.png" class="fixed left-36 pl-14 pt-8">
             </div>
             <dark_blur/>
             <div class="cont relative w-full shadow-black shadow-md bg-white bg-opacity-70 sm:w-5/6 md:w-4/6 lg:w-2/6 xl:w-2/6 mx-auto mt-44 sm:mt-40 mb-16 rounded-none sm:rounded-md">

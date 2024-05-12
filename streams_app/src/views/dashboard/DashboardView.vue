@@ -40,17 +40,17 @@
       <!-- display record -->
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
         <div v-if="showRecord" class="popup-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[500px] bg-white text-[#042334] rounded-md shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-full">
-          <h2 class="text-s text-[#0E5E7B] font-bold">Water Consumption Record</h2>
-          <h2 class="text-3xl font-bold mt-14">{{ formattedwaterSource }}</h2>
-          <h2 class="text-xl font-bold text-white mb-4">{{ location }}</h2>
-          <div class="record_details_container flex border-2 border-[#36B4E7] rounded-lg">
+          <h2 class="text-s text-[#042334] font-bold">Water Consumption Record</h2>
+          <h2 class="text-3xl text-[#042334] font-bold mt-14">{{ formattedwaterSource }}</h2>
+          <h2 class="text-xl font-bold text-[#042334] mb-4">{{ location }}</h2>
+          <div class="record_details_container flex border-2 border-[#042334] rounded-lg">
             <div class="record_details text-lg mt-4" style="flex-grow: 1;">
-                <div class="rec_field text-white p-2">Class: {{ classf }}</div>
-                <div class="rec_field text-white p-2 mt-2">Date: {{ search_date }}</div>
-                <!--<div class="rec_field text-white p-2 mb-2">Time: {{ time }}</div>-->
+                <div class="rec_field text-[#042334] p-2">Class: {{ getClassf }}</div>
+                <div class="rec_field text-[#042334] p-2 mt-2">Date: {{ search_date }}</div>
+                <!--<div class="rec_field text-[#042334] p-2 mb-2">Time: {{ time }}</div>-->
             </div>
-            <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#36B4E7] rounded-lg flex flex-col items-center justify-center">
-                <h2 class="text-3xl font-bold">{{ meter }}</h2>
+            <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#042334] rounded-lg flex flex-col items-center justify-center">
+                <h2 class="text-3xl font-bold">{{ meter }}m<sup>3</sup></h2>
             </div>
         </div>
           <button @click="toggleRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>
@@ -59,7 +59,7 @@
         <div class="grid grid-cols-10 w-full gap-8 mt-5">
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out ml-2">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] ml-2">
                 <span class="text-3xl font-bold">{{ $store.state.totalAccumulated }} m<sup>3</sup></span>
                 <p class="text-white mb-4">Total Accumulated</p>
                 <div class="flex flex-row px-8">
@@ -76,7 +76,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.q_avg }}m<sup>3</sup></p>
                 </span>
@@ -96,7 +96,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }}m<sup>3</sup></p>
                 </span>
@@ -116,7 +116,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out mr-2">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] mr-2">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }}m<sup>3</sup></p>
                 </span>
@@ -230,6 +230,7 @@ import { ref, provide } from "vue";
 import { /*quarterly_consumption,*/ search_record/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
 import formatString from "@/format";
 import * as echarts from 'echarts';
+//import { ref, watch } from 'vue';
 
 echarts.use([
     CanvasRenderer,
@@ -269,8 +270,20 @@ export default{
     }, 
     flopSource(){
       return this.$store.state.minSource
+    },
+    getClassf() {
+      if (
+        this.formattedwaterSource === "Deep Well 1" ||
+        this.formattedwaterSource === "Deep Well 2" ||
+        this.formattedwaterSource === "Deep Well 3" ||
+        this.formattedwaterSource === "Deep Well 4" ||
+        this.formattedwaterSource === "Prime Water"
+      ) {
+        return "Main";
+      } else {
+        return "Submeter";
+      }
     }
-
   },
   mounted(){
     window.addEventListener('resize', this.handleResize);
@@ -615,7 +628,7 @@ export default{
       const record = await search_record(search_date.value, search_water_source.value)
       formattedwaterSource.value = formatString(search_water_source.value)
       if(record == 0){
-        meter.value = 'no reading'
+        meter.value = 'no reading 0'
       } else {
         meter.value = record;
       }

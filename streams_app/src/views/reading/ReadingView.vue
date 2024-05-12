@@ -1,6 +1,6 @@
 <template>
   <main-content>
-    <header_bar>
+    <header_bar class="sticky top-0 bg-white">
       <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-3 mt-1">Reading</h1>
     </header_bar>
     <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
@@ -24,25 +24,25 @@
     </div>
 
     <div class="reading bg-bsu-blue flex justify-center items-center h-screen">
-      <div class="bg-center h-full w-full inset-0 opacity-80 bg-[url('/public/image-30.jpg')]">
+      <div class="bg-center h-full w-full inset-0 bg-white"> <!--[url('/public/image-30.jpg')]-->
         <!--MENU FOR MAIN-->
-        <div class="pt-10 pl-4 pr-4">
-          <button @click="mainmeter = !mainmeter" class="text-black bg-bsu-base font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
+        <div class="pt-10 pl-4 pr-4 bg-bsu-base">
+          <button @click="mainmeter = !mainmeter" class="main-meter-box bg-bsu-alt-base bg-opacity-90 text-white font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
           <div v-if="mainmeter" class="mb-2">
-            <ul class="bg-bsu-blue bg-opacity-60 w-full p-4">
-              <li v-for="(source, index) in mainMeterSources" :key="index" :class="{'bg-green-500': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" >
-                <div class="hover:bg-bsu-hover border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{ capitalize(source) }}</div>
+            <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
+              <li v-for="(source, index) in mainMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" >
+                <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{ capitalize(source) }}</div>
               </li>
             </ul>
           </div>
         </div>
         <!--MENU FOR SUB-->
         <div class="pl-4 pr-4">
-          <button @click="submeter = !submeter" class="text-black bg-bsu-base font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
+          <button @click="submeter = !submeter" class="sub-meter-box bg-bsu-alt-base text-white bg-opacity-90 font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
           <div v-if="submeter" class="mb-2">
-            <ul class="bg-bsu-blue bg-opacity-60 w-full p-4">
-              <li v-for="(source, index) in subMeterSources" :key="index" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}">
-                <div class="hover:bg-bsu-hover border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{  capitalize(source) }}</div>
+            <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
+              <li v-for="(source, index) in subMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}">
+                <div class="hover:bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{  capitalize(source) }}</div>
               </li>
             </ul>
           </div>
@@ -474,7 +474,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5rem;
+  margin-top: 2rem;
 }
 .body a {
   position: relative;
