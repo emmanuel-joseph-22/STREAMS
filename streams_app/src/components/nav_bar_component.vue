@@ -263,7 +263,7 @@ export default {
         box-sizing: border-box;
         padding: 10px 14px;
         background-color: var(--navy);
-        border-right: 1px solid var(--border);
+        border-right: 1px solid rgb(120, 127, 145);
         transition: ease-in-out 0.6s;
         overflow: hidden;
         z-index: 10; /* oa nyan */

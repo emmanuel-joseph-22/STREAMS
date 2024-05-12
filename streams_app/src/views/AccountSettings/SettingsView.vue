@@ -1,7 +1,7 @@
 <template>
     <home-page>
-      <header_bar>
-        <h1 class="text-4xl text-bsu-light-blue font-arial font-bold ml-24 mt-1">Account Settings</h1>
+      <header_bar class="acct_header">
+        <h1 class="text-3xl text-white font-arial font-bold ml-24 mt-1">Account Settings</h1>
       </header_bar>
 
       <div class="account-cont flex flex-col items-center justify-center">
@@ -80,7 +80,7 @@
   </template>
   
 
-  <script>
+<script>
   import AccountPageView from './AccountPageView.vue';
   import header_component from "../../components/header_component.vue";
   import store from '@/store';
@@ -127,5 +127,12 @@
   </script>
   
   <style scoped>
- 
+ .account-cont{
+  background-color: var(--navy);
+  height: calc(100vh - 60px);
+ }
+ .acct_header{
+  background-color: var(--navy);
+  border-bottom: 1px solid rgb(120, 127, 145);
+ }
   </style>
