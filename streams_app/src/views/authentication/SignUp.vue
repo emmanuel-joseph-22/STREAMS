@@ -64,7 +64,7 @@ import { firestore as db } from "../../main.js"; // Import Firestore instance
 import { setDoc, doc } from "firebase/firestore"; // Import Firestore functions
 import store from './../../store'; // Import the Vuex store
 import { useRouter } from "vue-router";
-
+import { fetchData, fetchPie } from "@/dashboard_query.js";
 // Reactive data properties
 const email = ref("");
 const password = ref("");
@@ -169,7 +169,14 @@ const signup = async () => {
 
         console.log("Successfully registered and data saved in Firestore!");
 
-        store.dispatch('updateRole', userData.role);
+        store.dispatch('updateRole', userData.role)
+        store.dispatch('setUID', user.uid)
+        store.dispatch('setUserInfo', name.value, email.value)   
+        await fetchPie()
+        if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
+            console.log('bitch magffffetch')
+            await fetchData()
+        }
 
         // Redirect to the '/home' route
         router.push("/home");

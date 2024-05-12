@@ -255,8 +255,54 @@ export default {
         console.error("Error storing meter record: ", error);
       }
     },
-    async getTotalConsumptionReading(){
-
+    getTotalConsumptionReading(){
+      let submeterTotal = 0
+      let mainMeterTotal = 0
+      for(let reading of this.$store.state.readings){
+        if(this.mainMeterSources.includes(reading.waterSource)){
+          mainMeterTotal += reading.data.consumption
+        } else if(this.subMeterSources.includes(reading.waterSource)){
+          submeterTotal += reading.data.consumption
+        }
+      }
+      return [mainMeterTotal, submeterTotal]
+    },
+    async submitTotalConsumption(dateRead, consumption, category){
+      const [year, month, day] = dateRead.split("-")
+      const data = {
+        consumption: consumption,
+        date: dateRead,
+        year: year,
+        month: month,
+        day: day
+      };
+      let path;
+      try {
+        // identify the category of the source 
+        //to set the path in firestore and 
+        // in querying in checkexsitingrecord function
+        if (category == 'main_meter') {
+          path = `meter_records/${category}/total_consumption`;
+        } else {
+          path = `meter_records/${category}/total_consumption`;
+        }
+        // get reading ID if there is
+        const readingID = await this.checkExisitngRecord(category, 'total_consumption', dateRead)
+        
+        // if so, update the exisitng record in firestore
+        // if the id container is empty, add the data in a new reading ID
+        if(readingID){
+          await setDoc(doc(collection(db, path), readingID), data)
+          console.log(`updated reading for total consumption in ${category} at ${dateRead} successfully!`)
+        } else if(!readingID){
+          await addDoc(collection(db, path), data);
+          console.log('submitted successfully')
+        } else {
+          console.log('unsuccessful submission')
+        }
+      } catch (error) {
+        console.error("Error storing meter record: ", error);
+      }
     },
     handleInput(event, key) {
       const inputValue = event.target.value;
@@ -379,7 +425,9 @@ export default {
 
         await this.submitForm(dateRead);
         //compute the total consumption
-
+        const [main_meter_total, submeter_total] = this.getTotalConsumptionReading()
+        this.submitTotalConsumption(dateRead, main_meter_total, 'main_meter')
+        this.submitTotalConsumption(dateRead, submeter_total, 'submeter')
         console.log('Successfully submitted reading for:', this.selectedWaterSource);
         hasSubmittedAny = true;
       }
