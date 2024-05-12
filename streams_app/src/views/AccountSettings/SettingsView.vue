@@ -29,7 +29,7 @@
             <div class="flex justify-center items-center">
                 <div class="default-name flex flex-col items-start lg:w-2/4 mt-4">
                     <label for="input-change" class="change-label font-bold text-white">Default Name</label>
-                    <input v-model="defaultName" id="input-change" type="text" name="change" required placeholder="Default Name" class="change-input w-full lg:w-3/2 px-4 py-2 border-2 border-blue-500 rounded-md text-base text-blue-900 focus:outline-none">
+                    <input disabled v-model="defaultName" id="input-change" type="text" name="change" required placeholder="Default Name" class="change-input w-full lg:w-3/2 px-4 py-2 border-2 border-blue-500 rounded-md text-base text-blue-900 focus:outline-none">
                 </div>
             </div>
             <div class="flex justify-center items-center">
