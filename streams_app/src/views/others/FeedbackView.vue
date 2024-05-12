@@ -2,7 +2,7 @@
   <home-page>
     <header-bar>
       <h1 class="text-4xl font-semibold ml-3">STREAMS</h1>
-      <p>Community Forum jk lang 2</p>
+ <!--    <p>Community Forum jk lang 2</p>   -->
     </header-bar>
 
     <div class="feedback">

@@ -45,7 +45,7 @@
           <h2 class="text-xl font-bold text-[#042334] mb-4">{{ location }}</h2>
           <div class="record_details_container flex border-2 border-[#042334] rounded-lg">
             <div class="record_details text-lg mt-4" style="flex-grow: 1;">
-                <div class="rec_field text-[#042334] p-2">Class: {{ classf }}</div>
+                <div class="rec_field text-[#042334] p-2">Class: {{ getClassf }}</div>
                 <div class="rec_field text-[#042334] p-2 mt-2">Date: {{ search_date }}</div>
                 <!--<div class="rec_field text-[#042334] p-2 mb-2">Time: {{ time }}</div>-->
             </div>
@@ -59,7 +59,7 @@
         <div class="grid grid-cols-10 w-full gap-8 mt-5">
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out ml-2">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] ml-2">
                 <span class="text-3xl font-bold">{{ $store.state.totalAccumulated }} m<sup>3</sup></span>
                 <p class="text-white mb-4">Total Accumulated</p>
                 <div class="flex flex-row px-8">
@@ -76,7 +76,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.q_avg }}m<sup>3</sup></p>
                 </span>
@@ -96,7 +96,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }}m<sup>3</sup></p>
                 </span>
@@ -116,7 +116,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] hover:bg-[#0E5E7B] hover:text-white transition duration-300 ease-in-out mr-2">
+              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] mr-2">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }}m<sup>3</sup></p>
                 </span>
@@ -230,6 +230,7 @@ import { ref, provide } from "vue";
 import { /*quarterly_consumption,*/ search_record/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
 import formatString from "@/format";
 import * as echarts from 'echarts';
+//import { ref, watch } from 'vue';
 
 echarts.use([
     CanvasRenderer,
@@ -269,8 +270,20 @@ export default{
     }, 
     flopSource(){
       return this.$store.state.minSource
+    },
+    getClassf() {
+      if (
+        this.formattedwaterSource === "Deep Well 1" ||
+        this.formattedwaterSource === "Deep Well 2" ||
+        this.formattedwaterSource === "Deep Well 3" ||
+        this.formattedwaterSource === "Deep Well 4" ||
+        this.formattedwaterSource === "Prime Water"
+      ) {
+        return "Main";
+      } else {
+        return "Submeter";
+      }
     }
-
   },
   mounted(){
     window.addEventListener('resize', this.handleResize);
@@ -615,7 +628,7 @@ export default{
       const record = await search_record(search_date.value, search_water_source.value)
       formattedwaterSource.value = formatString(search_water_source.value)
       if(record == 0){
-        meter.value = 'no reading'
+        meter.value = 'no reading 0'
       } else {
         meter.value = record;
       }
