@@ -2,7 +2,7 @@
   <home-page>
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
-        <div @click="refresh_data" class="refresh_data"><img src="refresh_dash.png"></div>
+        <div @click="refresh_data" class="refresh_data" title="refresh dashboard"><img src="refresh_dash.png"></div>
       </header-bar>
       <dashboard-content>
         <!-- search record -->
