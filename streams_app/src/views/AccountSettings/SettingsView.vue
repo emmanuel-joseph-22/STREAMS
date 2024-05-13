@@ -84,7 +84,7 @@
   import AccountPageView from './AccountPageView.vue';
   import header_component from "../../components/header_component.vue";
   import store from '@/store';
-  import { updateDisplayName, changePassword } from '@/user';
+  import { updateDisplayName } from '@/user';
 
   export default {
     components: {
@@ -119,7 +119,6 @@
         this.newPassword = '';
       },
       changePassword() {
-        changePassword(this.newPassword)
         this.closePasswordPopup();
       }
     },

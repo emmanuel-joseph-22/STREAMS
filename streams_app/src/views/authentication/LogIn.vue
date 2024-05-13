@@ -158,7 +158,7 @@
     import store from './../../store/index.js'; // Import the Vuex store
     import { doc, getDoc } from 'firebase/firestore';
     import { fetchData, fetchPie } from '@/dashboard_query.js';
-import { getUserInfo } from '@/user.js';
+    import { getUserInfo } from '@/user.js';
 
     const email = ref("");
     const password = ref("");
@@ -233,8 +233,11 @@ import { getUserInfo } from '@/user.js';
             // Dispatching the action to update the role in the store
             store.dispatch('updateRole', userRole);
             store.dispatch('setUID', userId)
-            const [name, email] = await getUserInfo()
-            store.dispatch('setUserInfo', name, email)   
+            if(user){
+                const [name, email] = await getUserInfo()
+                store.dispatch('setUserInfo', name, email)   
+            }
+
             await fetchPie()
             if(!store.state.daily_values || !store.state.monthly_values || !store.state.quarterly_values ){
                 console.log('bitch magffffetch')
@@ -246,7 +249,7 @@ import { getUserInfo } from '@/user.js';
             router.push('/home');
             
         } catch (error) {
-            console.log(error.code);
+            console.log('Error logging in: ', error.code);
             switch (error.code) {
                 case "auth/invalid-email":
                     errorMsg.value = "Invalid email";
@@ -262,7 +265,7 @@ import { getUserInfo } from '@/user.js';
                     break;
             }
         }
-        store.commit('stopLoading');
+        //store.commit('stopLoading');
     };
 
 </script>

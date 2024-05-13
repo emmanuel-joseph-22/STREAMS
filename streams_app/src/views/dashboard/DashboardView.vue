@@ -286,6 +286,7 @@ export default{
     }
   },
   mounted(){
+    //await lipat_data_hohoho()
     window.addEventListener('resize', this.handleResize);
     this.handleResize();
   },
@@ -302,6 +303,7 @@ export default{
   },
   setup(){
     provide(THEME_KEY, "white");
+
     const daily_water_consumption_container = store.state.daily_values
     const monthly_water_consumption_container = store.state.monthly_values
     const quarter_container = store.state.quarterly_values

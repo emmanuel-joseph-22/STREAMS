@@ -1,7 +1,7 @@
 import store from "./store/index.js";
 import { firestore as db } from './main.js';
 import { getDoc, doc, updateDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+//import { getAuth } from "firebase/auth";
 export async function getUserInfo(){    
     try {
         const userRef = doc(db, 'users', store.state.userID);
@@ -28,7 +28,7 @@ export async function updateDisplayName(name){
     }
 }
 
-
+/*
 export function changePassword(newPassword) {
     const user = getAuth(db).currentUser;
   
@@ -38,4 +38,4 @@ export function changePassword(newPassword) {
     }
     console.log('password updated')
     return user.updatePassword(newPassword);
-  }
+  }*/

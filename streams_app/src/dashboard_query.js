@@ -1,4 +1,4 @@
-import { doc, getDocs, collection, orderBy, query, limit, where /*getDocFromCache*/ } from "firebase/firestore";
+import { doc, getDocs, addDoc, collection, orderBy, query, limit, where /*getDocFromCache*/ } from "firebase/firestore";
 import { firestore as db } from './main.js';
 import formatString from './format.js';
 import store from "./store/index.js";
@@ -31,22 +31,20 @@ export async function fetchData(){
     }
 }
 
-/*pagpasok ng data ng emu sa firestore
+//pagpasok ng data ng emu sa firestore
 export async function lipat_data_hohoho(){
     const startDate = new Date(2023, 0, 1);
     const meterRecordsRef = collection(db, 'meter_records');
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
-    for(let i = 0; i < DW2.length; i++){
+    for(let i = 0; i < DW1.length; i++){
         // Calculate the date for the current iteration
         //const currentDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
         //
-
         const currentDate = new Date(startDate.getTime()); // Create a new date object to avoid modifying the startDate
         currentDate.setDate(startDate.getDate() + (i + 1));
         const formattedDate = currentDate.toISOString().split('T')[0];
             // Split the date field into year, month, and day
         const [year, month, day] = formattedDate.split("-");
-
         try {
             // Store data in Firestore
             await addDoc(collection(mainMeterRef, 'total_consumption'), {
@@ -62,8 +60,8 @@ export async function lipat_data_hohoho(){
             console.error("Error storing water consumption: ", error);
           }
     }
-    console.log("done")
-}*/
+    //console.log(prime_water)
+}
 //
 export async function daily_query(){  
     const daily_obj = {}
@@ -780,7 +778,7 @@ export async function daily_consumption(object){
     return object
 }*/
 
-/*lipat data bla bla bla ignore nyo nalang
+//lipat data bla bla bla ignore nyo nalang
 
 const prime_water = [
     0,
@@ -1882,4 +1880,4 @@ const DW2 = [
 22.830,
 22.830,
 22.830
-]*/
+]
