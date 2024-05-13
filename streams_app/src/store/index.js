@@ -47,6 +47,41 @@ const store = createStore({
         loading: false
     },
     mutations: {
+        clearDashboardData(state){
+            //daily
+            state.daily_values =  null
+            //monthly
+            state.monthly_values =  null
+            //quarterly
+            state.quarterly_values =  null
+
+            //highlights for total
+            state.totalAccumulated = 0 // total consumption
+            state.maxTotalDate =  null // date of peak consumption
+            state.minTotalDate =  null // date lowest consumption
+            state.maxTotal =  0 // peak conusmption
+            state.minTotal =  0 // lowest consumption
+
+            state.monthly_avg_value = 0 // avg consumption
+            state.maxOfCurrentMonth = 0 // peak consumption
+            state.minOfCurrentMonth = 0 // lowest consumption
+            state.maxMonthDate = null // date of peak consumption
+            state.minMonthDate = null // date lowest consumption
+
+            state.daily_avg_value = 0 // avg consumption
+            state.maxDaily = 0 // peak consumption
+            state.minDaily = 0 // lowest consumption
+            state.maxSource = 0 // water source
+            state.minSource = 0 // water source
+            state.q_avg = 0 //ewan
+            state.peakQrt = 0
+            state.flopQrt = 0
+        },
+        clearPieData(state){
+            // main meter in pie
+            state.pieMainMeter =  null
+            state.pieSubmeter =  null
+        },
         // Mutation to set the user's role
         setRole(state, role) {
             state.role = role;
@@ -264,6 +299,12 @@ const store = createStore({
         },
         clearReadings({ commit }){
             commit('CLEAR_READINGS');
+        },
+        clearDashboardData({commit}){
+            commit('clearDashboardData');
+        },
+        clearPieData({commit}){
+            commit('clearPieData')
         }
     },/*
     module: {

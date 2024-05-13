@@ -29,7 +29,7 @@ export default {
     lodiSpener: loaderSpinner
   },
   setup() {
-    const allowedRoutes = ['/home', '/reading', '/report', '/events', '/map', '/login'];
+    const allowedRoutes = ['/home', '/reading', '/report', '/events', '/map', '/login', '/feedback'];
     // Function to handle back button press
     const handleBackButton = () => {
       try {

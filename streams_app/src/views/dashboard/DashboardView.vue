@@ -2,6 +2,7 @@
   <home-page>
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
+        <div @click="refresh_data" class="refresh_data"><img src="refresh_dash.png"></div>
       </header-bar>
       <dashboard-content>
         <!-- search record -->
@@ -56,7 +57,7 @@
           <button @click="toggleRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>
         </div>
         <!-- highlighted data -->
-        <div class="grid grid-cols-10 w-full gap-8 mt-5">
+        <div class="grid grid-cols-10 w-full gap-4 mt-5">
           <div class="col-span-10 flex overflow-x-auto">
             <div class="box1-inner flex gap-4">
               <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7] ml-2">
@@ -139,7 +140,7 @@
             </div>
           </div> 
           <!-- main meter graph --> 
-<div id="pie_div" tabindex="0" class="col-span-10 md:col-span-4 box border shadow-md">
+<div id="pie_div" tabindex="0" class="col-span-10 md:col-span-4 mx-3 box border shadow-md">
   <div @click="refresh_main_pie" title="refresh data" class="refresh_button flex justify-end md:mr-4">
     <img class="refresh_icon" src="refresh.png"/>
   </div>
@@ -151,7 +152,7 @@
   </div>
 </div>
 <!-- daily consumption chart -->
-<div class="col-span-10 md:col-span-6 box border shadow-md">
+<div class="col-span-10 md:col-span-6 mx-3 box border shadow-md">
   <div class="filter-button flex justify-end md:mr-4">
     <select v-model="daily_filter_output" @change="daily_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
       <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
@@ -165,7 +166,7 @@
   <v-chart ref="daily_chart" class="box border shadow-md" style="height: 400px;" :option="consumption_chart" @click="passDayToPie"/>
 </div>
 <!-- monthly box -->
-<div class="col-span-10 md:col-span-6 box border shadow-md" style="height: 400px;">
+<div class="col-span-10 md:col-span-6 mx-3 box border shadow-md" style="height: 400px;">
   <div class="filter-button flex justify-end md:mr-4">
     <select v-model="monthly_filter_output" @change="monthly_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
       <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
@@ -185,7 +186,7 @@
   </div>
 </div>
 <!-- quarterly box -->
-<div class="col-span-10 md:col-span-4 box border shadow-md" style="height: 400px; margin: 0 0 60px 0;">
+<div class="col-span-10 md:col-span-4 mx-3 box border shadow-md" style="height: 400px; margin-bottom: 60px">
   <div class="filter-button flex justify-end md:mr-4">
     <select v-model="quarterly_filter_output" @change="quarterly_filter" class="filter rounded-md p-2 w-full md:w-20 text-[#042334] hover:text-[#36B4E7] transition duration-300 ease-in-out font-bold">
       <option value="total_consumption" selected class="dept_option text-[#042334]">Total Consumption</option>
@@ -230,6 +231,7 @@ import { ref, provide } from "vue";
 import { /*quarterly_consumption,*/ search_record/* getTotalAccumulated, avg_monthly, avg_daily */ } from "@/dashboard_query"; 
 import formatString from "@/format";
 import * as echarts from 'echarts';
+import { fetchData, fetchPie } from '@/dashboard_query';
 //import { ref, watch } from 'vue';
 
 echarts.use([
@@ -663,7 +665,13 @@ export default{
       quarter_yAxis.value = quarter_container[quarterly_filter_output.value];
     }
 
+    //for refresh
+    const refresh_data = async () => {
+      await fetchPie()
+      await fetchData()
+    }
     return {
+      refresh_data,
       pie_main_meter,
       submeter_graph,
       consumption_chart,
@@ -706,6 +714,12 @@ export default{
 
 
 <style scoped>
+.refresh_data{
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin-left: auto;
+}
 .refresh_icon{
   width: 100%;
   height: 100%;

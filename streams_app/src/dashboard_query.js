@@ -7,6 +7,7 @@ const month_path = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', 
 
 export async function fetchPie(){
     try{
+        store.dispatch('clearPieData')
         await store.dispatch('setPieMainMeter')
     } catch(error) {
         console.log(error)
@@ -14,6 +15,7 @@ export async function fetchPie(){
 }
 export async function fetchData(){
     try{
+        store.commit('clearDashboardData');
         store.commit('startLoading');
         await store.dispatch(`setTotalAccumulated`)
         await store.dispatch('setMonthlyAvg')
