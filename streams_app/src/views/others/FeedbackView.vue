@@ -394,7 +394,7 @@ export default {
   padding: 10px 10px 30px 10px;
   color: var(--navy);
   text-align: left;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 .toggle-comments-button{
   font-size: 0.8rem;
