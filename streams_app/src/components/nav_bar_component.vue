@@ -126,12 +126,12 @@
         <!-- sidebar for mobile -->
         <div class="sidebar" v-if="isMobile" :class="{ collapsed: sidebarOpen }"> 
             <div class="flex">
-                <div class="more_settings z-10" v-if="!sidebarOpen" @click="toggleSidebar" style="cursor: pointer;">
+                <div class="more_settings z-30" v-if="!sidebarOpen" @click="toggleSidebar" style="cursor: pointer;">
                     <img src="hamburger.png" alt="more_setting">
                 </div>
             </div>
             <div class="flex">
-                <div class="fixed inset-0 bg-gray-800 bg-opacity-60 z-10" v-if="sidebarOpen" @click="toggleSidebar"></div>
+                <div class="fixed inset-0 bg-gray-800 bg-opacity-60 z-20" v-if="sidebarOpen" @click="toggleSidebar"></div>
                 <div id="sidebar" class="bg-gray-800 text-white w-16" v-if="sidebarOpen" @click="toggleSidebar">
                     <div class="pl-6 pt-4 flex flex-row">
                         <img src="streams_logo.png" alt="more_setting" class="w-8 h-8">
