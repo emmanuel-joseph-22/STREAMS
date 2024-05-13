@@ -1,7 +1,7 @@
 <template>
   <home-page>
     <header-bar>
-      <h1 class="text-4xl font-semibold ml-3">STREAMS</h1>
+      <h1 class="text-3xl font-semibold ml-3 mt-1">STREAMS</h1>
  <!--    <p>Community Forum jk lang 2</p>   -->
     </header-bar>
 
@@ -27,24 +27,26 @@
       <div class="feedback-list">
         <div v-for="feedback in feedbacks" :key="feedback.id" class="feedback-item">
           <!-- Feedback header with profile picture, name, and timestamp -->
-          <div class="feedback-header">
-            <div class="feedback-header-left">
-              <div
-                class="profile-picture"
-                :style="{ backgroundColor: getRoleColor(feedback.role) }"
-              ></div>
-              <p class="feedback-name">{{ feedback.role || 'guest' }}</p>
-            </div>
-            <div class="feedback-header-right">
-              <p class="feedback-timestamp">{{ formatTimestamp(feedback.timestamp) }}</p>
+          <div class="main_feedback_cont">
+            <div class="profile_picture"
+              :style="{ backgroundColor: getRoleColor(feedback.role) }"
+            ></div>
+            <div class="feedback_focus">
+              <div class="feedback-header">
+                <div class="feedback-header-left">
+                  <p class="feedback-name">{{ feedback.role || 'guest' }}</p>
+                </div>
+                <div class="feedback-header-right">
+                  <p class="feedback-timestamp">{{ formatTimestamp(feedback.timestamp) }}</p>
+                </div>
+              </div>
+
+              <!-- Feedback content -->
+              <div class="feedback-content">
+                <p>{{ feedback.text }}</p>
+              </div>
             </div>
           </div>
-
-          <!-- Feedback content -->
-          <div class="feedback-content">
-            <p>{{ feedback.text }}</p>
-          </div>
-
           <!-- Toggle comments button -->
           <button class="toggle-comments-button" @click="toggleComments(feedback)">
             {{ feedback.showComments ? 'Hide Comments' : 'Show Comments' }}
@@ -58,6 +60,7 @@
                 v-model="feedback.newCommentText"
                 class="comment-input"
                 placeholder="Add a comment..."
+                rows="1"
               ></textarea>
               <button
                 class="comment-button"
@@ -68,21 +71,31 @@
             </div>
 
             <!-- Display existing comments -->
-            <div class="comments-list">
-              <div v-for="(comment, idx) in feedback.comments.sort((a, b) => b.timestamp - a.timestamp)" :key="idx" class="comment-item">
-                <div class="comment-header">
-                  <div class="comment-avatar" :style="{ backgroundColor: getRoleColor(comment.username) }"></div>
-                  <p class="comment-username">{{ comment.username }}</p>
-                  <p class="comment-timestamp">{{ formatTimestamp(comment.timestamp) }}</p>
+            
+              <div class="comments-list">
+                <div v-for="(comment, idx) in feedback.comments.sort((a, b) => b.timestamp - a.timestamp)" :key="idx" class="comment-item">
+                  <div class="main_feedback_cont">
+                    <div class="comment-avatar" :style="{ backgroundColor: getRoleColor(comment.username) }"></div>
+                    <div class="main_comment">
+                      <div class="comment-header">
+                        <p class="comment-username">{{ comment.username }}</p>
+                        <p class="comment-timestamp">{{ formatTimestamp(comment.timestamp) }}</p>
+                      </div>
+                      <p class="comment-text">{{ comment.text }}</p>
+                      
+                    </div>
+                  </div><!--<hr class="comment-divider"/>-->
                 </div>
-                <p class="comment-text">{{ comment.text }}</p>
-                <hr class="comment-divider"/>
               </div>
-            </div>
           </div>
         </div>
       </div>
+
         
+    </div>
+
+    <div class="side_content">
+
     </div>
   </home-page>
 </template>
@@ -264,16 +277,28 @@ export default {
 
 
 <style scoped>
+.side_content{
+}
 /* Feedback styles */
 .feedback {
-  margin-top: 25px;
+  max-width: 900px;
+  margin: 0 180px;
+  border-left: 1px solid #e0e0e080;
+  border-right: 1px solid #e0e0e080;
+  padding-bottom: 60px;
+}
+@media screen and (max-width: 900px) { 
+  .feedback{
+    margin: 0;
+  }
 }
 
 .post-section {
   display: flex;
   flex-direction: column;
-  width: 60%;
-  margin: 25px auto;
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 20px;
 }
 
 .discussion-box {
@@ -307,45 +332,51 @@ export default {
 
 .feedback-list {
   margin-top: 20px;
+  
 }
 
 .feedback-item {
-  background-color: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  /*background-color: var(--navy);*/
+  border: 1px solid #e0e0e080;
+  margin: 0 auto;
   padding: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease-in-out;
+  /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease-in-out;*/
 }
-
+/*
 .feedback-item:hover {
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-}
+  box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.1);
+}*/
 
 .feedback-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background-color: rgb(10, 11, 34);
-  color: white;
+  padding: 15px 10px 10px 10px;
+  color: var(--navy);
   border-radius: 10px 10px 0 0;
-  border-bottom: 1px solid #ccc;
+  /*border-bottom: 1px solid #ccc;*/
+
 }
 
 .feedback-header-left {
   display: flex;
   align-items: center;
 }
-
-.profile-picture {
-  width: 40px;
+.main_feedback_cont{
+  display: flex;
+  width: 100%;
+}
+.profile_picture {
+  width: 44px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 10px;
-  border: 2px solid white;
+  margin: 10px 5px 0 10px;
+  border: 2px solid var(--navy);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.feedback_focus{
+  width: 100%;
 }
 
 .feedback-name {
@@ -360,60 +391,72 @@ export default {
 }
 
 .feedback-content {
-  padding: 10px;
-  color: #333;
+  padding: 10px 10px 30px 10px;
+  color: var(--navy);
+  text-align: left;
+  font-size: 1.5rem;
 }
-
+.toggle-comments-button{
+  font-size: 0.8rem;
+}
 /* Comments section styles */
 .comments-section {
   margin-top: 10px;
-  border: 1px solid #ccc;
+  border-top: 1px solid var(--navy);
   padding: 10px;
-  border-radius: 8px;
-  background-color: #f8f8f8;
 }
 
 .comment-form {
   display: flex;
   gap: 10px;
-  margin-bottom: 10px;
 }
 
 .comment-input {
   flex: 1;
   padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 25px;
+  min-height: 20px;
+  resize: none;
+  overflow-y: hidden;
+  margin: 10px auto;
 }
 
 .comment-button {
   background-color: #0e5e7b;
   color: white;
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 25px;
+  height: 40px;
   border: none;
+  margin: 10px auto;
 }
 
 .comments-list {
   margin-top: 10px;
 }
-
+.main_comment{
+  width: 100%;
+}
 .comment-item {
   padding: 8px;
-  border-bottom: 1px solid #ccc;
   margin-bottom: 8px;
 }
 
 .comment-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  padding: 8px;
+  color: var(--navy);
 }
 
 .comment-avatar {
-  width: 30px;
+  width: 34px;
   height: 30px;
   border-radius: 50%;
+  border: 2px solid var(--navy);
+  margin-top: 6px;
 }
 
 .comment-username {
@@ -427,13 +470,17 @@ export default {
 }
 
 .comment-text {
-  margin: 5px 0;
+  padding: 10px;
+  color: var(--navy);
+  text-align: left;
+  font-size: 1.1rem;
 }
 
 .comment-divider {
   border: none;
   height: 1px;
   background-color: #ccc;
+  margin-top: 8px;
 }
 
 /* gawa ni yvan
