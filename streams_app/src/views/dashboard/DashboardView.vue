@@ -2,8 +2,10 @@
   <home-page>
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
-        <div @click="refresh_data" class="refresh_data" title="refresh dashboard"><img src="refresh_dash.png"></div>
-      </header-bar>
+        <div class="toggle_refresh">
+          <div @click="refresh_data" class="refresh_dashboard_icon" title="refresh_dashboard"><img src="refresh_dash.png"></div>
+        </div>
+              </header-bar>
       <dashboard-content>
         <!-- search record -->
         <button @click="togglePopup" class="circle-button fixed bottom-16 right-5 lg:bottom-10 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
@@ -714,11 +716,30 @@ export default{
 
 
 <style scoped>
-.refresh_data{
-  width: 40px;
+.toggle_refresh{
+  position: fixed;
+  background-color: var(--navy);
+  width: 20px;
   height: 40px;
+  margin: 0;
+  right: 0;
+  border-radius: 10px 0 0 10px;
+  transition: ease-in-out 0.4s;
   cursor: pointer;
-  margin-left: auto;
+}
+.toggle_refresh:hover{
+  width: 50px;
+  height: 40px;
+}
+.toggle_refresh:hover .refresh_dashboard_icon{
+  visibility: visible;
+  opacity: 1;
+}
+
+.refresh_dashboard_icon{
+  visibility: hidden;
+  opacity: 0; /* initially transparent */
+  transition: visibility 0s, opacity 0.3s linear 0.3s;
 }
 .refresh_icon{
   width: 100%;
