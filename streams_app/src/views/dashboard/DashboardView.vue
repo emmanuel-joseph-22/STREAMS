@@ -2,8 +2,10 @@
   <home-page>
       <header-bar>
         <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
-        <div class="toggle_refresh">
-          <div @click="refresh_data" class="refresh_dashboard_icon" title="refresh_dashboard"><img src="refresh_dash.png"></div>
+        <div class="toggle_refresh" :class="{ collapsed: dash_refresh_collapsed }" @click="toggleDashRefresh" >
+          <div v-if="dash_refresh_collapsed" class="refresh_dashboard_icon" title="refresh dashboard" @click="refresh_data">
+            <img  src="refresh_dash.png">
+          </div>
         </div>
               </header-bar>
       <dashboard-content>
@@ -62,8 +64,8 @@
         <div class="grid grid-cols-10 w-full gap-4 mt-5">
           
           <div class="col-span-10 flex overflow-x-auto">
-            <div class="box1-inner flex gap-4 mx-3">
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
+            <div class="box1-inner flex gap-4 mx-3 my-2">
+              <div class="box1-item box highlight_shadow rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.daily_avg_value }}m<sup>3</sup></p>
                 </span>
@@ -83,7 +85,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
+              <div class="box1-item box highlight_shadow rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.monthly_avg_value }}m<sup>3</sup></p>
                 </span>
@@ -103,7 +105,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
+              <div class="box1-item box highlight_shadow rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-base">
                     <p class="text-3xl font-bold">{{ $store.state.q_avg }}m<sup>3</sup></p>
                 </span>
@@ -123,7 +125,7 @@
                   </div>
                 </div>
               </div>
-              <div class="box1-item box border-4 shadow border-[#36B4E7] rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
+              <div class="box1-item box highlight_shadow rounded-xl w-[380px] h-[160px] flex flex-col items-center justify-center bg-[#042334] text-[#36B4E7]">
                 <span class="text-3xl font-bold">{{ $store.state.totalAccumulated }} m<sup>3</sup></span>
                 <p class="text-white mb-4">Total Accumulated</p>
                 <div class="flex flex-row px-8">
@@ -255,6 +257,8 @@ export default{
   data(){
     return {
       isLoading: false,
+      mainMeterColorPalette: ['#36B4E7', '#0E5E7B', '#057ABB', '#7BC7FF', '#1D6892'],
+      dash_refresh_collapsed: false,
     }
   },
   computed: {
@@ -301,6 +305,9 @@ export default{
       this.$refs.daily_chart.resize();
       this.$refs.monthly_chart.resize();
       this.$refs.quarterly_chart.resize();
+    },
+    toggleDashRefresh(){
+      this.dash_refresh_collapsed = !this.dash_refresh_collapsed;
     }
   },
   beforeUnmount() {
@@ -358,6 +365,7 @@ export default{
                   borderWidth: 1
                 },
                 data: mainWaterSourceBreakdown,
+                color: ['#4682b4', '#5b92e5', '#0047ab', '#7BC7FF', '#1D6892'],
                 emphasis: {
                   itemStyle: {
                     shadowBlur: 10,
@@ -459,7 +467,8 @@ export default{
             series: [{
               name: 'Data',
               type: 'bar',
-              data: Daily_yAxisConsumption
+              data: Daily_yAxisConsumption,
+              color: '#5CB3D6'
               }]
     });
     //monthly chart
@@ -498,6 +507,7 @@ export default{
                 name: 'Data',
                 data: monthly_yAxis,
                 type: 'bar',
+                color: '#5CB3D6'
               }
             ]
     });
@@ -537,6 +547,7 @@ export default{
                 name: 'Data',
                 data: quarter_yAxis,
                 type: 'bar',
+                color: '#5CB3D6'
               }
             ]
     });
@@ -717,6 +728,9 @@ export default{
 
 
 <style scoped>
+.highlight_shadow{
+  box-shadow: 0 0 8px rgb(30, 155, 204)
+}
 .toggle_refresh{
   position: fixed;
   background-color: var(--navy);
@@ -731,19 +745,13 @@ export default{
   transition: ease-in-out 0.4s;
   cursor: pointer;
 }
-.toggle_refresh:hover{
-  width: 50px;
-  height: 40px;
+.toggle_refresh.collapsed{
+  width: 50px;  
+  transition: ease-in-out 0.4s;
 }
-.toggle_refresh:hover .refresh_dashboard_icon{
-  visibility: visible;
-  opacity: 1;
-}
-
 .refresh_dashboard_icon{
-  visibility: hidden;
-  opacity: 0; /* initially transparent */
-  transition: visibility 0s, opacity 0.4s linear 0.4s;
+  transition: ease-in-out 0.7s;
+  margin: 0 4px;
 }
 .refresh_icon{
   width: 100%;

@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- nav bar for web -->
-        <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }" @click="toggleNavbar" title="Expand/Collapse SideBar" >
+        <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }" @click="toggleNavbar" >
             <header>
                 <!-- tinanggal ko class=icon ang cute nagzzooom -->
                 <div v-show="!navbarCollapsed">
