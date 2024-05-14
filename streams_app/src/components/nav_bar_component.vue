@@ -53,6 +53,15 @@
                     </div>
                 </router-link>
 
+                <!-- feedback div -->
+                <router-link v-if="!role" class="navbar_link" to="/feedback">
+                    <div class="navbar_icon">
+                        <!-- nav icon -->
+                        <img class="icon" src="community.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Community</div>
+                    </div>
+                </router-link>
+
                 <!-- map div -->
                 <router-link class="navbar_link"  to="/map" title="Maps">
                     <div class="navbar_icon">
@@ -62,6 +71,7 @@
                     </div>
                 </router-link>
             </header>
+
             <div class="empty_space"></div>
                 <!-- hamburger icon -->
                 <div class="dropdown_menu" @click="showMoreOptions">

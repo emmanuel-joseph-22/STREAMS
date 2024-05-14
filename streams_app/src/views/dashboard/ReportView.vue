@@ -124,9 +124,9 @@
   
   <!--Mobile PopUp-->
         
-        <!--<div v-if="showPopup" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>-->
-        <div class="popup-container fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[570px] border border-black bg-white text-[#042334] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-10/12" v-if="showPopup && isMobile">
-          <div class="popup-content h-[510px] flex flex-col">
+        <div v-if="showPopup && isMobile" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="togglePopup"></div>
+        <div class="popup-container fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-[630px] border border-black bg-white text-[#042334] rounded-lg shadow-lg z-30 p-4 transition-transform transition-opacity duration-500 ease-out md:w-1/3 w-11/12" v-if="showPopup && isMobile">
+            <div class="popup-content h-[570px] flex flex-col">
                 <div class="box-header">{{ rows[activeButtonIndex]?.title }}</div>
                 <div class="box-body overflow-y-auto">
                   <table v-if="activeButtonIndex === 0" class="elegant-table">
@@ -986,7 +986,8 @@
   /* Textarea styles */
   textarea {
     width: 100%;
-    padding: 10px;
+    margin-top: 4px;
+    padding: 0 0 70px 0;
     margin-top: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;

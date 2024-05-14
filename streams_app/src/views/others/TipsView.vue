@@ -1,8 +1,10 @@
 <template>
+    <header-bar>
+        <h1 class="text-4xl font-semibold ml-24">LEARN MORE</h1>
+    </header-bar>
     <home-page>
         <div class="tips">
             <div class="tips_header">
-                <h1 class="relative mt-4 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl">LEARN MORE</h1>
                 <p class="px-4 py-2 text-center">This page is intended to disseminate information about the importance of conserving water and how can we achieve it in different ways.</p>
             </div>
             <div class="tips_section relative">
@@ -246,11 +248,13 @@
 
 <script>
 import othersPageView from './othersPageView.vue';
+import header from './../../components/header_component.vue';
 
 export default {
     name: 'VideoEmbed',
     components: {
         'home-page': othersPageView,
+        'header-bar': header
     },
     data(){
         return {

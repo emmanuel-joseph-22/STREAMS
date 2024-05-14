@@ -445,6 +445,12 @@ export default{
                 return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + 'm<sup>3</sup>';
               }
             },
+            grid: {
+              left: '10%',
+              right: '10%',
+              bottom: '12%',
+              containLabel: true
+            },
             xAxis: [{
               type: 'category',
               data: Daily_xAxisConsumption,
@@ -462,7 +468,7 @@ export default{
               nameTextStyle: {
                 fontWeight: 'bold',
               },
-                nameGap: 35, 
+                nameGap: 90, 
             },
             series: [{
               name: 'Data',
@@ -483,6 +489,11 @@ export default{
                 return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + 'm<sup>3</sup>';
               }
             },
+            grid: {
+              left: '10%',
+              right: '10%',
+              bottom: '20%'
+            },
             xAxis: {
               type: 'category',
               data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -500,7 +511,7 @@ export default{
               nameTextStyle: {
                 fontWeight: 'bold' 
               },
-                nameGap: 35,
+                nameGap: 50,
             },
             series: [
               {
@@ -523,6 +534,11 @@ export default{
                 return params[0].name + '<br/>' + params[0].seriesName + ': ' + params[0].value + 'm<sup>3</sup>';
               }
             },
+            grid: {
+              left: '15%',
+              right: '10%',
+              bottom: '20%'
+            },
             xAxis: {
               type: 'category',
               data: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
@@ -540,7 +556,7 @@ export default{
               nameTextStyle: {
                 fontWeight: 'bold' 
               },
-                nameGap: 35,
+                nameGap: 50,
             },
             series: [
               {
