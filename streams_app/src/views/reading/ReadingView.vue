@@ -1,6 +1,6 @@
 <template>
+  <water_drop v-if="hide_everything"/>    
   <main-content>
-    <water_drop v-if="hide_everything"/>    
     <header_bar class="sticky top-0 bg-white">
       <h1 class="text-3xl text-left text-bsu-light-blue font-semibold ml-3 mt-1">Reading</h1>
     </header_bar>
@@ -102,81 +102,81 @@ export default {
       kayo ibang way para di humaba to*/
       popupData: {
           'deep_well_1': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'deep_well_2': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
             },
           'deep_well_3': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'deep_well_4': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'prime_water': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'fic_1': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'fic_2': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'canteen_drinking_fountain': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'executive_lounge': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'ceafa_faculty_room': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'rgr': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'cics_drinking_fountain': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'ssc': {
-              input1: { type: 'number', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'number', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'number', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
         }
@@ -447,9 +447,92 @@ export default {
       } else {
         alert('No valid readings were available to submit.');
       }
-    this.isSubmitting = false;
-    this.hide_everything = false;
-    this.closePopup()
+      this.isSubmitting = false;
+      this.hide_everything = false;
+      this.closePopup()
+      this.resetPopUp()
+    },
+    resetPopUp(){
+      this.popupData = {
+          'deep_well_1': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'deep_well_2': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+            },
+          'deep_well_3': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'deep_well_4': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'prime_water': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'fic_1': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'fic_2': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'canteen_drinking_fountain': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'executive_lounge': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'ceafa_faculty_room': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'rgr': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'cics_drinking_fountain': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+          'ssc': {
+              input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
+              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
+              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
+              isReadingAdded: false
+          },
+        }
     }
   },
   computed: {
