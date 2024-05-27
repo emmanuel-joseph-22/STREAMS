@@ -29,12 +29,12 @@
           <!-- Feedback header with profile picture, name, and timestamp -->
           <div class="main_feedback_cont">
             <div class="profile_picture"
-              :style="{ backgroundColor: getRoleColor(feedback.userRole) }"
+              :style="{ backgroundColor: getRoleColor(feedback.role) }"
             ></div>
             <div class="feedback_focus">
               <div class="feedback-header">
                 <div class="feedback-header-left">
-                  <p class="feedback-name">{{ feedback.userRole || 'guest' }}</p>
+                  <p class="feedback-name">{{ feedback.role || 'guest' }}</p>
                 </div>
                 <div class="feedback-header-right">
                   <p class="feedback-timestamp">{{ formatTimestamp(feedback.timestamp) }}</p>
@@ -112,19 +112,13 @@ export default {
     'home-page': othersPageView,
     'header-bar': header,
   },
-
   data() {
     return {
       feedbackText: '',
       isSubmitting: false,
       feedbacks: [],
+      role: store.state.role, // Retrieve the user's role from the store
     };
-  },
-  computed: {
-    userRole(){
-      return store.state.role || 'Guest';      
-    }
-
   },
   methods: {
     async submitFeedback() {
@@ -140,7 +134,7 @@ export default {
         const newFeedbackRef = await push(feedbackRef, {
           text: this.feedbackText,
           timestamp: Date.now(),
-          role: this.userRole,
+          role: this.role,
         });
 
         // Create a new feedback object
@@ -148,7 +142,7 @@ export default {
           id: newFeedbackRef.key,
           text: this.feedbackText,
           timestamp: Date.now(),
-          role: this.userRole,
+          role: this.role,
           comments: [],
           newCommentText: '',
           showComments: false, // Initialize showComments as false
@@ -188,7 +182,7 @@ export default {
           const commentsRef = ref(database, `feedbacks/${feedback.id}/comments`);
 
           // Get the current user's role from the store
-          const currentUserRole = this.userRole;
+          const currentUserRole = store.state.role || 'guest';
 
           // Push the new comment to the database
           await push(commentsRef, {
@@ -231,7 +225,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.userRole)
     // Calculate the timestamp 30 days ago from the current date and time
     const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
 
@@ -277,7 +270,6 @@ export default {
                 });
             }
         }
-        console.log('oks ba')
     });
   },
 };
