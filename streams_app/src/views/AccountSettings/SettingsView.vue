@@ -1,7 +1,7 @@
 <template>
   <home-page>
     <header_bar class="acct_header">
-      <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-3 mt-1 lg:ml-24">Account Settings</h1>
+      <h1 class="text-3xl text-left text-bsu-light-blue font-semibold ml-3 mt-1 lg:ml-24">Account Settings</h1>
     </header_bar>
 
     <div class="account-cont flex flex-col items-center justify-center">

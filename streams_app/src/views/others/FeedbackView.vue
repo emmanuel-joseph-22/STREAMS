@@ -316,8 +316,8 @@ export default {
 }
 
 .post-button {
-  background-color: rgba(14, 94, 123, 0.5);
-  color: #042334;
+  background-color: var(--navy);
+  color: white;
   border: none;
   border-radius: 18px;
   font-size: 16px;
@@ -327,7 +327,8 @@ export default {
 
 .post-button:hover,
 .post-button:disabled {
-  background-color: rgba(14, 94, 123, 0.7);
+  background-color: rgba(29, 147, 190, 0.7);
+  color: white;
 }
 
 .feedback-list {
@@ -423,13 +424,16 @@ export default {
 }
 
 .comment-button {
-  background-color: #0e5e7b;
+  background-color: var(--navy);
   color: white;
   padding: 8px 16px;
   border-radius: 25px;
   height: 40px;
   border: none;
   margin: 10px auto;
+}
+.comment-button:hover{
+  background-color: rgba(29, 147, 190, 0.7);
 }
 
 .comments-list {

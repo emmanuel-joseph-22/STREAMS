@@ -1,15 +1,15 @@
 <template>
     <home-page>
       <header-bar>
-        <h1 class="text-4xl font-semibold ml-3">Report</h1>
+        <h1 class="text-3xl font-semibold ml-3 mt-1">Report</h1>
       </header-bar>
       <div class="content-container">
         <!-- Left content -->
         <div class="left-content fixed md:top-28 top-14 md:left-52 left-0 bottom-0 w-full md:w-96 p-4 overflow-y-auto;">
           <!-- Creative rows -->
           <div class="flex items-center mb-4" v-for="(row, index) in rows" :key="row.id" @click="handleButtonClick(index)">
-              <div class="w-full">
-                  <span class="block text-lg text-left font-semibold mb-1">{{ row.title }}</span>
+              <div class="w-full p-2">
+                  <span class="block w-full text-lg text-left font-semibold mb-1">{{ row.title }}</span>
               </div>
               <div class="ml-auto">
                   <button :class="{ 'button': true, 'active-button': activeButtonIndex === index }" @click="togglePopup">📄</button>
@@ -21,7 +21,7 @@
           </div>
         </div>
         <!-- Right content -->
-        <div class="right-content overflow-x-hidden">
+        <div v-if="!isMobile" class="right-content overflow-x-hidden">
           <div class="box1 overflow-y-hidden">
             <div class="box-header">Report</div>
             <div class="box-body h-[400px] overflow-y-auto" v-if="activeButtonIndex === 0">
@@ -150,9 +150,10 @@
                     </tbody>
                   </table>
                 </div>
+                <div v-if="activeButtonIndex === 1" class="chart-container" id="generalConsumptionChartContainer"></div>
                 <div v-if="activeButtonIndex === 2" class="chart-container" id="pwChartContainer"></div>
-                <div v-else-if="activeButtonIndex === 3" class="chart-container" id="dw1ChartContainer"></div>
-                <div v-else-if="activeButtonIndex === 4" class="chart-container" id="dw2ChartContainer"></div>
+                <div v-if="activeButtonIndex === 3" class="chart-container" id="dw1ChartContainer"></div>
+                <div v-if="activeButtonIndex === 4" class="chart-container" id="dw2ChartContainer"></div>
                 <textarea v-model="userReport" v-if="activeButtonIndex !== null" placeholder="Type your report here..." rows="4"></textarea>
             </div>
             <button class="close-button absolute bottom-2 right-4 text-red-500 hover:text-red-700 cursor-pointer" @click="togglePopup">Close</button>
@@ -161,7 +162,7 @@
     </home-page>
   </template>
   
-  <script>
+<script>
   import HomePageView from './HomePageView.vue';
   import header from './../../components/header_component.vue';
   import { ref, onMounted, nextTick, computed, onUnmounted } from "vue";
@@ -848,9 +849,9 @@
       };
     }
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   /* Creative row styles */
   .row-container {
     display: flex;
@@ -918,7 +919,8 @@
   
   .left-content {
     @apply fixed md:top-28 top-14 md:left-52 left-0 bottom-0 w-full md:w-96 p-4 overflow-y-auto;
-  }
+    margin-top: 20px;
+}
   
   .right-content {
     margin-left: 300px; /* Adjust margin to accommodate fixed left content */

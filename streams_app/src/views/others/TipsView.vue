@@ -1,6 +1,6 @@
 <template>
     <header-bar>
-        <h1 class="text-4xl font-semibold ml-24">LEARN MORE</h1>
+        <h1 class="text-3xl font-semibold ml-24">LEARN MORE</h1>
     </header-bar>
     <home-page>
         <div class="tips">

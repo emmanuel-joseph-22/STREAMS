@@ -1,7 +1,7 @@
 <template>
   <home-page>
       <header-bar>
-        <h1 class="dashboard font-arial font-bold text-4xl ml-3">Dashboard</h1>
+        <h1 class="dashboard font-arial font-bold text-3xl ml-3 mt-1">Dashboard</h1>
         <div class="toggle_refresh" :class="{ collapsed: dash_refresh_collapsed }" @click="toggleDashRefresh" >
           <div v-if="dash_refresh_collapsed" class="refresh_dashboard_icon" title="refresh dashboard" @click="refresh_data">
             <img  src="refresh_dash.png">
@@ -257,7 +257,7 @@ export default{
   data(){
     return {
       isLoading: false,
-      mainMeterColorPalette: ['#36B4E7', '#0E5E7B', '#057ABB', '#7BC7FF', '#1D6892'],
+      mainMeterColorPalette: ['#0092B2', '#0E5E7B', '#057ABB', '#7BC7FF', '#1D6892'],
       dash_refresh_collapsed: false,
     }
   },
@@ -365,7 +365,7 @@ export default{
                   borderWidth: 1
                 },
                 data: mainWaterSourceBreakdown,
-                color: ['#4682b4', '#5b92e5', '#0047ab', '#7BC7FF', '#1D6892'],
+                color: ['#0092B2', '#0E5379', '#36B4E7', '#7BC7FF', '#1D6892'],
                 emphasis: {
                   itemStyle: {
                     shadowBlur: 10,

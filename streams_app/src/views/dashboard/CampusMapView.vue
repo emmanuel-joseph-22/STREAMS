@@ -1,7 +1,7 @@
 <template>
   <home-page>
     <header-bar>
-      <h1 class="dashboard font-arial font-bold text-4xl ml-3">Map</h1>
+      <h1 class="dashboard font-arial font-bold text-3xl ml-3 mt-1">Map</h1>
     </header-bar>
     <main-content>
       <div class="map-wrap">
