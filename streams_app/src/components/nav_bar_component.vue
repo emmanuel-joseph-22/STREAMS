@@ -41,7 +41,7 @@
                     <div class="navbar_icon">
                         <!-- nav icon -->
                         <img ref="navIcon" class="icon" src="reading_icon.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
-                        <div class="navlink_label" v-if="!navbarCollapsed">Report</div>
+                        <div class="navlink_label" v-if="!navbarCollapsed">Reading</div>
                     </div>
                 </router-link>
 
