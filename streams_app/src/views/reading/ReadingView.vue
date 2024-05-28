@@ -1,69 +1,73 @@
 <template>
-  <water_drop v-if="hide_everything"/>    
-  <main-content>
-    <header_bar class="sticky top-0 bg-white">
-      <h1 class="text-3xl text-left text-bsu-light-blue font-semibold ml-3 mt-1">Reading</h1>
-    </header_bar>
-    <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
-      This will record water reading in the database!
-    </confirm_pop_up>
+  <div>
+    <water_drop v-if="hide_everything"/>    
+    <main-content>
+      <header_bar class="sticky top-0 bg-white">
+        <h1 class="text-3xl text-left text-bsu-light-blue font-semibold ml-3 mt-1">Reading</h1>
+      </header_bar>
+      <confirm_pop_up @confirmEvent="confirm_window" v-if="stage_reading">
+        This will record water reading in the database!
+      </confirm_pop_up>
 
-    <div v-if="selectedWaterSource" class="fixed top-0 left-0 w-full h-full pl-8 pr-8 pt-16 pb-16 flex justify-center items-center bg-black bg-opacity-50 z-20">
-    <!--POPUP-->
-      <div class="bg-white w-full h-full rounded-lg shadow-lg">
-        <span class="absolute top-16 right-10 cursor-pointer text-gray-600 text-2xl" @click="closePopup">&times;</span>
-        <h2 class="mt-8">{{  capitalize(selectedWaterSource)  }}</h2>
-        <!--CONTENTS NG POPUP-->
+      <toast_notification ref="toast" />
+
+      <div v-if="selectedWaterSource" class="fixed top-0 left-0 w-full h-full pl-8 pr-8 pt-16 pb-16 flex justify-center items-center bg-black bg-opacity-50 z-20">
+        <!--POPUP-->
+        <div class="bg-white w-full h-full rounded-lg shadow-lg">
+          <span class="absolute top-16 right-10 cursor-pointer text-gray-600 text-2xl" @click="closePopup">&times;</span>
+          <h2 class="mt-8">{{  capitalize(selectedWaterSource)  }}</h2>
+          <!--CONTENTS NG POPUP-->
           <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-8 mt-4 t-7 p-4">
             <label for="input1" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input1.label }}</label>
             <input id="input1" :type="popupData[selectedWaterSource].input1.type" :placeholder="popupData[selectedWaterSource].input1.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input1.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input1.error }" @input="handleInput($event, 'input1')" inputmode="numeric"/>
-          
+
             <label for="input2" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input2.label }}</label>
             <input id="input2" :type="popupData[selectedWaterSource].input2.type" :placeholder="popupData[selectedWaterSource].input2.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input2.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input2.error }" @input="handleInput($event, 'input2')" inputmode="numeric"/>
-          
+
             <label for="input3" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input3.label }}</label>
             <input id="input3" :type="popupData[selectedWaterSource].input3.type" :placeholder="popupData[selectedWaterSource].input3.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input3.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input3.error }" @input="handleInput($event, 'input3')" inputmode="numeric"/>
-            <button @click="addReadingToLocal" class="add-reading-btn p-2.5 8 bg-bsu-blue text-white rounded-full cursor-pointer mt-4 text-base w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders self-center">Add Reading</button>
-          </div>
-      </div>
-    </div>
-
-    <div class="overflow-y-auto">
-      <div class="reading bg-bsu-blue flex justify-center items-center h-full">
-        <div class="bg-center h-full w-full inset-0 bg-white flex flex-col"> <!--[url('/public/image-30.jpg')]-->
-          <!--MENU FOR MAIN-->
-          <div class="pt-10 pl-4 pr-4 bg-bsu-base">
-            <button @click="mainmeter = !mainmeter" class="main-meter-box bg-bsu-alt-base bg-opacity-90 text-white font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
-            <div v-if="mainmeter" class="mb-2">
-              <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
-                <li v-for="(source, index) in mainMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" >
-                  <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{ capitalize(source) }}</div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!--MENU FOR SUB-->
-          <div class="pl-4 pr-4">
-            <button @click="submeter = !submeter" class="sub-meter-box bg-bsu-alt-base text-white bg-opacity-90 font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
-            <div v-if="submeter" class="mb-2">
-              <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
-                <li v-for="(source, index) in subMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}">
-                  <div class="hover:bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{  capitalize(source) }}</div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="body">
-            <a href="#" class="bg-bsu-base bg-opacity-50" @click="submitAllReadings">
-              <span>Submit</span>
-              <div class="wave"></div>
-            </a>
+            <button @click="addReadingToLocal" class="add-reading-btn p-2.5 bg-bsu-blue text-white rounded-full cursor-pointer mt-4 text-base w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders self-center">Add Reading</button>
           </div>
         </div>
       </div>
-    </div>
-  </main-content>
+
+      <div class="overflow-y-auto">
+        <div class="reading bg-bsu-blue flex justify-center items-center h-full">
+          <div class="bg-center h-full w-full inset-0 bg-white flex flex-col">
+            <!--MENU FOR MAIN-->
+            <div class="pt-10 pl-4 pr-4 bg-bsu-base">
+              <button @click="mainmeter = !mainmeter" class="main-meter-box bg-bsu-alt-base bg-opacity-90 text-white font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
+              <div v-if="mainmeter" class="mb-2">
+                <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
+                  <li v-for="(source, index) in mainMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" >
+                    <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{ capitalize(source) }}</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!--MENU FOR SUB-->
+            <div class="pl-4 pr-4">
+              <button @click="submeter = !submeter" class="sub-meter-box bg-bsu-alt-base text-white bg-opacity-90 font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
+              <div v-if="submeter" class="mb-2">
+                <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
+                  <li v-for="(source, index) in subMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}">
+                    <div class="hover:bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{  capitalize(source) }}</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="body">
+              <a href="#" class="bg-bsu-base bg-opacity-50" @click="submitAllReadings">
+                <span>Submit</span>
+                <div class="wave"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main-content>
+  </div>
 </template>
 
 <script>
@@ -73,6 +77,7 @@ import { firestore as db } from './../../main.js';
 import header_component from "../../components/header_component.vue";
 import HomePageView from "./../dashboard/HomePageView.vue";
 import confirmation_view from "./../../components/confirmation_view.vue";
+import toast_notification from "./../../components/toast_notification.vue";
 //import { mapActions } from 'vuex';
 import store from "@/store/index.js";
 import formatString from "@/format.js";
@@ -83,7 +88,8 @@ export default {
     'water_drop': loaderSpinner,
     'header_bar': header_component,
     'main-content': HomePageView,
-    'confirm_pop_up': confirmation_view
+    'confirm_pop_up': confirmation_view,
+    'toast_notification': toast_notification
   },
   data() {
     return {
@@ -392,6 +398,7 @@ export default {
       // Clear the input fields in the UI
       this.resetInputFields(waterSource);
       this.closePopup();
+      this.$refs.toast.show('Record added successfully!', 'success');
     },
     //resetting input function
     resetInputFields(source) {
