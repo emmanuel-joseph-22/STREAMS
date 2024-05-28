@@ -54,8 +54,8 @@
             </div>
           </div>
 
-          <div v-on:click="submitAllReadings" class="body">
-            <a href="#" class="bg-bsu-base bg-opacity-50">
+          <div class="body">
+            <a href="#" class="bg-bsu-base bg-opacity-50" @click="submitAllReadings">
               <span>Submit</span>
               <div class="wave"></div>
             </a>
@@ -278,16 +278,16 @@ export default {
       return [mainMeterTotal, submeterTotal]
     },*/
     async submitTotalConsumption(dateRead, consumption){
-      const [year, month, day] = dateRead.split("-")
-      const data = {
-        consumption: consumption,
-        date: dateRead,
-        year: year,
-        month: month,
-        day: day
-      };
+
       try {
-        this.hide_everything = true;
+        const [year, month, day] = dateRead.split("-")
+        const data = {
+          consumption: consumption,
+          date: dateRead,
+          year: year,
+          month: month,
+          day: day
+        };
         const path = `meter_records/main_meter/total_consumption`;
         // get reading ID if there is
         const readingID = await this.checkExisitngRecord('main_meter', 'total_consumption', dateRead)
@@ -402,6 +402,7 @@ export default {
       }
     },
     async submitAllReadings() {
+      this.hide_everything = true;
       this.isSubmitting = true; //temporary fix to looping submit problem 
       let dateRead = null;
       if (!navigator.onLine) {
