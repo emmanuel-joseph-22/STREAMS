@@ -4,10 +4,11 @@
         <h1 class="dashboard font-arial font-bold text-3xl ml-3 mt-1">Dashboard</h1>
         <div class="toggle_refresh" :class="{ collapsed: dash_refresh_collapsed }" @click="toggleDashRefresh" >
           <div v-if="dash_refresh_collapsed" class="refresh_dashboard_icon" title="refresh dashboard" @click="refresh_data">
-            <img  src="refresh_dash.png">
+            <img class="refresh_dash_icon" src="refresh_dash.png">
           </div>
         </div>
-              </header-bar>
+        <div v-if="dash_refresh_collapsed" class="fixed inset-0 z-10" @click="toggleDashRefresh"></div>
+      </header-bar>
       <dashboard-content>
         <!-- search record -->
         <button @click="togglePopup" class="circle-button fixed bottom-16 right-5 lg:bottom-10 m-2 w-14 h-14 rounded-full bg-[#042334] border-2 border-[#36B4E7] text-white hover:bg-[#36B4E7] hover:cursor-pointer hover:text-white transition duration-300 ease-in-out font-bold flex items-center justify-center z-10">
@@ -760,18 +761,26 @@ export default{
   border-left: 1px solid grey;
   transition: ease-in-out 0.4s;
   cursor: pointer;
+  z-index: 20;
 }
 .toggle_refresh.collapsed{
-  width: 50px;  
+  width: 45px;  
   transition: ease-in-out 0.4s;
 }
 .refresh_dashboard_icon{
-  transition: ease-in-out 0.7s;
-  margin: 0 4px;
+  
+  transition: ease-in-out 4.0s;
 }
+
+.refresh_dash_icon{
+  width: 40px;
+  height: 40px;
+}
+/*pie */
 .refresh_icon{
   width: 100%;
   height: 100%;
+  transition: ease-in-out 0.7s;
 }
 .refresh_button{
   cursor: pointer;
