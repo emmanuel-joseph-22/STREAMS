@@ -16,16 +16,15 @@
         <!--CONTENTS NG POPUP-->
           <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-8 mt-4 t-7 p-4">
             <label for="input1" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input1.label }}</label>
-            <input id="input1" :type="popupData[selectedWaterSource].input1.type" :placeholder="popupData[selectedWaterSource].input1.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input1.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input1.error }" @input="handleInput($event, 'input1')"/>
+            <input id="input1" :type="popupData[selectedWaterSource].input1.type" :placeholder="popupData[selectedWaterSource].input1.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input1.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input1.error }" @input="handleInput($event, 'input1')" inputmode="numeric"/>
           
             <label for="input2" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input2.label }}</label>
-            <input id="input2" :type="popupData[selectedWaterSource].input2.type" :placeholder="popupData[selectedWaterSource].input2.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input2.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input2.error }" @input="handleInput($event, 'input2')"/>
+            <input id="input2" :type="popupData[selectedWaterSource].input2.type" :placeholder="popupData[selectedWaterSource].input2.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input2.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input2.error }" @input="handleInput($event, 'input2')" inputmode="numeric"/>
           
             <label for="input3" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input3.label }}</label>
-            <input id="input3" :type="popupData[selectedWaterSource].input3.type" :placeholder="popupData[selectedWaterSource].input3.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input3.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input3.error }" @input="handleInput($event, 'input3')"/>
-          
+            <input id="input3" :type="popupData[selectedWaterSource].input3.type" :placeholder="popupData[selectedWaterSource].input3.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input3.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input3.error }" @input="handleInput($event, 'input3')" inputmode="numeric"/>
+            <button @click="addReadingToLocal" class="add-reading-btn p-2.5 8 bg-bsu-blue text-white rounded-full cursor-pointer mt-4 text-base w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders self-center">Add Reading</button>
           </div>
-          <button @click="addReadingToLocal" class="add-reading-btn p-2.5 8 bg-bsu-blue text-white rounded-full cursor-pointer text-base mt-20 w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders">Add Reading</button>
       </div>
     </div>
 
@@ -320,7 +319,7 @@ export default {
           this.popupData[this.selectedWaterSource][key].error = false;
         }
       } else {
-        if (!inputRegex.test(inputValue) || parseFloat(inputValue) < 0) {
+        if (inputValue && (!inputRegex.test(inputValue) || parseFloat(inputValue) < 0)) {
           this.popupData[this.selectedWaterSource][key].error = true;
         } else {
           this.popupData[this.selectedWaterSource][key].value = inputValue;
@@ -335,7 +334,7 @@ export default {
       if (this.popupData[waterSource].isReadingAdded) {
         // confirm if they want to edit the previous input
         if (confirm('A reading has already been added for this water source. Do you want to edit the previous input?')) {
-          // reset the flag  a reading has been added
+          // reset the flag a reading has been added
           this.popupData[waterSource].isReadingAdded = false;
         } else {
           // do not proceed 
@@ -350,10 +349,9 @@ export default {
         return;
       }
       
-      // if all fields are valid
-      const isValid = Object.values(this.popupData[waterSource]).every(field => !field.error && field.value !== '');
-      if (!isValid) {
-        alert('Please fill all fields with valid values.');
+      // if consumption field is field and valid
+      if (this.popupData[waterSource].input1.error || !this.popupData[waterSource].input1.value) {
+        alert('Please fill the Consumption field with a valid value.');
         return;
       }
 
@@ -393,6 +391,7 @@ export default {
       console.log('eto ung reading: ', store.state.readings)
       // Clear the input fields in the UI
       this.resetInputFields(waterSource);
+      this.closePopup();
     },
     //resetting input function
     resetInputFields(source) {
