@@ -7,7 +7,7 @@
             <img class="refresh_dash_icon" src="refresh_dash.png">
           </div>
         </div>
-        <div v-if="dash_refresh_collapsed" class="fixed inset-0 z-20" @click="toggleDashRefresh"></div>
+        <div v-if="dash_refresh_collapsed" class="fixed inset-0 z-10" @click="toggleDashRefresh"></div>
       </header-bar>
       <dashboard-content>
         <!-- search record -->
@@ -761,6 +761,7 @@ export default{
   border-left: 1px solid grey;
   transition: ease-in-out 0.4s;
   cursor: pointer;
+  z-index: 20;
 }
 .toggle_refresh.collapsed{
   width: 45px;  

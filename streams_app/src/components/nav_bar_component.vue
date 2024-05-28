@@ -85,7 +85,7 @@
                 <div v-if="more_settings" class="fixed inset-0 z-1" @click="showMoreOptions"></div>
                 <div class="dropdown_content" v-if="more_settings">
                     <!-- feedback link -->
-                    <router-link class="navbar_link" to="/feedback">
+                    <router-link class="navbar_link" to="/feedback" v-if="role">
                         <div class="other_link_label"><span>Community</span></div>
                     </router-link>
                     <!-- convservation tips ewan san lalagay -->
@@ -125,6 +125,9 @@
                     <router-link to="/events" v-if="role == 'event admin'">
                         <img class="mobile_icon" src="event_icon.png" />
                     </router-link>                  
+                    <router-link to="/feedback" v-if="!role">
+                        <img class="mobile_icon" src="community.png"/>
+                    </router-link>
                 </div>
                 <div class="mobile_link">
                     <router-link to="/map"> 
@@ -151,7 +154,7 @@
                         </div>
                     </div>
 
-                    <router-link class="navbar_label" to="/feedback" title="Feedback">
+                    <router-link class="navbar_label" to="/feedback" title="Feedback" v-if="role">
                         <span class="feedback">Community</span>
                     </router-link>
 

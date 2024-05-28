@@ -14,11 +14,11 @@
           </div>
 
           <div class="change-box flex flex-col items-center border-2 border-bsu-borders lg:w-3/4 rounded-lg bg-white p-4 cursor-pointer text-black hover:bg-bsu-borders hover:text-white transition duration-1000" @click="showPopup = true">
-            <label for="input-change" class="change-label font-bold">
+            <label for="input-change" class="change-label font-bold cursor-pointer">
               <span>Change Default Name</span>
             </label>
           </div>
-          <div class="change-box flex flex-col items-center border-2 border-bsu-borders lg:w-3/4 mt-4 rounded-lg bg-white p-4 cursor-pointer text-black hover:bg-bsu-borders hover:text-white" @click="showPasswordPopup = true">
+          <div class="change-box flex flex-col items-center border-2 border-bsu-borders lg:w-3/4 mt-4 rounded-lg bg-gray-400 p-4 cursor-pointer text-black">
             <label for="input-change" class="change-label font-bold">
               <span>Change Password</span>
             </label>
