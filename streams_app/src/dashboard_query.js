@@ -780,6 +780,27 @@ export async function daily_consumption(object){
     return object
 }*/
 
+export async function getTotalConsumption(date){
+    const meterRecordsRef = collection(db, 'meter_records');
+    const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
+    let totalConsumption = 0;
+    try{
+        for(let i = 0; i < main_meter.length; i++){
+            const reportsQuery = query(collection(mainMeterRef, main_meter[i]), where('date', '==', date), limit(1));          
+            const reportSnapshot = await getDocs(reportsQuery);
+             //console.log(reportSnapshot.size)
+            reportSnapshot.forEach((doc) => {
+                const waterConsumption = doc.data().consumption;
+                totalConsumption += waterConsumption;
+            });    
+        }    
+        return totalConsumption;
+    } catch (error) {
+        console.log('Error getting data for total consumption: ', error)
+    }        
+    //return 0;
+}
+
 //lipat data bla bla bla ignore nyo nalang
 
 const prime_water = [
