@@ -397,6 +397,7 @@ export default {
       console.log('eto ung reading: ', store.state.readings)
       // Clear the input fields in the UI
       this.resetInputFields(waterSource);
+      this.closePopup();
     },
     //resetting input function
     resetInputFields(source) {
