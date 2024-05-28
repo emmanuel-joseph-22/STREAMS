@@ -29,36 +29,38 @@
       </div>
     </div>
 
-    <div class="reading bg-bsu-blue flex justify-center items-center h-screen">
-      <div class="bg-center h-full w-full inset-0 bg-white"> <!--[url('/public/image-30.jpg')]-->
-        <!--MENU FOR MAIN-->
-        <div class="pt-10 pl-4 pr-4 bg-bsu-base">
-          <button @click="mainmeter = !mainmeter" class="main-meter-box bg-bsu-alt-base bg-opacity-90 text-white font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
-          <div v-if="mainmeter" class="mb-2">
-            <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
-              <li v-for="(source, index) in mainMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" >
-                <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{ capitalize(source) }}</div>
-              </li>
-            </ul>
+    <div class="overflow-y-auto">
+      <div class="reading bg-bsu-blue flex justify-center items-center h-full">
+        <div class="bg-center h-full w-full inset-0 bg-white flex flex-col"> <!--[url('/public/image-30.jpg')]-->
+          <!--MENU FOR MAIN-->
+          <div class="pt-10 pl-4 pr-4 bg-bsu-base">
+            <button @click="mainmeter = !mainmeter" class="main-meter-box bg-bsu-alt-base bg-opacity-90 text-white font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
+            <div v-if="mainmeter" class="mb-2">
+              <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
+                <li v-for="(source, index) in mainMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" >
+                  <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{ capitalize(source) }}</div>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <!--MENU FOR SUB-->
-        <div class="pl-4 pr-4">
-          <button @click="submeter = !submeter" class="sub-meter-box bg-bsu-alt-base text-white bg-opacity-90 font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
-          <div v-if="submeter" class="mb-2">
-            <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
-              <li v-for="(source, index) in subMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}">
-                <div class="hover:bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{  capitalize(source) }}</div>
-              </li>
-            </ul>
+          <!--MENU FOR SUB-->
+          <div class="pl-4 pr-4">
+            <button @click="submeter = !submeter" class="sub-meter-box bg-bsu-alt-base text-white bg-opacity-90 font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
+            <div v-if="submeter" class="mb-2">
+              <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
+                <li v-for="(source, index) in subMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}">
+                  <div class="hover:bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{  capitalize(source) }}</div>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <div v-on:click="submitAllReadings" class="body">
-          <a href="#" class="bg-bsu-base bg-opacity-50">
-            <span>Submit</span>
-            <div class="wave"></div>
-          </a>
+          <div v-on:click="submitAllReadings" class="body">
+            <a href="#" class="bg-bsu-base bg-opacity-50">
+              <span>Submit</span>
+              <div class="wave"></div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -565,9 +567,10 @@ export default {
 }
 .body {
   display: flex;
+  padding: 1rem;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
+  margin-bottom: 3rem;
 }
 .body a {
   position: relative;
