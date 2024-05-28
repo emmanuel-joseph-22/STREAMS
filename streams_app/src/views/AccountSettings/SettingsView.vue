@@ -1,7 +1,7 @@
 <template>
   <home-page>
     <header_bar class="acct_header">
-      <h1 class="text-3xl text-left text-bsu-light-blue font-semibold ml-3 mt-1 lg:ml-24">Account Settings</h1>
+      <h1 class="text-4xl text-left text-bsu-light-blue font-semibold ml-3 mt-1 lg:ml-24">Account Settings</h1>
     </header_bar>
 
     <div class="account-cont flex flex-col items-center justify-center">
@@ -78,7 +78,7 @@
               </div>
           </div>
           <div class="flex justify-center mt-4">
-              <button @click="changePassword" class="absolute bottom-4 left-8 text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out flex items-left justify-left">Save</button>
+            <span class="absolute bottom-4 left-8 text-grey-500 hover:text-blue-700 transition duration-300 ease-in-out flex items-left justify-left cursor-pointer">Save</span> <!---<button @click="changePassword" class="absolute bottom-4 left-8 text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out flex items-left justify-left">Save</button>-->    
           </div>
       </div>
       <button @click="closePasswordPopup" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
