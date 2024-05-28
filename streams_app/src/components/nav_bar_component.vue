@@ -82,6 +82,7 @@
                     </div>
                     <div class="navlink_label" v-if="!navbarCollapsed">More</div>
                 </div>
+                <div v-if="more_settings" class="fixed inset-0 z-1" @click="showMoreOptions"></div>
                 <div class="dropdown_content" v-if="more_settings">
                     <!-- feedback link -->
                     <router-link class="navbar_link" to="/feedback">
@@ -141,7 +142,7 @@
                 </div>
             </div>
             <div class="flex">
-                <div class="fixed inset-0 bg-gray-800 bg-opacity-60 z-10" v-if="sidebarOpen" @click="toggleSidebar"></div>
+                <div class="fixed inset-0 bg-gray-800 bg-opacity-60 z-20" v-if="sidebarOpen" @click="toggleSidebar"></div>
                 <div id="sidebar" class="bg-gray-800 text-white w-16" v-if="sidebarOpen" @click="toggleSidebar">
                     <div class="pl-6 pt-4 flex flex-row">
                         <img src="streams_logo.png" alt="more_setting" class="w-8 h-8">
