@@ -1,8 +1,8 @@
 <template>
-    <header-bar>
-        <h1 class="text-3xl font-semibold ml-24">LEARN MORE</h1>
-    </header-bar>
-    <home-page>
+    <home-page>    
+        <header-bar>
+            <h1 class="text-3xl font-semibold ml-2 mt-1">LEARN MORE</h1>
+        </header-bar>
         <div class="tips">
             <div class="tips_header">
                 <p class="px-4 py-2 text-center">This page is intended to disseminate information about the importance of conserving water and how can we achieve it in different ways.</p>
