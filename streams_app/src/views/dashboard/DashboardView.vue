@@ -41,7 +41,7 @@
             </div>
             <br/>
           </div>
-          <button @click="togglePopup" class="btn-close absolute bottom-4 right-8 text-red-500 hover:text-red-700">Close</button>
+          <button @click="closeSearchPopup" class="btn-close absolute bottom-4 right-8 text-red-500 hover:text-red-700">Close</button>
         </div>
       <!-- display record -->
       <div v-if="showRecord" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="toggleRecord"></div>
@@ -56,10 +56,10 @@
                 <!--<div class="rec_field text-[#042334] p-2 mb-2">Time: {{ time }}</div>-->
             </div>
             <div class="rec_field text-white p-2 w-[200px] h-[150px] m-2 bg-[#042334] rounded-lg flex flex-col items-center justify-center">
-                <h2 class="text-3xl font-bold">{{ meter }}m<sup>3</sup></h2>
+                <h2 class="text-3xl font-bold">{{ meter }}</h2>
             </div>
         </div>
-          <button @click="toggleRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>
+          <button @click="closeRecord" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Return</button>
         </div>
         <!-- highlighted data -->
         <div class="grid grid-cols-10 w-full gap-4 mt-5">
@@ -296,7 +296,6 @@ export default{
     }
   },
   mounted(){
-    //await lipat_data_hohoho()
     window.addEventListener('resize', this.handleResize);
     this.handleResize();
   },
@@ -380,31 +379,29 @@ export default{
     //submeter graph
     const submeter_graph = ref({
             title: {
-              text: "Submeters di pa okay",
+              text: "Submeters",
               left: "center"
             },
             tooltip: {
               trigger: "item",
               // format including percentage
-              formatter: "{a} <br/>{b}: {c}m<sup>3</sup> ({d}%)"
+              formatter: "{b} <br/>Data: {c}m<sup>3</sup> ({d}%)"
             },
             legend: {
               top: '7%',
               left: "center",
               //data: main_meter
             },
-
             series: [
               {
                 name: "Source",
                 type: "pie",
-                top: '12%',
-                radius: ["30%", "70%"],
-                avoidLabelOverlap: true,
+                radius: "55%",
+                center: ["50%", "70%"],
                 itemStyle: {
-                  borderRadius: 10,
+                  borderRadius: 1,
                   borderColor: '#fff',
-                  borderWidth: 2
+                  borderWidth: 1
                 },
                 data: [
                   { value: 73, name: "FIC-FOOD INNOVATION 1" },
@@ -417,22 +414,16 @@ export default{
                   { value: 55, name: "CICS DRINKING FOUNTAIN" },
                   { value: 19, name: "SSC" }
                 ],
+                color: ['#0092B2', '#0E5379', '#36B4E7', '#7BC7FF', '#1D6892', '#0E5323', '#0E532F', '#0E53ED'],
                 emphasis: {
-                  label: {
-                    show: true,
-                    fontSize: 20,
-                    fontWeight: 'bold'
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: "rgba(0, 0, 0, 0.2)"
                   }
-                },
-                labelLine: {
-                  show: false
-                },
-                label: {
-                  show: false,
-                  position: 'center'
                 }
               }
-            ]
+            ],
     });
     // daily water consumption
     const consumption_chart = ref( {
@@ -627,7 +618,7 @@ export default{
       mainWaterSourceBreakdown.value = dataSet
       pieDate.value = dateString.toString()
     }
-
+1
     // nav : main and sub meters
     const selectedGraph = ref('mainMeter');
 
@@ -663,9 +654,9 @@ export default{
       const record = await search_record(search_date.value, search_water_source.value)
       formattedwaterSource.value = formatString(search_water_source.value)
       if(record == 0){
-        meter.value = 'no reading 0'
+        meter.value = 'no reading'
       } else {
-        meter.value = record;
+        meter.value = record + 'm\u00B3';
       }
       //format date into formal structure
       const dateString = new Date(search_date.value)
@@ -673,6 +664,16 @@ export default{
       search_date.value = formattedDate
       showRecord.value = !showRecord.value;
     };
+    const closeRecord = () => {
+      search_water_source.value = "";
+      search_date.value = null;
+      showRecord.value = !showRecord.value;
+    }
+    const closeSearchPopup = () => {
+      search_water_source.value = "";
+      search_date.value = null;
+      showPopup.value = !showPopup.value;
+    }
 
     const quarPopup = ref(false);
 
@@ -736,7 +737,9 @@ export default{
       showRecord,
       quarPopup,
       monthlyPopup,
-      refresh_main_pie
+      refresh_main_pie,
+      closeRecord,
+      closeSearchPopup
     }
   }
 }
@@ -795,5 +798,8 @@ input:focus, textarea:focus, select:focus {
 .subtitles{
   line-height: 0.4;
   cursor: pointer;
+}
+.popup-box{
+  z-index: 900;
 }
 </style>

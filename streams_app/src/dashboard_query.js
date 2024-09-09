@@ -125,7 +125,6 @@ export async function monthly_query(month_obj){
     const mainMeterRef = doc(meterRecordsRef, 'main_meter'); 
     try{
         for(let i = 0; i < main_meter.length; i++){
-
             for(let j = 0; j < month_path.length; j++){  
                 let totalConsumption = 0;
                 const monthlyQuery = query(collection(mainMeterRef, main_meter[i]), 
@@ -169,7 +168,7 @@ export function quarterly_consumption(month_obj){
     }
     return q_obj
 }
-// quarterly helper
+// quarterly helper functions
 function q1_calculator(month_obj, q_obj, i){
     const meter = main_meter[i];
     if(month_obj[meter]){
@@ -801,7 +800,7 @@ export async function getTotalConsumption(date){
     //return 0;
 }
 
-//lipat data bla bla bla ignore nyo nalang
+//yaw ko na
 
 const prime_water = [
     0,

@@ -333,6 +333,18 @@ export default {
         }
       }
     },
+    /*handleInput(event) {
+      const inputValue = event.target.value;
+      const idPattern = /^[0-9]+$/; // allow id that starts with 0
+      this.isIDValid = idPattern.test(this.id);
+
+        if (inputValue && (!inputRegex.test(inputValue))) {
+          return true;
+        } else {
+          return false;
+        }
+  
+    },*/
     addReadingToLocal() {
       const waterSource = this.selectedWaterSource;
 

@@ -8,6 +8,7 @@ const store = createStore({
         userID: null,
         userDisplayName: null,
         userEmail: null,
+
         // try ko lang tong sa dashboard na data
         //daily
         daily_values: null,
@@ -18,6 +19,7 @@ const store = createStore({
         // main meter in pie
         pieMainMeter: null,
         pieSubmeter: null,
+        
         //highlights for total
         totalAccumulated: 0, // total consumption
         maxTotalDate: null, // date of peak consumption

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-cover bg-center inset-0 opacity-90 bg-[url('/public/Alangilan-entrance-facade.jpg')] h-screen">
+    <div class="bg-crop bg-center inset-0 opacity-90 bg-[url('/public/Alangilan-entrance-facade.jpg')]">
         <div class="login relative flex flex-column">
             <div class="prj-name">
     <!--       <h1 class="streams fixed left-10 mt-10 font-bold text-1xl font-sans sm:text-1xl md:text-2xl lg:text-4xl text-blue-400">STREAMS</h1>   -->

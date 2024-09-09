@@ -160,7 +160,7 @@
           </div>
       </div>
     </home-page>
-  </template>
+</template>
   
 <script>
   import HomePageView from './HomePageView.vue';
