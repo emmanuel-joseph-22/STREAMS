@@ -626,7 +626,6 @@ export default{
       mainWaterSourceBreakdown.value = dataSet
       pieDate.value = dateString.toString()
     }
-
     // nav : main and sub meters
     const selectedGraph = ref('mainMeter');
 
