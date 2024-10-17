@@ -28,7 +28,6 @@
                                 <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption.
                                     <br/><br/><img src="water_conserve.gif" alt="GIF Conserve" class="p-12"><br/>
                                     <strong>Water conservation</strong> entails both individual actions, such as fixing leaks and using water-efficient appliances, and collective efforts, such as implementing water-saving policies and investing in water infrastructure.</p>
-                                
                                 <p class="text-2xl font-bold"><br/>10 Ways To Conserve Water as a Student<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
                                 <ol>
@@ -95,7 +94,7 @@
                                     <br/><br/>In the realm of agriculture, water conservation emerges as a linchpin for ensuring global food security amidst changing climatic conditions. With agriculture accounting for a substantial portion of global water usage, optimizing water use efficiency in irrigation practices becomes imperative for sustaining crop yields while minimizing environmental impacts. By embracing water-efficient irrigation techniques and promoting soil conservation measures, farmers can not only conserve water resources but also bolster their resilience to droughts and water scarcity, thereby bolstering food security for communities worldwide.
                                     
                                     <br/><br/>Furthermore, water conservation serves as a vital tool for adapting to the realities of water scarcity and building resilience in vulnerable communities. As climate change exacerbates water stress in many regions, proactive measures to conserve and manage water resources become indispensable for ensuring equitable access to clean water for all. By investing in water-saving technologies, implementing water reuse systems, and raising public awareness about water conservation, societies can empower individuals and communities to adapt to water scarcity and build a more resilient future.</p>
-                            </div>
+                                </div>
                             <div ref="scrollableDiv" v-if="selectedContent == 'staffs'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is Water Conservation?<br/><br/></p>
                                 <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption. 
@@ -240,10 +239,9 @@
                                 <p class="text-2xl font-bold"><br/>SDG 12 aims to..?<br/><br/></p>
                                 <p class="text-left px-4 py-2"><strong>SDG 12</strong> aims to promote sustainable consumption and production patterns to ensure that economic growth and development are environmentally sustainable and socially inclusive. It encourages responsible consumption and production practices that minimize waste generation, reduce resource depletion, and promote the efficient use of natural resources.</p>
                             </div>
-                            <!--Back To Top Button-->
-                        <button v-if="showBackToTop" @click="scrollToTop" class="fixed bottom-10 left-60% p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all"> Back to Top </button>
-                </div>
-            </div>
+                    </div>
+                </div>         
+            <button v-if="showBackToTop" @click="scrollToTop" class="back-to-top-btn"> Back to Top </button>               
         </div>
     </home-page>
 </template>
@@ -301,6 +299,29 @@ export default {
 </script>
 
 <style>
+
+.tips_section {
+  position: relative;
+}
+
+.back-to-top-btn {
+  position: absolute; /* Change from fixed to absolute */
+  bottom: 50px; /* Adjust the distance from the bottom */
+  transform: translateX(-50%); /* Adjust for half of its own width */
+  padding: 12px;
+  background-color: #3B82F6;
+  color: white;
+  border-radius: 30px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  z-index: 10; /* Ensure it is on top of the content */
+}
+
+.back-to-top-btn:hover {
+  background-color: #2563EB; /* Darker blue on hover */
+}
+
 .slide-fade-enter-active, .slide-fade-leave-active {
   transition: opacity 0.3s, transform 0.3s;
 }
@@ -334,4 +355,6 @@ export default {
     width: 100%;
     height: 100%;
 }
+
+
 </style>
