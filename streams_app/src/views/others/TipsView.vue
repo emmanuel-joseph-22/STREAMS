@@ -23,7 +23,7 @@
                     </div>
                 </div>
                         <div class="tip-content overflow-y-hidden">
-                            <div v-if="selectedContent == 'students'" class="relative w-full h-[690px] sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto">
+                            <div ref="scrollableDiv" v-if="selectedContent == 'students'" class="relative w-full h-[690px] sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto">
                                 <p class="text-2xl font-bold"><br/>What is Water Conservation?<br/><br/></p>
                                 <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption.
                                     <br/><br/><img src="water_conserve.gif" alt="GIF Conserve" class="p-12"><br/>
@@ -96,7 +96,7 @@
                                     
                                     <br/><br/>Furthermore, water conservation serves as a vital tool for adapting to the realities of water scarcity and building resilience in vulnerable communities. As climate change exacerbates water stress in many regions, proactive measures to conserve and manage water resources become indispensable for ensuring equitable access to clean water for all. By investing in water-saving technologies, implementing water reuse systems, and raising public awareness about water conservation, societies can empower individuals and communities to adapt to water scarcity and build a more resilient future.</p>
                             </div>
-                            <div v-if="selectedContent == 'staffs'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
+                            <div ref="scrollableDiv" v-if="selectedContent == 'staffs'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is Water Conservation?<br/><br/></p>
                                 <p class="px-4 py-2 text-left"><strong>Water conservation</strong> encompasses a range of practices aimed at responsibly managing and preserving the world's freshwater resources. It involves reducing water wastage, optimizing water use efficiency, and promoting sustainable water management practices across various sectors, including agriculture, industry, and domestic consumption. 
                                     <br/><br/><img src="water_conserve.gif" alt="GIF Conserve" class="p-12"><br/>
@@ -164,7 +164,7 @@
                                     However, water treatment also helps to guarantee that water is returned to the natural cycle. The safe return of water to natural sources such as rivers, lakes, and oceans is one of the processes' final applications. Naturally, in order to prevent contamination and other seriously detrimental environmental issues like water pollution, water treatment facilities must make sure that the water is clear of harmful elements before proceeding.
                                     </p>
                             </div>
-                            <div v-if="selectedContent == 'sdg6'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
+                            <div ref="scrollableDiv" v-if="selectedContent == 'sdg6'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is SDG 6 all about?<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
                                     <strong>SDG 6</strong> stands for Sustainable Development Goal 6, which is one of the seventeen global goals established by the United Nations in 2015 as part of the 2030 Agenda for Sustainable Development.<br/>
@@ -199,7 +199,7 @@
                                 <p class="text-2xl font-bold"><br/>SDG 6 aims to..?<br/><br/></p>
                                 <p class="text-left px-4 py-2"><strong>SDG 6</strong> aims to ensure that everyone has access to clean water and sanitation by 2030, addressing a fundamental aspect of human well-being and sustainable development. It acknowledges the importance of water as a vital resource for health, economic development, and environmental sustainability.</p>
                             </div>
-                            <div v-if="selectedContent == 'sdg12'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
+                            <div ref="scrollableDiv" v-if="selectedContent == 'sdg12'" class="relative border border-900-black w-full sm:w-10/12 md:w-3/4 lg:w-2/3 xl:w-1/2 top-2 mx-auto rounded-lg max-w-screen-2xl p-8 overflow-y-auto h-[690px]">
                                 <p class="text-2xl font-bold"><br/>What is SDG 12 all about?<br/><br/></p>
                                 <p class="px-4 py-2 text-left">
                                     <strong>SDG 12</strong> stands for Sustainable Development Goal 12, which is one of the seventeen global goals established by the United Nations as part of the 2030 Agenda for Sustainable Development.<br/> 
@@ -240,7 +240,9 @@
                                 <p class="text-2xl font-bold"><br/>SDG 12 aims to..?<br/><br/></p>
                                 <p class="text-left px-4 py-2"><strong>SDG 12</strong> aims to promote sustainable consumption and production patterns to ensure that economic growth and development are environmentally sustainable and socially inclusive. It encourages responsible consumption and production practices that minimize waste generation, reduce resource depletion, and promote the efficient use of natural resources.</p>
                             </div>
-                        </div>
+                            <!--Back To Top Button-->
+                        <button v-if="showBackToTop" @click="scrollToTop" class="fixed bottom-10 left-60% p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all"> Back to Top </button>
+                </div>
             </div>
         </div>
     </home-page>
@@ -260,18 +262,42 @@ export default {
         return {
             selectedContent: 'students',
             videoUrl: 'https://www.youtube.com/embed/66p5VT3XwTk',
-            videoUrls: 'https://www.youtube.com/embed/VaUXquivUwQ'
+            videoUrls: 'https://www.youtube.com/embed/VaUXquivUwQ',
+            showBackToTop: false
         }
     },
-    mounted(){
-      
+        methods: {
+        showContent(content) {
+            this.$refs.scrollableDiv.removeEventListener('scroll', this.handleScroll);
+            this.selectedContent = content;
+            this.$nextTick(() => {
+                this.$refs.scrollableDiv.scrollTop = 0;  // Reset scroll position
+                this.showBackToTop = false; //Hide Back to Top button
+                this.$refs.scrollableDiv.addEventListener('scroll', this.handleScroll);  // Attack scroll even listener to new section
+            });
+        },
+        scrollToTop() {
+            // Scroll to top of the scrollable div
+            this.$refs.scrollableDiv.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        },
+        handleScroll() {
+            // Check the scroll position of the specific div
+            const scrollTop = this.$refs.scrollableDiv.scrollTop;
+            this.showBackToTop = scrollTop > 100;
+        }
     },
-    methods: {
-    showContent(content) {
-      this.selectedContent = content;
+    mounted() {
+        // Attach scroll event to the specific div
+        this.$refs.scrollableDiv.addEventListener('scroll', this.handleScroll);
+    },
+    beforeUnmount() {
+        // Clean up the scroll event listener
+        this.$refs.scrollableDiv.removeEventListener('scroll', this.handleScroll);
     }
-  }   
-}
+};
 </script>
 
 <style>
