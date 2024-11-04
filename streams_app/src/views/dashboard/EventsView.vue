@@ -109,7 +109,12 @@
 
             <!-- Department -->
             <div class="input-container">
-                <input v-model="newRow.department" type="text" placeholder="Office/College Department" class="input-field" :class="{ 'border-red-500': error === 'Please provide a department.' }" />
+                <select v-model="newRow.department" class="input-field" type="text" placeholder="Office/College Department" :class="{ 'border-red-500': error === 'Please provide a department.' }" >
+                    <option value="" disabled selected>Office/College Department</option>
+                    <option value="CIT Department">CIT</option>
+                    <option value="CEAFA Department">CEAFA</option>
+                    <option value="CICS Department">CICS</option>
+                </select>
                 <div v-if="error === 'Please provide a department.'" class="error-message">{{ error }}</div>
             </div>
 
