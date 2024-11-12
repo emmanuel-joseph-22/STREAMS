@@ -11,52 +11,47 @@
 
       <toast_notification ref="toast" />
 
-      <div v-if="selectedWaterSource" class="fixed top-0 left-0 w-full h-full pl-8 pr-8 pt-16 pb-16 flex justify-center items-center bg-black bg-opacity-50 z-20">
-        <!--POPUP-->
-        <div class="bg-white w-full h-full rounded-lg shadow-lg">
-          <span class="absolute top-16 right-10 cursor-pointer text-gray-600 text-2xl" @click="closePopup">&times;</span>
-          <h2 class="mt-8">{{  capitalize(selectedWaterSource)  }}</h2>
-          <!--CONTENTS NG POPUP-->
-          <div class="m3-cont flex flex-col flex-start w-auto h-14 mb-8 mt-4 t-7 p-4">
-            <label for="input1" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input1.label }}</label>
-            <input id="input1" :type="popupData[selectedWaterSource].input1.type" :placeholder="popupData[selectedWaterSource].input1.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input1.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input1.error }" @input="handleInput($event, 'input1')" inputmode="numeric"/>
-
-            <label for="input2" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input2.label }}</label>
-            <input id="input2" :type="popupData[selectedWaterSource].input2.type" :placeholder="popupData[selectedWaterSource].input2.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input2.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input2.error }" @input="handleInput($event, 'input2')" inputmode="numeric"/>
-
-            <label for="input3" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[selectedWaterSource].input3.label }}</label>
-            <input id="input3" :type="popupData[selectedWaterSource].input3.type" :placeholder="popupData[selectedWaterSource].input3.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl rounded text-base text-blue-900 box-border outline-none w-full" v-model="popupData[selectedWaterSource].input3.value" :class="{ 'border-red-500': popupData[selectedWaterSource].input3.error }" @input="handleInput($event, 'input3')" inputmode="numeric"/>
-            <button @click="addReadingToLocal" class="add-reading-btn p-2.5 bg-bsu-blue text-white rounded-full cursor-pointer mt-4 text-base w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders self-center">Add Reading</button>
-          </div>
-        </div>
-      </div>
-
       <div class="overflow-y-auto">
         <div class="reading bg-bsu-blue flex justify-center items-center h-full">
           <div class="bg-center h-full w-full inset-0 bg-white flex flex-col">
             <!--MENU FOR MAIN-->
-            <div class="pt-10 pl-4 pr-4 bg-bsu-base">
+            <div class="pt-10 pl-4 pr-4 bg-bsu-base"> 
               <button @click="mainmeter = !mainmeter" class="main-meter-box bg-bsu-alt-base bg-opacity-90 text-white font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">MAIN METER</button>
               <div v-if="mainmeter" class="mb-2">
                 <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
-                  <li v-for="(source, index) in mainMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}" >
-                    <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{ capitalize(source) }}</div>
+                  <li v-for="(source, index) in mainMeterSources" :key="index" class="cursor-pointer rounded-md mb-4" :class="{'bg-bsu-borders': selectedWaterSource === source || popupData[source].isReadingAdded, 'bg-bsu-blue': selectedWaterSource !== source && !popupData[source].isReadingAdded}">
+                    <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 font-bold text-white" @click="toggleSource(source)">{{ capitalize(source) }}</div>
+                    <div v-if="selectedWaterSource === source" class="p-4 bg-white rounded-md">
+                      <label for="input1" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[source].input1.label }}</label>
+                      <input id="input1" :type="popupData[source].input1.type" :placeholder="popupData[source].input1.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl text-base text-blue-900 box-border outline-none w-full" 
+                        v-model="popupData[source].input1.value" :class="{ 'border-red-500': popupData[source].input1.error }" @input="handleInput($event, 'input1')" inputmode="numeric" />
+                        <button @click="addReadingToLocal(source)" class="add-reading-btn p-2.5 bg-bsu-blue text-white rounded-full cursor-pointer mt-4 text-base w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders self-center">
+                          Add Reading
+                        </button>
+                    </div>
                   </li>
                 </ul>
               </div>
             </div>
-            <!--MENU FOR SUB-->
+            <!-- MENU FOR SUBMETER -->
             <div class="pl-4 pr-4">
               <button @click="submeter = !submeter" class="sub-meter-box bg-bsu-alt-base text-white bg-opacity-90 font-bold p-4 border-2 border-bsu-borders w-full rounded-md mb-2">SUBMETER</button>
               <div v-if="submeter" class="mb-2">
                 <ul class="bg-bsu-blue bg-opacity-30 w-full p-4">
-                  <li v-for="(source, index) in subMeterSources" :key="index" class="cursor-pointer rounded-md" :class="{'bg-bsu-borders': isPopupFilled(source), 'bg-bsu-blue': !isPopupFilled(source)}">
-                    <div class="hover:bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 mb-2 font-bold text-white" @click="openPopup(source)">{{  capitalize(source) }}</div>
-                  </li>
-                </ul>
-              </div>
+                  <li v-for="(source, index) in subMeterSources" :key="index" class="cursor-pointer rounded-md mb-4" :class="{'bg-bsu-borders': selectedWaterSource === source || popupData[source].isReadingAdded, 'bg-bsu-blue': selectedWaterSource !== source && !popupData[source].isReadingAdded}">
+                  <div class="hover:bg-bsu-borders border-2 border-bsu-borders rounded-md w-full p-4 font-bold text-white" @click="toggleSource(source)">{{ capitalize(source) }}</div>
+                  <div v-if="selectedWaterSource === source" class="p-4 bg-white rounded-md">
+                    <label for="input1" class="m3-label mt-8 mr-2.5 font-bold text-left">{{ popupData[source].input1.label }}</label>
+                    <input id="input1" :type="popupData[source].input1.type" :placeholder="popupData[source].input1.placeholder" class="flex-1 p-2.5 border-solid border-4 border-bsu-borders rounded-xl text-base text-blue-900 box-border outline-none w-full"
+                      v-model="popupData[source].input1.value" :class="{ 'border-red-500': popupData[source].input1.error }" @input="handleInput($event, 'input1')" inputmode="numeric" />
+                      <button @click="addReadingToLocal(source)" class="add-reading-btn p-2.5 bg-bsu-blue text-white rounded-full cursor-pointer mt-4 text-base w-32 border-2 border-bsu-borders hover:bg-bsu-borders active:bg-bsu-borders self-center">
+                        Add Reading
+                      </button>
+                  </div>
+                </li>
+              </ul>
             </div>
-
+          </div>
             <div class="body">
               <a href="#" class="bg-bsu-base bg-opacity-50" @click="submitAllReadings">
                 <span>Submit</span>
@@ -111,80 +106,54 @@ export default {
       popupData: {
           'deep_well_1': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'deep_well_2': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
             },
           'deep_well_3': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'deep_well_4': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'prime_water': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'fic_1': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'fic_2': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'canteen_drinking_fountain': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'executive_lounge': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'ceafa_faculty_room': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'rgr': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'cics_drinking_fountain': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'ssc': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
         }
@@ -193,8 +162,11 @@ export default {
   },    
   methods: {
     capitalize(source){
-      const formattedStr = formatString(source)
-      return formattedStr.toUpperCase()
+       const formattedStr = formatString(source)
+       return formattedStr.toUpperCase()
+    },
+    toggleSource(source){
+      this.selectedWaterSource = this.selectedWaterSource === source ? null : source;
     },
     openPopup(source) {
       this.selectedWaterSource = source;
@@ -226,15 +198,11 @@ export default {
       const [year, month, day] = dateRead.split("-");
       const waterSource = this.selectedWaterSource;
       const consumption = this.popupData[waterSource].input1.value;
-      const input_x = this.popupData[waterSource].input2.value;
-      const input_x0 = this.popupData[waterSource].input3.value;
       
       let path;
       let source_category;
       const data = {
         consumption: consumption,
-        input_x: input_x,
-        input_x0: input_x0,
         date: dateRead,
         year: year,
         month: month,
@@ -377,8 +345,7 @@ export default {
       // also slice them into separate parameter
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString().split('T')[0];
-      const input_x = this.popupData[waterSource].input2.value || '';  // Consider empty as default
-      const input_x0 = this.popupData[waterSource].input3.value || ''; // Consider empty as default
+
       
       // if the reading already exists in the store
       const existingReading = this.$store.state.readings.findIndex(reading => reading.waterSource === waterSource);
@@ -387,8 +354,6 @@ export default {
         this.$store.state.readings[existingReading].data = {
           date: formattedDate,
           consumption,
-          input_x,
-          input_x0
         };
       } else {
         // if the reading does not exist, add to the store
@@ -397,8 +362,6 @@ export default {
           data: {
             date: formattedDate,
             consumption,
-            input_x,
-            input_x0
           }
         };
         // Add the reading to Vuex
@@ -408,7 +371,7 @@ export default {
       this.popupData[waterSource].isReadingAdded = true;
       console.log('eto ung reading: ', store.state.readings)
       // Clear the input fields in the UI
-      this.resetInputFields(waterSource);
+      // this.resetInputFields(waterSource);
       this.closePopup();
       this.$refs.toast.show('Record added successfully!', 'success');
     },
@@ -416,8 +379,6 @@ export default {
     resetInputFields(source) {
       if (this.popupData[source]) {
         this.popupData[source].input1.value = '';
-        this.popupData[source].input2.value = '';
-        this.popupData[source].input3.value = '';
       }
     },
     async submitAllReadings() {
@@ -439,8 +400,6 @@ export default {
         dateRead = reading.data.date
         this.popupData[this.selectedWaterSource] = {
             input1: { value: reading.data.consumption },
-            input2: { value: reading.data.input_x || '' },
-            input3: { value: reading.data.input_x0 || '' }
         };
         await this.submitForm(dateRead);
        
@@ -471,80 +430,54 @@ export default {
       this.popupData = {
           'deep_well_1': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'deep_well_2': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
             },
           'deep_well_3': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'deep_well_4': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'prime_water': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'fic_1': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'fic_2': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'canteen_drinking_fountain': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'executive_lounge': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'ceafa_faculty_room': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'rgr': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'cics_drinking_fountain': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
           'ssc': {
               input1: { type: 'text', placeholder: 'm3:', label: 'Consumption', value: '', error: '' },
-              input2: { type: 'text', placeholder: 'x0.001', label: 'one-thousandth (milli)', value: '', error: '' },
-              input3: { type: 'text', placeholder: 'x0.0001', label: 'ten-thousandth (micro)', value: '', error: '' },
               isReadingAdded: false
           },
         }
