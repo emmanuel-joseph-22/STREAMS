@@ -83,8 +83,12 @@
       </div>
       <button @click="closePasswordPopup" class="btn-close absolute bottom-4 right-4 text-red-500 hover:text-red-700">Close</button>
   </div>
-
-    </div>
+    <!-- Notification Popup -->
+    <pop_up_notification
+    v-if="showNotification"
+    :message="notificationMessage"
+    @close="showNotification = false"/>
+      </div>
   </home-page>
 </template>
 
@@ -94,15 +98,19 @@ import AccountPageView from './AccountPageView.vue';
 import header_component from "../../components/header_component.vue";
 import store from '@/store';
 import { updateDisplayName, changePassword } from '@/user';
+import pop_up_notification from '@/components/pop_up_notification.vue';
 
 export default {
   components: {
     'home-page': AccountPageView,
     'header_bar': header_component,
+    'pop_up_notification': pop_up_notification,
   },
   data() {
     return {
       showPopup: false,
+      showNotification: false,
+      notificationMessage: '',
       defaultName: store.state.userDisplayName,
       emailAd: store.state.userEmail,
       newName: '',
@@ -116,11 +124,26 @@ export default {
     closePopup() {
       this.showPopup = false;
     },
-    async changeDefaultName(){
-      await updateDisplayName(this.newName)
-      store.dispatch('setUserInfo', this.newName)
-      this.defaultName = this.newName
-      this.closePopup();
+    async changeDefaultName() {
+      if (this.newName.trim() === this.defaultName.trim()) {
+        // If the new name is the same as the current name
+        this.notificationMessage = "Failed to change name. Please try another name.";
+        this.showNotification = true; // Show the notification
+      } else {
+        try {
+          // Proceed to update the display name
+          await updateDisplayName(this.newName);
+          store.dispatch('setUserInfo', this.newName);
+          this.defaultName = this.newName;
+          this.notificationMessage = "Successfully changed name!";
+          this.showNotification = true; // Show the notification
+          this.closePopup();
+        } catch (error) {
+          // Handle potential errors
+          this.notificationMessage = "An error occurred. Please try again.";
+          this.showNotification = true; // Show the notification
+        }
+      }
     },
     closePasswordPopup() {
       this.showPasswordPopup = false,
@@ -130,8 +153,8 @@ export default {
     changePassword() {
       changePassword(this.newPassword)
       this.closePasswordPopup();
-    }
-  },
+    },
+  }, 
 };
 </script>
 
@@ -163,4 +186,4 @@ position: relative;
 z-index: 1;
 transition: 0.5s;
 }
-</style>
+</style>../../components/pop_up.vue

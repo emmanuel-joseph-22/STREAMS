@@ -52,6 +52,12 @@
             <br />
             <router-link to="/login" id="login" class="relative text-center">Login</router-link>
           </div>
+          <!--Notification-->
+          <div v-if="showNotification" class="popup-overlay fixed inset-0 bg-gray-900 bg-opacity-60 z-20" @click="showNotification = false">
+            <div class="popup-content fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white text-blue-500 rounded-lg shadow-lg z-30 p-4">
+              <p>{{ notificationMessage }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -74,6 +80,8 @@ const name = ref("");
 const role = ref("");
 const errorMsg = ref("");
 const passwordVisibility = ref(false);
+const showNotification = ref(false);
+const notificationMessage = ref("");
 
 // Router setup
 const router = useRouter();
@@ -129,6 +137,7 @@ const setUserData = async (userId, data) => {
 const signup = async () => {
   // Reset error message
   errorMsg.value = "";
+  showNotification.value = false;
 
 
   if (!emailIsValid()) {
@@ -168,6 +177,9 @@ const signup = async () => {
 
       // Set user data in Firestore using setUserData function
       await setUserData(user.uid, userData);
+
+      notificationMessage.value = "Successfully signed up! Welcome!";
+      showNotification.value = true;
 
       console.log("Successfully registered and data saved in Firestore!");
 
