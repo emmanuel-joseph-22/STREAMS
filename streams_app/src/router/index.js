@@ -3,7 +3,6 @@ import LogIn from '../views/authentication/LogIn.vue';
 import SignUp from '../views/authentication/SignUp.vue';
 import Reading from '../views/reading/ReadingView.vue';
 import Settings from '../views/AccountSettings/SettingsView.vue';
-import Feedback from '../views/others/FeedbackView.vue';
 import Tips from '../views/others/TipsView.vue';
 import Events from '../views/dashboard/EventsView.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -48,11 +47,6 @@ const routes = [
       path: '/settings',
       name: 'settings',
       component: Settings
-    },
-    {
-      path: '/feedback',
-      name: 'feedback',
-      component: Feedback
     },
     {
       path: '/tips',

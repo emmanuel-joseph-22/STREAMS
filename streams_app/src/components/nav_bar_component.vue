@@ -53,15 +53,6 @@
                     </div>
                 </router-link>
 
-                <!-- feedback div -->
-                <router-link v-if="!role" class="navbar_link" to="/feedback">
-                    <div class="navbar_icon">
-                        <!-- nav icon -->
-                        <img class="icon" src="community.png" :style="{ 'margin-left': navbarCollapsed ? '0' : '41px' }"/>
-                        <div class="navlink_label" v-if="!navbarCollapsed">Community</div>
-                    </div>
-                </router-link>
-
                 <!-- map div -->
                 <router-link class="navbar_link"  to="/map" title="Maps">
                     <div class="navbar_icon">
@@ -84,10 +75,6 @@
                 </div>
                 <div v-if="more_settings" class="fixed inset-0 z-1" @click="showMoreOptions"></div>
                 <div class="dropdown_content" v-if="more_settings">
-                    <!-- feedback link -->
-                    <router-link class="navbar_link" to="/feedback" v-if="role">
-                        <div class="other_link_label"><span>Community</span></div>
-                    </router-link>
                     <!-- convservation tips ewan san lalagay -->
                     <router-link class="navbar_link" to="/tips">
                         <div class="other_link_label"><span>Learn More</span></div>
@@ -125,9 +112,6 @@
                     <router-link to="/events" v-if="role == 'event admin'">
                         <img class="mobile_icon" src="event_icon.png" />
                     </router-link>                  
-                    <router-link to="/feedback" v-if="!role">
-                        <img class="mobile_icon" src="community.png"/>
-                    </router-link>
                 </div>
                 <div class="mobile_link">
                     <router-link to="/map"> 
@@ -153,10 +137,6 @@
                             STREAMS
                         </div>
                     </div>
-
-                    <router-link class="navbar_label" to="/feedback" title="Feedback" v-if="role">
-                        <span class="feedback">Community</span>
-                    </router-link>
 
                     <router-link class="navbar_label" to="/tips" title="Useful Techniques">
                         <span class="tips">Learn More</span>
