@@ -11,11 +11,11 @@
     "ionic:serve": "npm run serve"
   },
   "dependencies": {
-    "@capacitor/android": "^5.7.2",
-    "@capacitor/app": "^5.0.7",
-    "@capacitor/core": "^6.1.2",
-    "@capacitor/geolocation": "^6.0.1",
-    "@capacitor/ios": "^5.7.2",
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/app": "^6.0.2",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/geolocation": "^6.0.2",
+    "@capacitor/ios": "^6.2.0",
     "@vue/cli": "^5.0.8",
     "core-js": "^3.8.3",
     "echarts": "^5.5.0",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
-    "@capacitor/cli": "^5.7.2",
+    "@capacitor/cli": "^6.2.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
