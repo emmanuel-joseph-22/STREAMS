@@ -45,6 +45,14 @@
               <div class="feedback-content">
                 <p>{{ feedback.text }}</p>
               </div>
+
+              <!-- Delete Post Button -->
+              <button 
+                v-if="canDeletePost(feedback)"
+                class="delete-post-button"
+                @click="deletePost(feedback.id)">
+                Delete Post
+              </button>
             </div>
           </div>
           <!-- Toggle comments button -->
@@ -98,7 +106,7 @@
 </template>
 
 <script>
-import { ref, push, onValue, query, orderByChild, startAt } from 'firebase/database';
+import { ref, push, onValue, query, orderByChild, startAt, remove } from 'firebase/database';
 import othersPageView from './othersPageView.vue';
 import header from './../../components/header_component.vue';
 import { database } from './../../main';
@@ -115,6 +123,7 @@ export default {
       isSubmitting: false,
       feedbacks: [],
       role: store.state.role, // Retrieve the user's role from the store
+      id: store.state.userID //Retrieve user's id
     };
   },
   methods: {
@@ -132,6 +141,7 @@ export default {
           text: this.feedbackText,
           timestamp: Date.now(),
           role: this.role,
+          senderId: this.id
         });
 
         // Create a new feedback object
@@ -140,6 +150,7 @@ export default {
           text: this.feedbackText,
           timestamp: Date.now(),
           role: this.role,
+          senderId: this.id,
           comments: [],
           newCommentText: '',
           showComments: false, // Initialize showComments as false
@@ -220,7 +231,31 @@ export default {
           return '#CCCCCC'; // Default gray for unknown roles
       }
     },
-  },
+    canDeletePost(feedback){
+      const userRole = this.role; 
+      const userId = this.id;
+      console.log("Checking delete permission:");
+      console.log("Logged-in user ID:", userId);
+      console.log("Post sender ID:", feedback.senderId);
+      console.log("Is admin:", userRole === 'admin');
+      console.log("Is sender:", feedback.senderId === userId);
+      return(
+        userRole === "admin" || feedback.senderId === userId
+    )
+    },
+    async deletePost(postId){
+      try{
+        const postRef = ref(database, `feedbacks/${postId}`);
+        await remove(postRef);
+        console.log(`Feedback with ID: ${postId} deleted successfully`);
+
+        this.feedbacks = this.feedbacks.filter(feedback => feedback.id !== postId);
+      } catch(error){
+        console.error("Error deleting post")
+      }
+    }
+
+    },
   mounted() {
     // Calculate the timestamp 30 days ago from the current date and time
     const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
@@ -241,6 +276,8 @@ export default {
             const feedbackArray = Object.values(feedbackData).map((feedback, index) => {
                 // Assigning the feedback ID (key) to each feedback object
                 feedback.id = Object.keys(feedbackData)[index];
+                feedback.senderId = feedback.senderId || '';
+                console.log("Retrieved feedback:", feedback);
                 return feedback;
             }).sort((a, b) => b.timestamp - a.timestamp);
 
@@ -482,6 +519,24 @@ export default {
   height: 1px;
   background-color: #ccc;
   margin-top: 8px;
+}
+
+.delete-post-button {
+  padding: 10px 20px;
+  margin-right: 15px;
+  float: right;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #DC0C0D;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+.delete-post-button:hover{
+  background-color: #B10A0C;
+  transform: scale(1.05);
 }
 
 /* gawa ni yvan
