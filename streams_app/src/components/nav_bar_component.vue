@@ -1,10 +1,10 @@
 <template>
     <div>
         <!-- nav bar for web -->
-        <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }" @click="toggleNavbar" >
+        <div class="nav_bar" v-if="!isMobile" :class="{ collapsed: navbarCollapsed }" >
             <header>
                 <!-- tinanggal ko class=icon ang cute nagzzooom -->
-                <div v-show="!navbarCollapsed">
+                <div v-show="!navbarCollapsed"  @click="toggleNavbar">
                     <div class="flex">
                         <span style="margin-left: 25px; cursor: pointer;">
                             <img class="streams_icon" src="streams_logo.png" alt="Toggle Icon"  >
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="navbarCollapsed" style="margin-left: 10px; cursor: pointer;">
+                <div v-if="navbarCollapsed" style="margin-left: 10px; cursor: pointer;"  @click="toggleNavbar">
                     <span>
                         <img class="streams_icon" src="streams_logo.png" alt="Toggle Icon" >
                     </span>
